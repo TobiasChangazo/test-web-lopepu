@@ -1,0 +1,2708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pizzería Lo Pepu</title>
+  <link href="styles.css?v=10.14" rel="stylesheet"/>
+  <link href="img/favicon/favicon.ico" rel="icon" type="image/x-icon">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="img/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="img/favicon/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="img/favicon/android-chrome-512x512.png">
+</head>
+<body>
+  <div class="fondo-fijo" aria-hidden="true"></div>
+  <header>
+  <div class="lp-header-inner">
+    <img
+      alt="Lo Pepu"
+      class="logo-redondo"
+      src="img/logo/logo1.webp"
+      title="Lo Pepu"
+      loading="lazy"
+    />
+    <h1 class="lp-header-title">LO PEPU</h1>
+  </div>
+  </header>
+
+  <main>
+    <section class="bienvenida-box">
+  <div class="bienvenida-bloque">
+
+    <!-- 1) Dirección -->
+    <div class="ubicacion-link">
+      <a href="https://maps.app.goo.gl/FqjmxddbLNjsjfuM8" target="_blank">
+        <i class="fa-solid fa-map-location-dot"></i>
+        Calle 30 Bis Esquina 5
+        <span class="ver-mapa">[Ver en mapa]</span>
+      </a>
+    </div>
+
+    <!-- 2) Medios de pago -->
+    <div class="pago-redes-moderno">
+      <h3><i class="fa-solid fa-credit-card"></i> Medios de pago</h3>
+      <ul class="lista-medios">
+        <li><i class="fa-solid fa-money-bill-wave"></i> Efectivo</li>
+        <li><i class="fa-solid fa-qrcode"></i> QR</li>
+        <li><i class="fa-solid fa-building-columns"></i> Transferencia</li>
+        <li><i class="fa-solid fa-credit-card"></i> Débito</li>
+      </ul>
+    </div>
+
+    <!-- 3) Estado del local + Ver horarios -->
+    <div class="estado-horarios-wrapper">
+      <div class="estado-horarios-row">
+        <div class="estado-local" id="estado-actual">Cargando estado...</div>
+        <button id="toggle-horarios" class="btn-horario">
+          Ver horarios
+        </button>
+      </div>
+
+      <div id="horarios-detalle" class="horarios-detalle" aria-hidden="true">
+        <ul>
+          <li><strong>Lunes:</strong> Cerrado</li>
+          <li><strong>Martes:</strong> 19:30 - 23:00</li>
+          <li><strong>Miércoles:</strong> 19:30 - 23:00</li>
+          <li><strong>Jueves:</strong> 19:30 - 23:00</li>
+          <li><strong>Viernes:</strong> 19:30 - 23:00</li>
+          <li><strong>Sábado:</strong> 19:30 - 23:00</li>
+          <li><strong>Domingo:</strong> 19:30 - 23:00</li>
+        </ul>
+      </div>
+    </div>
+
+  <div class="social-buttons">
+  <a class="social-circle" href="https://wa.me/5492324674311" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <a class="social-circle" href="https://instagram.com/lopepupizzeria" target="_blank">
+    <i class="fab fa-instagram"></i>
+  </a>
+</div>
+
+  </div>
+</section>
+</section>
+
+<div class="nav-container">
+  <nav id="lp-nav" data-scrollable>
+    <div class="nav-slab">
+      <div class="nav-inner">
+
+        <!-- BUSCADOR ARRIBA -->
+        <div class="nav-search-row">
+          <div class="nav-search">
+            <input id="lp-search" type="search" placeholder="Buscar Producto..." aria-label="Buscar producto">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <!-- ÍCONOS DEBAJO -->
+        <ul class="nav-icons nav-icons-big">
+          <li><button class="nav-chip" data-target="promos" aria-label="Promociones">
+            <img class="nav-icon" src="img/icon-nav/promoicon.png" alt="Promos"><span>Promos</span>
+          </button></li>
+
+          <li><button class="nav-chip" data-target="pizzas" aria-label="Pizzas">
+            <img class="nav-icon" src="img/icon-nav/pizzaicon.png" alt="Pizzas"><span>Pizzas</span>
+          </button></li>
+
+          <li><button class="nav-chip" data-target="empanadas" aria-label="Empanadas">
+            <img class="nav-icon" src="img/icon-nav/empanadaicon.png" alt="Empanadas"><span>Empanadas</span>
+          </button></li>
+
+          <li><button class="nav-chip" data-target="tartas" aria-label="Tartas">
+            <img class="nav-icon" src="img/icon-nav/tartaicon.png" alt="Tartas"><span>Tartas</span>
+          </button></li>
+
+          <li><button class="nav-chip" data-target="bebidas" aria-label="Bebidas">
+            <img class="nav-icon" src="img/icon-nav/bebidaicon.png" alt="Bebidas"><span>Bebidas</span>
+          </button></li>
+
+          <li><button class="nav-chip" data-target="conos" aria-label="Conos">
+            <img class="nav-icon" src="img/icon-nav/conoicon.png" alt="Conos"><span>Conos</span>
+          </button></li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+</div>
+
+
+<!-- PROMOS -->
+<section class="section active" id="promos">
+<div class="card-horizontal full"
+     data-type="promo"
+     data-promo-id="2muzza"
+     data-price="19000"
+     data-desc="Promo 2 Muzzarellas"
+     data-img="img/promos/2muzza.webp">
+  <div class="info">
+    <h4>2 Muzzarellas</h4>
+    <p>Promo 2 Muzzarellas</p>
+    <span class="price">$19000</span>
+  </div>
+  <img alt="Promo 2 Muzzarellas" src="img/promos/2muzza.webp"/>
+</div>
+
+<div class="card-horizontal full"
+     data-badge="Más pedida"
+     data-type="promo"
+     data-promo-id="2esp"
+     data-price="23000"
+     data-desc="Promo 2 Especiales (Solo las variedades que entran en la Promo)"
+     data-img="img/promos/2esp.webp">
+  <div class="info">
+    <h4>2 Especiales</h4>
+    <p>Promo 2 Especiales (Solo las variedades que entran en la Promo)</p>
+    <span class="price">$23000</span>
+  </div>
+  <img alt="Promo 2 Especiales" src="img/promos/2esp.webp"/>
+</div>
+
+<div class="card-horizontal full"
+     data-type="promo"
+     data-promo-id="esp+muzza"
+     data-price="21500"
+     data-desc="Promo 1 Especial + 1 Muzzarella"
+     data-img="img/promos/muzza+esp.webp">
+  <div class="info">
+    <h4>1 Especial + 1 Muzzarella</h4>
+    <p>Promo 1 Especial + 1 Muzzarella</p>
+    <span class="price">$21500</span>
+  </div>
+  <img alt="Promo 1 Especial + 1 Muzzarella" src="img/promos/muzza+esp.webp"/>
+</div>
+
+<div class="card-horizontal full"
+     data-type="promo"
+     data-promo-id="muzza+6"
+     data-price="17500"
+     data-desc="Promo 1 Muzzarella + 1/2 Docena (Pueden ser Variadas)"
+     data-img="img/promos/muzza+6.webp">
+  <div class="info">
+    <h4>1 Muzzarella + 1/2 Docena</h4>
+    <p>Promo 1 Muzzarella + 1/2 Docena (Pueden ser Variadas)</p>
+    <span class="price">$17500</span>
+  </div>
+  <img alt="Promo 1 Muzzarella + 1/2 Docena" src="img/promos/muzza+6.webp"/>
+</div>
+
+  <div class="card-horizontal full"
+     data-type="promo"
+     data-promo-id="esp+6"
+     data-price="19500"
+     data-desc="1 Especial + 1/2 Docena"
+     data-img="img/promos/esp+6.webp">
+  <div class="info">
+    <h4>1 Especial + 1/2 Docena</h4>
+    <p>1 Especial + 1/2 Docena</p>
+    <span class="price">$19500</span>
+  </div>
+  <img alt="Promo 1 Especial + 1/2 Docena" src="img/promos/esp+6.webp"/>
+  </div>
+
+<div class="card-horizontal full"
+     data-type="promo"
+     data-promo-id="muzza+12"
+     data-price="24500"
+     data-desc="Promo 1 Muzzarella + 1 Docena (Pueden ser Variadas)"
+     data-img="img/promos/muzza+12.webp">
+  <div class="info">
+    <h4>1 Muzzarella + 1 Docena</h4>
+    <p>Promo 1 Muzzarella + 1 Docena (Pueden ser Variadas)</p>
+    <span class="price">$24500</span>
+  </div>
+  <img alt="Promo 1 Muzzarella + 1 Docena" src="img/promos/muzza+12.webp"/>
+</div>
+
+<div class="card-horizontal full"
+     data-type="promo"
+     data-promo-id="esp+12"
+     data-price="26500"
+     data-desc="Promo 1 Especial + 1 Docena (Pueden ser Variadas)"
+     data-img="img/promos/esp+12.webp">
+  <div class="info">
+    <h4>1 Especial + 1 Docena</h4>
+    <p>Promo 1 Especial + 1 Docena (Pueden ser Variadas)</p>
+    <span class="price">$26500</span>
+  </div>
+  <img alt="Promo 1 Especial + 1 Docena" src="img/promos/esp+12.webp"/>
+</div>
+
+  <div class="card-horizontal full"
+     data-type="promo"
+     data-promo-id="3muzza"
+     data-price="28500"
+     data-desc="Promo 3 Muzzarellas"
+     data-img="img/promos/3muzza.webp">
+  <div class="info">
+    <h4>3 Muzzarellas</h4>
+    <p>Promo 3 Muzzarellas</p>
+    <span class="price">$28500</span>
+  </div>
+  <img alt="Promo 3 Muzzarellas" src="img/promos/3muzza.webp"/>
+</div>
+
+<div class="card-horizontal full"
+     data-type="promo"
+     data-promo-id="3esp"
+     data-price="34500"
+     data-desc="Promo 3 Especiales (Solo las variedades que entran en la Promo)"
+     data-img="img/promos/3esp.webp">
+  <div class="info">
+    <h4>3 Especiales</h4>
+    <p>Promo 3 Especiales (Solo las variedades que entran en la Promo)</p>
+    <span class="price">$34500</span>
+  </div>
+  <img alt="Promo 3 Especiales" src="img/promos/3esp.webp"/>
+</div>
+
+</section>
+
+<!-- PIZZAS -->
+<section class="section" id="pizzas">
+  <div class="card-horizontal full"
+       data-name="Muzzarella"
+       data-price="10000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Muzzarella</h4>
+      <p class="card-desc">Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$10000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$5300</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Muzzarella" src="img/pizzaG/muzza.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Jamón y Morrón"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Jamón y Morrón</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Jamón y Morrón" src="img/pizzaG/jamonmorron.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Jamón Solo"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Jamón Solo</h4>
+      <p class="card-desc"></p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Jamón solo" src="img/pizzaG/jamonsolo.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Jamón y Huevo"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Jamón y Huevo</h4>
+      <p class="card-desc"></p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Jamón y Huevo" src="img/pizzaG/jyhuevo.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Cebolla y Albahaca"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Cebolla y Albahaca</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Cebolla y Albahaca" src="img/pizzaG/cebollayalbahaca.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Doble Muzzarella"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Doble Muzzarella</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Doble Muzzarella" src="img/pizzaG/doblemuzza.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Napolitana"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Napolitana</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Napolitana" src="img/pizzaG/napo.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Fugazzeta"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Fugazzeta</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Fugazzeta" src="img/pizzaG/cebollap.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Cebolla y Tomate"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Cebolla y Tomate</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Jamón y Morrón" src="img/pizzaG/cebollaytomate.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Albahaca"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Albahaca</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Jamón y Morrón" src="img/pizzaG/albahaca.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Capresse"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Capresse</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Capresse" src="img/pizzaG/capresse.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Calabresa"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Calabresa</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Calabresa" src="img/pizzaG/calabreza.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Papas Pay"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Papas Pay</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Papas Pay" src="img/pizzaG/papaspay.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Choclo"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Choclo</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Choclo" src="img/pizzaG/choclo.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Huevo Solo"
+       data-price="12000"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Huevo Solo</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$12000</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7000</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Huevo Solo" src="img/pizzaG/huevosolo.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-name="Provolone"
+       data-price="13500"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Provolone</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$13500</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7600</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Provolone" src="img/pizzaG/provolone.webp"/>
+  </div>
+
+    <div class="card-horizontal full"
+       data-name="Ananá"
+       data-price="13500"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Ananá</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$13500</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7600</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Ananá" src="img/pizzaG/anana.webp"/>
+  </div>
+
+    <div class="card-horizontal full"
+       data-name="Roquefort"
+       data-price="13500"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Roquefort</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$13500</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7600</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Roquefort" src="img/pizzaG/roquefortt.webp"/>
+  </div>
+
+    <div class="card-horizontal full"
+       data-name="Anchoa"
+       data-price="13500"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Anchoa</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$13500</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7600</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Anchoa" src="img/pizzaG/anchoa.webp"/>
+  </div>
+
+    <div class="card-horizontal full"
+       data-name="3 Quesos"
+       data-price="13500"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">3 Quesos</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$13500</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7600</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="3 Quesos" src="img/pizzaG/3quesos.webp"/>
+  </div>
+
+    <div class="card-horizontal full"
+       data-name="Palmito"
+       data-price="13500"
+       data-extras='[
+         {"name":"Extra muzza","price":1500},
+         {"name":"Extra aceitunas","price":1200}
+       ]'>
+
+    <div class="info">
+      <h4 class="card-title">Palmito</h4>
+      <p class="card-desc">Jamón, Morrón, Muzzarella, Salsa, Aceituna.</p>
+
+      <div class="precios-dobles">
+        <span class="price">
+          <span class="label">Grande:</span>
+          <span class="monto">$13500</span>
+        </span>
+        <span class="price">
+          <span class="label">Chica:</span>
+          <span class="monto">$7600</span>
+        </span>
+      </div>
+    </div>
+
+    <img alt="Palmito" src="img/pizzaG/palmito.webp"/>
+  </div>
+</section>
+
+<!-- EMPANADAS -->
+<section class="section" id="empanadas">
+  <div class="bloque-precio-empanadas simple">
+    <h3>PROMO EMPANADAS</h3>
+    <p><strong>1/2 Docena:</strong> <span class="precio">$8000</span></p>
+    <p><strong>1 Docena:</strong> <span class="precio">$15000</span></p>
+    <p><strong>2 Docenas:</strong> <span class="precio">$29000</span></p>
+  </div>
+
+  <div class="card-horizontal full"
+     data-type="empanada"
+     data-name="Carne"
+     data-price="1500"
+     data-desc="Empanada de carne"
+     data-img="img/emp/carne.webp">
+
+    <div class="info">
+    <h4>Carne</h4>
+    <span class="price">$1500</span>
+    </div>
+
+  <img alt="Carne" src="img/emp/carne.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+     data-type="empanada"
+     data-name="Jamón y Queso"
+     data-price="1500"
+     data-desc="43r345"
+     data-img="img/emp/jyq.webp">
+
+    <div class="info">
+    <h4>Jamón y Queso</h4>
+    <span class="price">$1500</span>
+    </div>
+
+  <img alt="Carne" src="img/emp/jyq.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+     data-type="empanada"
+     data-name="Pollo"
+     data-price="1500"
+     data-desc="Empanada de carne"
+     data-img="img/emp/pollo.webp">
+
+    <div class="info">
+    <h4>Pollo</h4>
+    <span class="price">$1500</span>
+    </div>
+
+  <img alt="Carne" src="img/emp/pollo.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+     data-type="empanada"
+     data-name="Cebolla y Queso"
+     data-price="1500"
+     data-desc="Empanada de carne"
+     data-img="img/emp/cebolla.webp">
+
+    <div class="info">
+    <h4>Cebolla y Queso</h4>
+    <span class="price">$1500</span>
+    </div>
+
+  <img alt="Cebolla y Queso" src="img/emp/cebolla.webp"/>
+  </div>
+</section>
+
+<!-- TARTAS -->
+<section class="section" id="tartas">
+  <div class="card-horizontal full"
+       data-type="tarta"
+       data-name="Tarta Jamón y Queso"
+       data-price="12000"
+       data-desc="Jamón, huevo y queso."
+       data-img="img/emp/tarta.webp">
+    <div class="info">
+      <h4>Jamón y Queso</h4>
+      <p>Jamón , Huevo y Queso</p>
+      <span class="price">$12000</span>
+    </div>
+    <img alt="tarta" src="img/emp/tarta.webp"/>
+  </div>
+</section>
+
+<!-- BEBIDAS -->
+<section class="section" id="bebidas">
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="Coca Cola Retornable"
+       data-price="3600"
+       data-desc="Coca Cola sabor original 2L retornable."
+       data-img="img/bebida/coca_ret.webp">
+    <div class="info">
+      <h4>Coca Cola Retornable</h4>
+      <p>Coca Cola Retornable sabor original 2L</p>
+      <span class="price">$3600</span>
+    </div>
+    <img alt="Coca ret" src="img/bebida/coca_ret.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="Sprite Retornable"
+       data-price="3600"
+       data-desc="Sprite Retornable 2L"
+       data-img="img/bebida/sprite_ret.webp">
+    <div class="info">
+      <h4>Sprite Retornable 2L</h4>
+      <p>Sprite Retornable 2L</p>
+      <span class="price">$3600</span>
+    </div>
+    <img alt="sprite ret" src="img/bebida/sprite_ret.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="Coca Cola Zero Retornable"
+       data-price="3600"
+       data-desc="Coca Cola sabor original 2L retornable."
+       data-img="img/bebida/coca_ret_sa.webp">
+    <div class="info">
+      <h4>Coca Cola Zero Retornable</h4>
+      <p>Coca Cola Retornable sabor original 2L</p>
+      <span class="price">$3600</span>
+    </div>
+    <img alt="Coca Cola Zero Retornable" src="img/bebida/coca_ret_sa.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="Brahma 1L Retornable"
+       data-price="3700"
+       data-desc="Coca Cola sabor original 2L retornable."
+       data-img="img/bebida/brahma.webp">
+    <div class="info">
+      <h4>Brahma 1L Retornable</h4>
+      <p>Coca Cola Retornable sabor original 2L</p>
+      <span class="price">$3700</span>
+    </div>
+    <img alt="Brahma 1L Retornable" src="img/bebida/brahma.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="Levite Naranja 1.5L"
+       data-price="2200"
+       data-desc="Coca Cola sabor original 2L retornable."
+       data-img="img/bebida/levite.webp">
+    <div class="info">
+      <h4>Levite Naranja 1.5L</h4>
+      <p>Coca Cola Retornable sabor original 2L</p>
+      <span class="price">$2200</span>
+    </div>
+    <img alt="Levite" src="img/bebida/levite.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="Crush 2L"
+       data-price="2500"
+       data-desc="Coca Cola sabor original 2L retornable."
+       data-img="img/bebida/crush.webp">
+    <div class="info">
+      <h4>Crush 2L</h4>
+      <p>Coca Cola Retornable sabor original 2L</p>
+      <span class="price">$2500</span>
+    </div>
+    <img alt="Crush 2L" src="img/bebida/crush.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="Coca Cola Descartable 1,75L"
+       data-price="4500"
+       data-desc="Coca Cola sabor original 2L retornable."
+       data-img="img/bebida/coca_1,75.webp">
+    <div class="info">
+      <h4>Coca Cola Descartable 1,75L</h4>
+      <p>Coca Cola Retornable sabor original 2L</p>
+      <span class="price">$4500</span>
+    </div>
+    <img alt="Coca 1,75" src="img/bebida/coca_1,75.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="Sprite Descartable 1,75L"
+       data-price="4500"
+       data-desc="Coca Cola sabor original 2L retornable."
+       data-img="img/bebida/sprite_1,75.webp">
+    <div class="info">
+      <h4>Sprite Descartable 1,75L</h4>
+      <p>Coca Cola Retornable sabor original 2L</p>
+      <span class="price">$4500</span>
+    </div>
+    <img alt="Sprite Descartable 1,75L" src="img/bebida/sprite_1,75.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="Brahma 500Ml"
+       data-price="2500"
+       data-desc="Coca Cola sabor original 2L retornable."
+       data-img="img/bebida/brahma_lata.webp">
+    <div class="info">
+      <h4>Brahma 500Ml</h4>
+      <p>Coca Cola Retornable sabor original 2L</p>
+      <span class="price">$2500</span>
+    </div>
+    <img alt="Brahma 500Ml" src="img/bebida/brahma_lata.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="7up 500Ml"
+       data-price="2000"
+       data-desc="Coca Cola sabor original 2L retornable."
+       data-img="img/bebida/7up_500.webp">
+    <div class="info">
+      <h4>7up 500Ml</h4>
+      <p>Coca Cola Retornable sabor original 2L</p>
+      <span class="price">$2000</span>
+    </div>
+    <img alt="7up 500Ml" src="img/bebida/7up_500.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="Pepsi 500Ml"
+       data-price="2000"
+       data-desc="Coca Cola sabor original 2L retornable."
+       data-img="img/bebida/pepsi_500.webp">
+    <div class="info">
+      <h4>Pepsi 500Ml</h4>
+      <p>Coca Cola Retornable sabor original 2L</p>
+      <span class="price">$2000</span>
+    </div>
+    <img alt="Pepsi 500Ml" src="img/bebida/pepsi_500.webp"/>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="bebida"
+       data-name="Agua 500Ml"
+       data-price="1200"
+       data-desc="Coca Cola sabor original 2L retornable."
+       data-img="img/bebida/agua_500.webp">
+    <div class="info">
+      <h4>Agua 500Ml</h4>
+      <p>Coca Cola Retornable sabor original 2L</p>
+      <span class="price">$1200</span>
+    </div>
+    <img alt="Agua 500Ml" src="img/bebida/agua_500.webp"/>
+  </div>
+</section>
+
+<!-- CONOS -->
+<section class="section" id="conos">
+  <div class="bloque-promo-conos">
+    <h3>VARIEDADES DE CONOS</h3>
+    <p class="nota-conos">⚠️ Máximo 2 gustos por cono</p>
+    <ul>
+      <li>Jamón</li>
+      <li>Morrón</li>
+      <li>Huevo</li>
+      <li>Cebolla</li>
+      <li>Choclo</li>
+      <li>Tomate</li>
+      <li>Albahaca</li>
+      <li>Papas Pay</li>
+    </ul>
+  </div>
+
+  <div class="card-horizontal full"
+       data-type="cono"
+       data-name="Cono Pizza"
+       data-price="5500"
+       data-desc="Muzzarella, Salsa, Aceituna + Hasta (2) Variedades."
+       data-img="img/cono/cono1.webp"
+       data-flavors='["Jamón","Morrón","Huevo","Cebolla","Choclo","Tomate","Albahaca","Papas Pay"]'>
+    <div class="info">
+      <h4>Cono Pizza</h4>
+      <p>Muzzarella, Salsa, Aceituna + Hasta (2) Variedades.</p>
+      <span class="price">$5500</span>
+    </div>
+    <img alt="cono" src="img/cono/cono1.webp">
+  </div>
+</section>
+
+<!-- SOBRE NOSOTROS (MODAL O BLOQUE) -->
+<div id="sobre-nosotros-overlay"></div>
+<div id="sobre-nosotros" tabindex="-1" role="dialog" aria-modal="true">
+  <button id="cerrar-sobre-nosotros" aria-label="Cerrar sección">×</button>
+  <h2>Sobre Nosotros</h2>
+  <br>
+  <p>
+    Somos Pizzería Lo-Pepu, y estamos ofreciendo desde hace más de 20 años las mejores Pizzas, Empanadas, Tartas y Conos Pizza.
+  </p>
+</div>
+
+</main>
+<footer>
+<p>© 2025 Lo Pepu</p>
+</footer>
+
+<!-- MODAL PIZZA -->
+<div id="item-modal-overlay" hidden></div>
+
+<div id="item-modal" hidden>
+  <button class="im-close" aria-label="Cerrar">&times;</button>
+
+  <div class="im-hero">
+    <img id="im-photo" src="" alt="">
+  </div>
+
+  <div class="im-head">
+    <h3 id="im-title">Producto</h3>
+    <div class="im-price" id="im-price">$0</div>
+  </div>
+
+  <p class="im-desc" id="im-desc"></p>
+
+  <div class="im-qty">
+    <button class="im-btn" data-act="qty-dec">−</button>
+    <input id="im-qty" type="number" min="1" value="1" inputmode="numeric">
+    <button class="im-btn" data-act="qty-inc">+</button>
+  </div>
+
+  <div id="im-extras" class="im-block" hidden>
+    <h4>Extra</h4>
+    <p class="im-help">Agregale un extra a tu pedido!</p>
+    <div id="im-extras-list"></div>
+  </div>
+
+  <div id="im-options" class="im-block">
+    <h4>Opcional</h4>
+    <p class="im-help"></p>
+    <div id="im-options-list">
+      <label class="im-opt">
+        <span>BASE TOSTADA</span>
+        <input type="checkbox" class="opt-flag" value="Base tostada">
+        <span class="im-opt-dot"></span>
+      </label>
+      <label class="im-opt">
+        <span>SIN OREGANO</span>
+        <input type="checkbox" class="opt-flag" value="Sin orégano">
+        <span class="im-opt-dot"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="im-block">
+    <h4>Comentarios</h4>
+    <textarea id="im-note" placeholder="Agrega Comentarios "></textarea>
+  </div>
+
+  <button id="im-add" class="im-add">
+    <span>Agregar a mi pedido</span>
+    <span id="im-add-total">$0</span>
+  </button>
+</div>
+
+<!-- MODAL CONO -->
+
+<div id="modal-cono-overlay" class="modal-overlay" hidden></div>
+
+<div id="modal-cono" class="modal" hidden>
+  <button id="close-cono" class="close-btn">×</button>
+
+  <img id="cono-img" src="" alt="" class="modal-img"/>
+
+  <div class="cono-head">
+    <h2 id="cono-title"></h2>
+    <p class="modal-price" id="cono-price"></p>
+  </div>
+
+  <p id="cono-desc" class="cono-desc"></p>
+
+  <div class="modal-qty">
+    <button class="qty-btn" id="cono-qty-minus">-</button>
+    <span id="cono-qty">1</span>
+    <button class="qty-btn" id="cono-qty-plus">+</button>
+  </div>
+
+  <div class="modal-section">
+    <label>Cantidad de gustos:</label>
+    <select id="cono-flavor-count">
+      <option value="1">1 Gusto</option>
+      <option value="2">2 Gustos</option>
+    </select>
+  </div>
+
+  <div class="modal-section">
+    <label>Gusto 1:</label>
+    <select id="cono-flavor-1"></select>
+  </div>
+
+  <div class="modal-section" id="cono-flavor-2-box" style="display:none;">
+    <label>Gusto 2:</label>
+    <select id="cono-flavor-2"></select>
+  </div>
+
+  <div class="modal-section">
+    <label>Comentarios:</label>
+    <textarea id="cono-comments" placeholder="Agregá comentarios"></textarea>
+  </div>
+
+  <button id="cono-add" class="modal-add-btn">
+    <span>Agregar a mi pedido</span>
+    <span id="cono-add-total">$0</span>
+  </button>
+</div>
+
+<!-- MODAL EMPANADA -->
+<div id="modal-empanada-overlay" hidden></div>
+
+<div id="modal-empanada" hidden>
+  <button class="im-close" data-close-emp>&times;</button>
+
+  <div class="im-hero">
+    <img id="emp-photo" src="" alt="">
+  </div>
+
+  <div class="im-head">
+    <h3 id="emp-title">Empanada</h3>
+    <div class="im-price" id="emp-price">$0</div>
+  </div>
+
+  <p class="im-desc" id="emp-desc"></p>
+
+  <div class="im-qty">
+    <button class="im-btn" data-emp-act="dec">−</button>
+    <input id="emp-qty" type="number" min="1" value="1">
+    <button class="im-btn" data-emp-act="inc">+</button>
+  </div>
+
+  <div class="im-comments">
+    <label for="emp-comment">Comentario</label>
+    <textarea id="emp-comment" placeholder="Aclaraciones..."></textarea>
+  </div>
+
+    <button id="emp-add" class="im-add">
+    <span>Agregar a mi pedido</span>
+    <span id="emp-add-total">$0</span>
+  </button>
+</div>
+
+<!-- MODAL PROMO -->
+<div id="promo-modal-overlay" class="lp-overlay" hidden></div>
+
+<div id="promo-modal" class="lp-modal" hidden>
+  <button class="lp-close" id="promo-close">×</button>
+
+  <div class="promo-img-container">
+    <img id="promo-modal-img" src="" alt="Promo">
+  </div>
+
+  <!-- Header igual que el de la pizza -->
+  <div class="im-head">
+    <h3 id="promo-modal-title"></h3>
+    <div class="im-price" id="promo-modal-price"></div>
+  </div>
+
+  <p class="im-desc" id="promo-modal-desc"></p>
+
+  <!-- Cantidad de promos (barra blanca - + como en pizza) -->
+  <div class="im-qty" id="promo-qty-row">
+    <button class="im-btn" id="promo-qty-dec">−</button>
+    <input id="promo-qty" type="number" min="1" value="1" inputmode="numeric">
+    <button class="im-btn" id="promo-qty-inc">+</button>
+  </div>
+
+  <!-- Contenido interno: pizza + empanadas -->
+  <div id="promo-content"></div>
+
+<div class="im-block">
+  <h4>EXTRA</h4>
+  <p class="im-help">Agregale un extra a tu pizza:</p>
+
+  <!-- EXTRA MUZZA -->
+  <div class="im-extra promo-ex-row" data-extra="muzzarella" data-price="1500" data-max="1">
+    <div class="im-extra-left">
+      <span class="im-extra-name">EXTRA MUZZA</span>
+      <span class="im-extra-pill">$ 1.500</span>
+    </div>
+    <div class="im-extra-ctrl">
+      <button type="button" class="im-extra-btn promo-extra-minus" data-extra="muzzarella">−</button>
+      <span class="ex-qty promo-extra-qty" data-extra="muzzarella">0</span>
+      <button type="button" class="im-extra-btn promo-extra-plus" data-extra="muzzarella">+</button>
+    </div>
+  </div>
+
+  <!-- EXTRA ACEITUNAS -->
+  <div class="im-extra promo-ex-row" data-extra="aceitunas" data-price="1200" data-max="1">
+    <div class="im-extra-left">
+      <span class="im-extra-name">EXTRA ACEITUNAS</span>
+      <span class="im-extra-pill">$ 1.200</span>
+    </div>
+    <div class="im-extra-ctrl">
+      <button type="button" class="im-extra-btn promo-extra-minus" data-extra="aceitunas">−</button>
+      <span class="ex-qty promo-extra-qty" data-extra="aceitunas">0</span>
+      <button type="button" class="im-extra-btn promo-extra-plus" data-extra="aceitunas">+</button>
+    </div>
+  </div>
+</div>
+
+ <!-- OPCIONAL -->
+<div class="im-options">
+  <h4>OPCIONAL</h4>
+
+  <label class="im-opt">
+    <span>BASE TOSTADA</span>
+    <input type="checkbox" class="opt-flag" value="Base tostada">
+    <span class="im-opt-dot"></span>
+  </label>
+
+  <label class="im-opt">
+    <span>SIN OREGANO</span>
+    <input type="checkbox" class="opt-flag" value="Sin oregano">
+    <span class="im-opt-dot"></span>
+  </label>
+</div>
+
+<!-- COMENTARIOS -->
+<div class="im-block">
+  <h4>COMENTARIOS</h4>
+  <textarea
+    id="promo-note"
+    placeholder="Agrega comentarios"
+  ></textarea>
+</div>
+
+<!-- BOTÓN FINAL (mismo estilo que pizza) -->
+<button id="promo-add" class="im-add" type="button">
+  <span>Agregar a mi pedido</span>
+  <span id="promo-add-total">$ 0</span>
+</button>
+
+<!-- DRAWER DEL CARRITO -->
+<aside id="cart-drawer" hidden aria-labelledby="cart-title">
+  <header class="cd-head">
+    <h3 id="cart-title">Mi pedido</h3>
+    <button id="cd-close" class="cd-close" aria-label="Cerrar">&times;</button>
+  </header>
+
+  <div id="cd-list" class="cd-list"></div>
+
+  <div class="cd-summary">
+    <div class="row">
+      <span>Subtotal</span>
+      <strong id="cd-subtotal">$0</strong>
+    </div>
+    <div class="row total">
+      <span>Total</span>
+      <strong id="cd-total">$0</strong>
+    </div>
+  </div>
+
+  <div class="cd-actions">
+    <button id="cd-clear" class="cd-ghost">Vaciar</button>
+    <button id="cd-checkout" class="cd-primary">Continuar</button>
+  </div>
+
+  <form id="cd-form" class="cd-form" hidden>
+    <h4>Datos para el pedido</h4>
+    <label>Nombre y apellido
+      <input id="cd-name" type="text" autocomplete="name" required>
+    </label>
+    <label>Teléfono
+      <input id="cd-phone" type="tel" inputmode="tel" placeholder="11 3xxx xxxx" required>
+    </label>
+    <label>Retiro / Envío
+      <select id="cd-mode">
+        <option value="retiro">Retiro en local</option>
+        <option value="envio">Envío a domicilio</option>
+      </select>
+    </label>
+    <label id="cd-addr-wrap" hidden>Dirección
+      <input id="cd-addr" type="text" autocomplete="street-address" placeholder="Calle 30 Bis…">
+    </label>
+
+    <button id="cd-send" class="cd-primary" type="button">Enviar por WhatsApp</button>
+  </form>
+</aside>
+
+<script>
+(() => {
+  /* NAVBAR */
+  document.querySelectorAll('#lp-nav .nav-chip').forEach(btn => {
+    btn.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+
+      const target = btn.dataset.target;
+
+      document.querySelectorAll('#lp-nav .nav-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      const section = document.getElementById(target);
+      if (section) section.classList.add('active');
+    });
+  });
+
+  function actualizarEstado() {
+    const estadoEl = document.getElementById('estado-actual');
+    if (!estadoEl) return;
+
+    const ahora = new Date();
+    const dia = ahora.getDay();
+    const hora = ahora.getHours();
+    const minutos = ahora.getMinutes();
+
+    const abre = 19 * 60 + 30; // 19:30
+    const cierra = 23 * 60;    // 23:00
+    const actual = hora * 60 + minutos;
+
+    const esDiaHabil = (dia >= 2 && dia <= 6) || dia === 0;
+
+    let estado = '', clase = '';
+    if (esDiaHabil) {
+      if (actual >= abre && actual < cierra) {
+        if (actual >= cierra - 30) { 
+          estado = '<strong>Cierra pronto</strong>'; 
+          clase = 'cerrando'; 
+        } else { 
+          estado = '<strong>Abierto</strong>'; 
+          clase = 'abierto'; 
+        }
+      } else if (actual >= abre - 30 && actual < abre) {
+        estado = '<strong>Abre pronto</strong>'; 
+        clase = 'abriendo';
+      } else { 
+        estado = '<strong>Cerrado</strong>'; 
+        clase = 'cerrado'; 
+      }
+    } else { 
+      estado = '<strong>Cerrado</strong>'; 
+      clase = 'cerrado'; 
+    }
+
+    estadoEl.innerHTML = estado;
+    estadoEl.classList.remove('abierto','cerrado','abriendo','cerrando');
+    estadoEl.classList.add(clase);
+  }
+
+  function foldAccents(str){
+    return (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  }
+
+  (function initSearch(){
+    const input = document.getElementById('lp-search');
+    if(!input) return;
+
+    const productSelectors = [
+      '#promos .card-horizontal', '#pizzas .card-horizontal',
+      '#empanadas .card-horizontal', '#tartas .card-horizontal',
+      '#bebidas .card-horizontal', '#conos .card-horizontal'
+    ];
+
+    const nonProductSelectors = [
+      '#empanadas .bloque-precio-empanadas',
+      '#conos .bloque-promo-conos',
+      '#conos .nota-conos'
+    ];
+
+    const chips = [...document.querySelectorAll('#lp-nav .nav-chip')];
+    const sections = [...document.querySelectorAll('.section')];
+    const getActiveTarget = () => chips.find(c => c.classList.contains('active'))?.dataset.target;
+
+    function showAllSections(){
+      sections.forEach(sec => sec.classList.add('active'));
+    }
+    function showOnly(targetId){
+      sections.forEach(sec => sec.classList.remove('active'));
+      document.getElementById(targetId)?.classList.add('active');
+    }
+
+    function filterProducts(q){
+      const qFold = foldAccents(q.trim());
+      if (qFold) {
+        showAllSections();
+      } else {
+        const target = getActiveTarget() || 'promos';
+        showOnly(target);
+      }
+
+      productSelectors.forEach(sel=>{
+        document.querySelectorAll(sel).forEach(card=>{
+          const txt = [
+            card.innerText || '',
+            card.getAttribute('data-tags') || '',
+            card.getAttribute('data-name') || ''
+          ].join(' ');
+          const txtFold = foldAccents(txt);
+          card.style.display = qFold ? (txtFold.includes(qFold) ? '' : 'none') : '';
+        });
+      });
+
+      nonProductSelectors.forEach(sel => {
+        document.querySelectorAll(sel).forEach(el => {
+          el.style.display = qFold ? 'none' : '';
+        });
+      });
+    }
+
+    input.addEventListener('input', () => filterProducts(input.value));
+  })();
+
+  const initUI = () => {
+    const btnHorarios = document.getElementById('toggle-horarios');
+    const detalleHorarios = document.getElementById('horarios-detalle');
+    btnHorarios?.addEventListener('click', () => {
+      if (!detalleHorarios) return;
+      const visible = window.getComputedStyle(detalleHorarios).display !== 'none';
+      detalleHorarios.style.display = visible ? 'none' : 'block';
+    });
+
+    const sobreNosotrosOverlay = document.getElementById('sobre-nosotros-overlay');
+    const sobreNosotros = document.getElementById('sobre-nosotros');
+    const cerrarSobreNosotros = document.getElementById('cerrar-sobre-nosotros');
+    const logo = document.querySelector('.logo-redondo');
+
+    const abrirSobreNosotros = () => {
+      if (!sobreNosotros || !sobreNosotrosOverlay) return;
+      sobreNosotrosOverlay.classList.add('visible');
+      sobreNosotros.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => sobreNosotros.focus(), 10);
+    };
+    const cerrarSobre = () => {
+      if (!sobreNosotros || !sobreNosotrosOverlay) return;
+      sobreNosotrosOverlay.classList.remove('visible');
+      sobreNosotros.classList.remove('visible');
+      document.body.style.overflow = '';
+    };
+
+    logo?.addEventListener('click', abrirSobreNosotros);
+    cerrarSobreNosotros?.addEventListener('click', cerrarSobre);
+    sobreNosotrosOverlay?.addEventListener('click', cerrarSobre);
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && sobreNosotros?.classList.contains('visible')) cerrarSobre();
+    });
+
+    actualizarEstado();
+    setInterval(actualizarEstado, 60_000);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initUI);
+  } else {
+    initUI();
+  }
+
+  const CART_KEY = 'lopepu-cart';
+  const fmt = n => '$ ' + (n||0).toLocaleString('es-AR');
+
+  function getCart(){ 
+    try{ 
+      return JSON.parse(localStorage.getItem(CART_KEY)||'[]'); 
+    }catch{ 
+      return []; 
+    } 
+  }
+  function setCart(arr){ 
+    localStorage.setItem(CART_KEY, JSON.stringify(arr)); 
+    renderCart(); 
+  }
+
+  function addToCart(item){
+    const cart = getCart();
+    cart.push(item);
+    setCart(cart);
+  }
+
+  /* DRAWER */
+  const elDrawer   = document.getElementById('cart-drawer');
+  const elOverlay  = document.getElementById('cart-overlay');
+  const elList     = document.getElementById('cd-list');
+  const elSubtotal = document.getElementById('cd-subtotal');
+  const elTotal    = document.getElementById('cd-total');
+  const elClose    = document.getElementById('cd-close');
+  const btnOpen    = document.getElementById('open-cart');
+  const btnClear   = document.getElementById('cd-clear');
+  const btnCheck   = document.getElementById('cd-checkout');
+  const formWrap   = document.getElementById('cd-form');
+  const sendBtn    = document.getElementById('cd-send');
+  const modeSel    = document.getElementById('cd-mode');
+  const addrWrap   = document.getElementById('cd-addr-wrap');
+
+  function openCart(){ 
+    if(!elDrawer||!elOverlay) return; 
+    elDrawer.hidden = false; 
+    elOverlay.hidden = false; 
+    renderCart(); 
+  }
+  function closeCart(){ 
+    if(!elDrawer||!elOverlay) return; 
+    elDrawer.hidden = true; 
+    elOverlay.hidden = true; 
+  }
+
+  btnOpen?.addEventListener('click', openCart);
+  elClose?.addEventListener('click', closeCart);
+  elOverlay?.addEventListener('click', closeCart);
+
+  btnClear?.addEventListener('click', ()=> setCart([]) );
+
+  btnCheck?.addEventListener('click', ()=>{
+    if (!formWrap || !elList) return;
+    formWrap.hidden = false;
+    elList.scrollTop = elList.scrollHeight;
+  });
+
+  modeSel?.addEventListener('change', ()=>{
+    if (!addrWrap || !modeSel) return;
+    addrWrap.hidden = modeSel.value !== 'envio';
+  });
+
+  function renderCart(){
+    if (!elList || !elSubtotal || !elTotal) return;
+    const cart = getCart();
+    elList.innerHTML = '';
+    let subtotal = 0;
+
+    cart.forEach((it, idx)=>{
+      const extraTxt = (it.options?.length)
+        ? ' • ' + it.options.map(o=>`${o.name}${o.qty>1?` x${o.qty}`:''}`).join(', ')
+        : '';
+      const noteTxt = it.note ? ` — ${it.note}` : '';
+      const lineTotal = (it.basePrice + (it.options?.reduce((s,o)=>s + o.price*o.qty,0)||0)) * it.qty;
+      subtotal += lineTotal;
+
+      const row = document.createElement('div');
+      row.className = 'cd-item';
+      row.innerHTML = `
+        <div>
+          <h5>${it.name} <span class="cd-meta">(x${it.qty})</span></h5>
+          <div class="cd-meta">${extraTxt}${noteTxt}</div>
+        </div>
+        <div class="cd-controls">
+          <button class="cd-qtybtn" data-act="dec" data-idx="${idx}">−</button>
+          <button class="cd-qtybtn" data-act="inc" data-idx="${idx}">+</button>
+          <span class="cd-price">${fmt(lineTotal)}</span>
+          <button class="cd-trash" data-act="del" data-idx="${idx}">🗑️</button>
+        </div>
+      `;
+      elList.appendChild(row);
+    });
+
+    elSubtotal.textContent = fmt(subtotal);
+    elTotal.textContent    = fmt(subtotal);
+  }
+
+  elList?.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-act]');
+    if(!btn) return;
+    const idx = +btn.dataset.idx;
+    const cart = getCart();
+    if (!cart[idx]) return;
+
+    if (btn.dataset.act === 'del') cart.splice(idx,1);
+    if (btn.dataset.act === 'inc') cart[idx].qty++;
+    if (btn.dataset.act === 'dec') cart[idx].qty = Math.max(1, cart[idx].qty - 1);
+
+    setCart(cart);
+  });
+
+  /* MODAL PIZZA / PRODUCTO GENERAL */
+
+  const imOverlay = document.getElementById('item-modal-overlay');
+  const imModal   = document.getElementById('item-modal');
+  const imClose   = imModal?.querySelector('.im-close');
+  const qtyInput  = document.getElementById('im-qty');
+  const extrasBox = document.getElementById('im-extras');
+  const extrasList= document.getElementById('im-extras-list');
+  const noteInput = document.getElementById('im-note');
+  const addBtn    = document.getElementById('im-add');
+  const addTotal  = document.getElementById('im-add-total');
+
+  function resetModal(){
+    if (!imModal || !qtyInput || !noteInput) return;
+    qtyInput.value = '1';
+    noteInput.value = '';
+    imModal.querySelectorAll('.ex-qty').forEach(inp => inp.value = '0');
+    imModal.querySelectorAll('.opt-flag').forEach(ch => ch.checked = false);
+    updateModalTotal();
+  }
+
+  function openItemModal(){
+    if (!imOverlay || !imModal) return;
+    imOverlay.hidden = false;
+    imModal.hidden   = false;
+    imOverlay.classList.add('visible');
+    imModal.classList.add('visible');
+    document.body.classList.add('modal-open');
+    updateModalTotal();
+  }
+
+  function closeItemModal(){
+    if (!imOverlay || !imModal) return;
+    imOverlay.classList.remove('visible');
+    imModal.classList.remove('visible');
+    imOverlay.hidden = true;
+    imModal.hidden   = true;
+    document.body.classList.remove('modal-open');
+    resetModal();
+  }
+
+  imOverlay?.addEventListener('click', closeItemModal);
+  imClose?.addEventListener('click', closeItemModal);
+
+  imModal?.addEventListener('click', (e)=>{
+    const b = e.target.closest('.im-btn'); 
+    if(!b || !qtyInput) return;
+    if (b.dataset.act === 'qty-inc') qtyInput.value = +qtyInput.value + 1;
+    if (b.dataset.act === 'qty-dec') qtyInput.value = Math.max(1, (+qtyInput.value - 1));
+    updateModalTotal();
+  });
+  qtyInput?.addEventListener('input', updateModalTotal);
+
+  imModal?.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.im-extra-btn');
+    if (!btn) return;
+    const i = +btn.dataset.i || 0;
+    const inp = imModal.querySelector(`.ex-qty[data-i="${i}"]`);
+    if (!inp) return;
+
+    let val = parseInt(inp.value || '0', 10);
+    if (btn.dataset.act === 'ex-inc') val = Math.min(1, val + 1); 
+    if (btn.dataset.act === 'ex-dec') val = Math.max(0, val - 1);  
+    inp.value = String(val);
+    updateModalTotal();
+  });
+
+  imModal?.addEventListener('input', (e)=>{
+    if (e.target.classList.contains('ex-qty')) updateModalTotal();
+  });
+  imModal?.addEventListener('change', (e)=>{
+    if (e.target.classList.contains('opt-flag')) updateModalTotal();
+  });
+
+  function updateModalTotal(){
+    if (!imModal || !qtyInput || !addTotal) return;
+    const basePrice = parseInt(imModal.dataset.basePrice||'0',10);
+    const name = imModal.dataset.name||'';
+    const qty  = Math.max(1, parseInt(qtyInput.value||'1',10));
+
+    let extrasSum = 0;
+    imModal.querySelectorAll('.ex-qty').forEach(inp=>{
+      const i = +inp.dataset.i || 0;
+      let ex = null;
+      try{
+        const parentCardExtras = JSON.parse(
+          document.querySelector('.card-horizontal[data-name="'+name+'"]')?.dataset.extras||'[]'
+        );
+        ex = parentCardExtras[i];
+      }catch{ ex = null; }
+      if (ex) extrasSum += ex.price * Math.max(0, +inp.value||0);
+    });
+
+    const total = (basePrice + extrasSum) * qty;
+    addTotal.textContent = fmt(total);
+    const priceEl = document.getElementById('im-price');
+    if (priceEl) priceEl.textContent = fmt(total);
+  }
+
+  addBtn?.addEventListener('click', ()=>{
+    if (!imModal || !qtyInput) return;
+    const name = imModal.dataset.name || 'Producto';
+    const basePrice = parseInt(imModal.dataset.basePrice || '0', 10);
+    const qty = Math.max(1, parseInt(qtyInput.value || '1', 10));
+    const note = noteInput?.value.trim() || '';
+
+    const options = [];
+
+    imModal.querySelectorAll('.ex-qty').forEach(inp=>{
+      const i = +inp.dataset.i || 0;
+      const q = Math.max(0, parseInt(inp.value || '0', 10));
+      if (!q) return;
+      let exConf = null;
+      try {
+        const parentCardExtras = JSON.parse(
+          document.querySelector('.card-horizontal[data-name="'+name+'"]')?.dataset.extras || '[]'
+        );
+        exConf = parentCardExtras[i];
+      } catch { exConf = null; }
+      if (exConf) {
+        options.push({
+          name: exConf.name,
+          price: exConf.price,
+          qty: q
+        });
+      }
+    });
+
+    imModal.querySelectorAll('.opt-flag').forEach(ch=>{
+      if (!ch.checked) return;
+      const label = ch.closest('.im-opt')?.querySelector('span')?.textContent?.trim()
+        || ch.value || 'Opción';
+      options.push({
+        name: label,
+        price: 0,
+        qty: 1
+      });
+    });
+
+    addToCart({
+      name,
+      basePrice,
+      qty,
+      options,
+      note
+    });
+
+    closeItemModal();
+  });
+
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.card-horizontal.full');
+    if (!card) return;
+
+    if (card.dataset.type) return;
+
+    const section = card.closest('.section');
+    if (!section || section.id !== 'pizzas') return;
+
+    const name  = card.dataset.name || card.querySelector('.card-title')?.textContent?.trim() || 'Producto';
+    const price = parseInt(card.dataset.price || card.querySelector('[data-price]')?.dataset.price || '0', 10);
+    const photo = card.querySelector('img')?.src || '';
+    const desc  = card.querySelector('.card-desc')?.textContent?.trim() || '';
+
+    const tEl   = document.getElementById('im-title');
+    const pEl   = document.getElementById('im-price');
+    const imgEl = document.getElementById('im-photo');
+    const dEl   = document.getElementById('im-desc');
+
+    if (tEl)  tEl.textContent  = name;
+    if (pEl)  pEl.textContent  = fmt(price);
+    if (imgEl) imgEl.src       = photo;
+    if (dEl)  dEl.textContent  = desc;
+
+    let extras = [];
+    try { extras = JSON.parse(card.dataset.extras || '[]'); } catch {}
+
+    if (extrasList && extrasBox) {
+      extrasList.innerHTML = '';
+      if (extras.length) {
+        extrasBox.hidden = false;
+        extras.forEach((ex, i) => {
+          const row = document.createElement('div');
+          row.className = 'im-extra';
+          row.innerHTML = `
+      <div class="im-extra-left">
+        <span class="im-extra-name">${ex.name}</span>
+        <span class="im-extra-pill">${fmt(ex.price)}</span>
+      </div>
+      <div class="im-extra-ctrl">
+        <button type="button" class="im-extra-btn" data-act="ex-dec" data-i="${i}">−</button>
+        <input type="number" class="ex-qty" data-i="${i}" min="0" max="1" value="0">
+        <button type="button" class="im-extra-btn" data-act="ex-inc" data-i="${i}">+</button>
+      </div>
+    `;
+          extrasList.appendChild(row);
+        });
+      } else {
+        extrasBox.hidden = true;
+      }
+    }
+
+    if (imModal) {
+      imModal.dataset.basePrice = String(price);
+      imModal.dataset.name = name;
+    }
+
+    resetModal();
+    if (qtyInput) qtyInput.value = 1;
+    updateModalTotal();
+    openItemModal();
+  });
+
+  /* MODAL CONO */
+
+  const modalCono = document.getElementById("modal-cono");
+  const overlayCono = document.getElementById("modal-cono-overlay");
+
+  const conoTitle = document.getElementById("cono-title");
+  const conoDesc = document.getElementById("cono-desc");
+  const conoPrice = document.getElementById("cono-price");
+  const conoImg = document.getElementById("cono-img");
+  const conoAddTotal = document.getElementById("cono-add-total");
+  let conoBasePrice = 0;
+
+  const conoQty = document.getElementById("cono-qty");
+  const conoQtyMinus = document.getElementById("cono-qty-minus");
+  const conoQtyPlus = document.getElementById("cono-qty-plus");
+
+  const conoFlavorCount = document.getElementById("cono-flavor-count");
+  const conoFlavor1 = document.getElementById("cono-flavor-1");
+  const conoFlavor2 = document.getElementById("cono-flavor-2");
+  const conoFlavor2Box = document.getElementById("cono-flavor-2-box");
+
+  const closeCono = document.getElementById("close-cono");
+
+  let currentCono = null;
+
+  document.querySelectorAll('[data-type="cono"]').forEach(card => {
+    card.addEventListener("click", () => {
+      currentCono = card;
+
+      conoTitle.textContent = card.dataset.name;
+      conoDesc.textContent = card.dataset.desc;
+
+      conoBasePrice = parseInt(card.dataset.price || "0", 10);
+      conoPrice.textContent = fmt(conoBasePrice);    
+
+      conoImg.src = card.dataset.img;
+
+      conoQty.textContent = "1";
+      if (conoAddTotal) conoAddTotal.textContent = fmt(conoBasePrice);
+
+      const flavors = JSON.parse(card.dataset.flavors);
+
+      conoFlavor1.innerHTML = "";
+      conoFlavor2.innerHTML = "";
+
+      flavors.forEach(f => {
+        conoFlavor1.innerHTML += `<option value="${f}">${f}</option>`;
+        conoFlavor2.innerHTML += `<option value="${f}">${f}</option>`;
+      });
+
+      conoFlavorCount.value = "1";
+      conoFlavor2Box.style.display = "none";
+      conoFlavor2.value = conoFlavor1.value;
+
+      overlayCono.hidden = false;
+      modalCono.hidden = false;
+      document.body.classList.add('modal-open');
+    });
+  });
+
+  function closeConoModal() {
+    overlayCono.hidden = true;
+    modalCono.hidden = true;
+    document.body.classList.remove('modal-open');
+  }
+
+  closeCono.addEventListener("click", closeConoModal);
+  overlayCono.addEventListener("click", closeConoModal);
+
+  function updateConoTotal() {
+    const qty = Math.max(1, parseInt(conoQty.textContent || "1", 10));
+    const total = conoBasePrice * qty;
+    if (conoAddTotal) conoAddTotal.textContent = fmt(total);
+  }
+
+  conoQtyMinus.addEventListener("click", () => {
+    let v = parseInt(conoQty.textContent);
+    if (v > 1) {
+      conoQty.textContent = v - 1;
+      updateConoTotal();
+    }
+  });
+
+  conoQtyPlus.addEventListener("click", () => {
+    let v = parseInt(conoQty.textContent);
+    conoQty.textContent = v + 1;
+    updateConoTotal();
+  });
+
+  conoFlavorCount.addEventListener("change", () => {
+    if (conoFlavorCount.value === "2") {
+      conoFlavor2Box.style.display = "block";
+    } else {
+      conoFlavor2Box.style.display = "none";
+    }
+  });
+
+  conoFlavor1.addEventListener("change", () => {
+    if (conoFlavorCount.value === "2" && conoFlavor1.value === conoFlavor2.value) {
+      const options = Array.from(conoFlavor2.options).map(o => o.value);
+      const newOption = options.find(o => o !== conoFlavor1.value);
+      conoFlavor2.value = newOption;
+    }
+  });
+
+  conoFlavor2.addEventListener("change", () => {
+    if (conoFlavor1.value === conoFlavor2.value) {
+      const options = Array.from(conoFlavor2.options).map(o => o.value);
+      const newOption = options.find(o => o !== conoFlavor2.value);
+      conoFlavor1.value = newOption;
+    }
+  });
+
+
+  /* ===========================
+   MODAL PROMOS
+=========================== */
+
+const promoOverlay   = document.getElementById("promo-modal-overlay");
+const promoModal     = document.getElementById("promo-modal");
+const promoClose     = document.getElementById("promo-close");
+const promoContent   = document.getElementById("promo-content");
+
+const promoQtyInput  = document.getElementById("promo-qty");
+const promoQtyDec    = document.getElementById("promo-qty-dec");
+const promoQtyInc    = document.getElementById("promo-qty-inc");
+const promoPriceEl   = document.getElementById("promo-modal-price");
+const promoAddTotal  = document.getElementById("promo-add-total");
+
+let promoBasePrice   = 0;
+
+function getPromoExtrasSum() {
+  let sum = 0;
+  document.querySelectorAll('.promo-ex-row').forEach(row => {
+    const price = parseInt(row.dataset.price || "0", 10) || 0;
+    const qtyEl = row.querySelector('.promo-extra-qty');
+    const q = parseInt(qtyEl?.textContent || "0", 10) || 0;
+    sum += price * q;
+  });
+  return sum;
+}
+
+function updatePromoTotal() {
+  if (!promoQtyInput) return;
+  let qty = parseInt(promoQtyInput.value || "1", 10);
+  if (isNaN(qty) || qty < 1) qty = 1;
+  promoQtyInput.value = qty;
+
+  const extrasSum = getPromoExtrasSum();
+  const total = (promoBasePrice + extrasSum) * qty;
+
+  if (promoPriceEl)  promoPriceEl.textContent  = fmt(total);
+  if (promoAddTotal) promoAddTotal.textContent = fmt(total);
+}
+
+function resetPromoState() {
+  // cantidad promo
+  if (promoQtyInput) promoQtyInput.value = "1";
+
+  // extras (numeritos)
+  document.querySelectorAll('.promo-extra-qty').forEach(s => s.textContent = "0");
+
+  // opcionales (checks)
+  document.querySelectorAll('#promo-modal .opt-flag').forEach(ch => ch.checked = false);
+
+  // comentario
+  const note = document.getElementById("promo-note");
+  if (note) note.value = "";
+
+  updatePromoTotal();
+}
+
+// Controles - / +
+promoQtyDec?.addEventListener("click", () => {
+  let v = parseInt(promoQtyInput.value || "1", 10);
+  if (v > 1) {
+    promoQtyInput.value = String(v - 1);
+    updatePromoTotal();
+  }
+});
+
+promoQtyInc?.addEventListener("click", () => {
+  let v = parseInt(promoQtyInput.value || "1", 10);
+  promoQtyInput.value = String(v + 1);
+  updatePromoTotal();
+});
+
+// Si escribe a mano
+promoQtyInput?.addEventListener("input", updatePromoTotal);
+
+document.querySelectorAll('.card-horizontal[data-type="promo"]').forEach(card => {
+  card.addEventListener("click", () => {
+    const promoId = card.dataset.promoId || "";
+
+    // Imagen, título y descripción
+    document.getElementById("promo-modal-img").src = card.dataset.img || "";
+    document.getElementById("promo-modal-title").innerText = card.querySelector("h4").innerText;
+    document.getElementById("promo-modal-desc").innerText = card.dataset.desc || "";
+
+    // Precio base de la promo
+    promoBasePrice = parseInt(card.dataset.price || "0", 10) || 0;
+
+    resetPromoState();
+
+    promoContent.innerHTML = ""; // limpiamos contenido
+
+    // ======= CARGAR PROMO SEGÚN ID ========
+    if (promoId === "esp+6") {
+      loadPromoEspecialMasMediaDocena();
+    }
+    if (promoId === "2muzza") {
+      loadPromoSoloMuzzas(2);
+    }
+    if (promoId === "3muzza") {
+      loadPromoSoloMuzzas(3);
+    }
+    if (promoId === "2esp") {
+      loadPromoEspeciales(2);
+    }
+    if (promoId === "3esp") {
+      loadPromoEspeciales(3);
+    }
+    if (promoId === "esp+muzza") {
+      loadPromoEspecialMasMuzza();
+    }
+    if (promoId === "muzza+6") {
+      loadPromoMuzzaMasMediaDocena();
+    }
+    if (promoId === "muzza+12") {
+      loadPromoMuzzaMasDocena();
+    }
+    if (promoId === "esp+12") {
+      loadPromoEspecialMasDocena();
+    }
+
+  function loadPromoSoloMuzzas(n) {
+    promoContent.innerHTML = `
+      <div class="im-block">
+        <h4>Incluye</h4>
+        <p class="im-help"><strong>${n}</strong> pizzas <strong>Muzzarella</strong>.</p>
+        <p class="im-help">Podés agregar extras y opcionales abajo.</p>
+      </div>
+    `;
+  }
+    promoOverlay.hidden = false;
+    promoModal.hidden   = false;
+    document.body.classList.add("modal-open");
+  });
+});
+
+promoClose.addEventListener("click", () => {
+  promoOverlay.hidden = true;
+  promoModal.hidden   = true;
+  document.body.classList.remove("modal-open");
+  resetPromoState();
+});
+
+promoOverlay.addEventListener("click", () => {
+  promoOverlay.hidden = true;
+  promoModal.hidden   = true;
+  document.body.classList.remove("modal-open");
+  resetPromoState();
+});
+
+function loadPromoEspeciales(n) {
+  const gustos1 = ["Jamón y Morrón", "Napolitana", "Calabresa"];
+  const gustos2 = ["Muzzarella", ...gustos1];
+
+  const pizzaBlock = (idx) => `
+    <div class="im-block">
+      <h4>Pizza ${idx}</h4>
+      <p class="im-help">Elegí si la querés de un gusto o mitad y mitad.</p>
+
+      <label for="p${idx}-tipo">¿Cómo la querés?</label>
+      <select id="p${idx}-tipo">
+        <option value="1">1 gusto</option>
+        <option value="2">Mitad y mitad</option>
+      </select>
+
+      <label for="p${idx}-g1">Gusto 1</label>
+      <select id="p${idx}-g1">
+        ${gustos1.map(g => `<option>${g}</option>`).join("")}
+      </select>
+
+      <div id="p${idx}-g2-box" style="display:none;">
+        <label for="p${idx}-g2">Gusto 2</label>
+        <select id="p${idx}-g2">
+          ${gustos2.map(g => `<option>${g}</option>`).join("")}
+        </select>
+      </div>
+    </div>
+  `;
+
+  promoContent.innerHTML = Array.from({ length: n }, (_, i) => pizzaBlock(i + 1)).join("");
+
+  // listeners para mostrar/ocultar el 2do gusto por pizza
+  for (let i = 1; i <= n; i++) {
+    const tipo = document.getElementById(`p${i}-tipo`);
+    const box  = document.getElementById(`p${i}-g2-box`);
+    if (!tipo || !box) continue;
+
+    tipo.addEventListener("change", () => {
+      box.style.display = (tipo.value === "2") ? "" : "none";
+    });
+  }
+}
+
+function loadPromoEspecialMasMuzza() {
+  promoContent.innerHTML = `
+    <div class="im-block">
+      <h4>Incluye</h4>
+      <p class="im-help"><strong>1</strong> pizza <strong>Muzzarella</strong> + <strong>1</strong> pizza <strong>Especial</strong>.</p>
+      <p class="im-help">Configurá <strong>solo la Especial</strong> acá abajo.</p>
+    </div>
+
+    <div class="im-block">
+      <h4>Pizza Especial</h4>
+      <p class="im-help">Elegí si la querés de un gusto o mitad y mitad.</p>
+
+      <label for="promo-pizza-tipo">¿Cómo la querés?</label>
+      <select id="promo-pizza-tipo">
+        <option value="1">1 gusto</option>
+        <option value="2">Mitad y mitad</option>
+      </select>
+
+      <label for="gusto1">Gusto 1</label>
+      <select id="gusto1">
+        <option>Jamón y Morrón</option>
+        <option>Napolitana</option>
+        <option>Calabresa</option>
+      </select>
+
+      <div id="gusto2-box" style="display:none;">
+        <label for="gusto2">Gusto 2</label>
+        <select id="gusto2">
+          <option>Muzzarella</option>
+          <option>Jamón y Morrón</option>
+          <option>Napolitana</option>
+          <option>Calabresa</option>
+        </select>
+      </div>
+    </div>
+  `;
+
+  const tipo = document.getElementById("promo-pizza-tipo");
+  const box  = document.getElementById("gusto2-box");
+  if (tipo && box) {
+    tipo.addEventListener("change", () => {
+      box.style.display = (tipo.value === "2") ? "" : "none";
+    });
+  }
+}
+
+function loadPromoMuzzaMasMediaDocena() {
+  promoContent.innerHTML = `
+    <div class="im-block">
+      <h4>Incluye</h4>
+      <p class="im-help"><strong>1</strong> pizza <strong>Muzzarella</strong> + <strong>6</strong> empanadas.</p>
+      <p class="im-help">Repartí las empanadas como quieras (variadas).</p>
+    </div>
+
+    <div class="im-block">
+      <h4>Empanadas (6 unidades)</h4>
+      <p class="im-help">Repartí tus <strong>6 unidades</strong> entre los gustos disponibles. Máximo 6 en total.</p>
+      <div id="empanada-list"></div>
+      <p class="contador-emp">Seleccionadas: <span id="emp-count">0</span> / 6</p>
+    </div>
+  `;
+
+  const empContainer = document.getElementById("empanada-list");
+  const empanadas = ["Carne", "Jamón y Queso", "Pollo", "Cebolla y Queso"];
+
+  let total = 0;
+
+  empanadas.forEach(gusto => {
+    const row = document.createElement("div");
+    row.className = "im-extra";
+
+    row.innerHTML = `
+      <div class="im-extra-left">
+        <span class="im-extra-name">${gusto}</span>
+      </div>
+      <div class="im-extra-ctrl">
+        <button type="button" class="im-extra-btn emp-minus">−</button>
+        <span class="emp-cant">0</span>
+        <button type="button" class="im-extra-btn emp-plus">+</button>
+      </div>
+    `;
+
+    empContainer.appendChild(row);
+
+    const minus = row.querySelector(".emp-minus");
+    const plus  = row.querySelector(".emp-plus");
+    const cant  = row.querySelector(".emp-cant");
+
+    plus.onclick = () => {
+      if (total < 6) {
+        cant.innerText = String(parseInt(cant.innerText, 10) + 1);
+        total++;
+        document.getElementById("emp-count").innerText = String(total);
+      }
+    };
+
+    minus.onclick = () => {
+      const v = parseInt(cant.innerText, 10);
+      if (v > 0) {
+        cant.innerText = String(v - 1);
+        total--;
+        document.getElementById("emp-count").innerText = String(total);
+      }
+    };
+  });
+}
+
+function loadPromoMuzzaMasDocena() {
+  promoContent.innerHTML = `
+    <div class="im-block">
+      <h4>Incluye</h4>
+      <p class="im-help"><strong>1</strong> pizza <strong>Muzzarella</strong> + <strong>12</strong> empanadas.</p>
+      <p class="im-help">Repartí las empanadas como quieras (variadas).</p>
+    </div>
+
+    <div class="im-block">
+      <h4>Empanadas (12 unidades)</h4>
+      <p class="im-help">Repartí tus <strong>12 unidades</strong> entre los gustos disponibles. Máximo 12 en total.</p>
+      <div id="empanada-list"></div>
+      <p class="contador-emp">Seleccionadas: <span id="emp-count">0</span> / 12</p>
+    </div>
+  `;
+
+  const empContainer = document.getElementById("empanada-list");
+  const empanadas = ["Carne", "Jamón y Queso", "Pollo", "Cebolla y Queso"];
+
+  let total = 0;
+  const MAX = 12;
+
+  empanadas.forEach(gusto => {
+    const row = document.createElement("div");
+    row.className = "im-extra";
+
+    row.innerHTML = `
+      <div class="im-extra-left">
+        <span class="im-extra-name">${gusto}</span>
+      </div>
+      <div class="im-extra-ctrl">
+        <button type="button" class="im-extra-btn emp-minus">−</button>
+        <span class="emp-cant">0</span>
+        <button type="button" class="im-extra-btn emp-plus">+</button>
+      </div>
+    `;
+
+    empContainer.appendChild(row);
+
+    const minus = row.querySelector(".emp-minus");
+    const plus  = row.querySelector(".emp-plus");
+    const cant  = row.querySelector(".emp-cant");
+
+    plus.onclick = () => {
+      if (total < MAX) {
+        cant.innerText = String(parseInt(cant.innerText, 10) + 1);
+        total++;
+        document.getElementById("emp-count").innerText = String(total);
+      }
+    };
+
+    minus.onclick = () => {
+      const v = parseInt(cant.innerText, 10);
+      if (v > 0) {
+        cant.innerText = String(v - 1);
+        total--;
+        document.getElementById("emp-count").innerText = String(total);
+      }
+    };
+  });
+}
+
+function loadPromoEspecialMasDocena() {
+  promoContent.innerHTML = `
+    <div class="im-block">
+      <h4>Incluye</h4>
+      <p class="im-help"><strong>1</strong> pizza <strong>Especial</strong> + <strong>12</strong> empanadas.</p>
+      <p class="im-help">Configurá la <strong>Especial</strong> y repartí las empanadas como quieras.</p>
+    </div>
+
+    <div class="im-block">
+      <h4>Pizza Especial</h4>
+      <p class="im-help">Elegí si la querés de un gusto o mitad y mitad.</p>
+
+      <label for="promo-pizza-tipo">¿Cómo la querés?</label>
+      <select id="promo-pizza-tipo">
+        <option value="1">1 gusto</option>
+        <option value="2">Mitad y mitad</option>
+      </select>
+
+      <label for="gusto1">Gusto 1</label>
+      <select id="gusto1">
+        <option>Jamón y Morrón</option>
+        <option>Napolitana</option>
+        <option>Calabresa</option>
+      </select>
+
+      <div id="gusto2-box" style="display:none;">
+        <label for="gusto2">Gusto 2</label>
+        <select id="gusto2">
+          <option>Muzzarella</option>
+          <option>Jamón y Morrón</option>
+          <option>Napolitana</option>
+          <option>Calabresa</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="im-block">
+      <h4>Empanadas (12 unidades)</h4>
+      <p class="im-help">Repartí tus <strong>12 unidades</strong> entre los gustos disponibles. Máximo 12 en total.</p>
+      <div id="empanada-list"></div>
+      <p class="contador-emp">Seleccionadas: <span id="emp-count">0</span> / 12</p>
+    </div>
+  `;
+
+  // mostrar/ocultar 2do gusto
+  const tipo = document.getElementById("promo-pizza-tipo");
+  const box  = document.getElementById("gusto2-box");
+  if (tipo && box) {
+    tipo.addEventListener("change", () => {
+      box.style.display = (tipo.value === "2") ? "" : "none";
+    });
+  }
+
+  // empanadas (tope 12)
+  const empContainer = document.getElementById("empanada-list");
+  const empanadas = ["Carne", "Jamón y Queso", "Pollo", "Cebolla y Queso"];
+
+  let total = 0;
+  const MAX = 12;
+
+  empanadas.forEach(gusto => {
+    const row = document.createElement("div");
+    row.className = "im-extra";
+
+    row.innerHTML = `
+      <div class="im-extra-left">
+        <span class="im-extra-name">${gusto}</span>
+      </div>
+      <div class="im-extra-ctrl">
+        <button type="button" class="im-extra-btn emp-minus">−</button>
+        <span class="emp-cant">0</span>
+        <button type="button" class="im-extra-btn emp-plus">+</button>
+      </div>
+    `;
+
+    empContainer.appendChild(row);
+
+    const minus = row.querySelector(".emp-minus");
+    const plus  = row.querySelector(".emp-plus");
+    const cant  = row.querySelector(".emp-cant");
+
+    plus.onclick = () => {
+      if (total < MAX) {
+        cant.innerText = String(parseInt(cant.innerText, 10) + 1);
+        total++;
+        document.getElementById("emp-count").innerText = String(total);
+      }
+    };
+
+    minus.onclick = () => {
+      const v = parseInt(cant.innerText, 10);
+      if (v > 0) {
+        cant.innerText = String(v - 1);
+        total--;
+        document.getElementById("emp-count").innerText = String(total);
+      }
+    };
+  });
+}
+
+//   PROMO: 1 Especial + 1/2 Docena
+function loadPromoEspecialMasMediaDocena() {
+
+  // HTML interno del modal, usando el mismo layout que el modal de pizza
+  promoContent.innerHTML = `
+    <div class="im-block">
+      <h4>Pizza Especial</h4>
+      <p class="im-help">Elegí si la querés de un gusto o mitad y mitad.</p>
+
+      <label for="promo-pizza-tipo">¿Cómo la querés?</label>
+      <select id="promo-pizza-tipo">
+        <option value="1">1 gusto</option>
+        <option value="2">Mitad y mitad</option>
+      </select>
+
+      <label for="gusto1">Gusto 1</label>
+      <select id="gusto1">
+        <option>Jamón y Morrón</option>
+        <option>Napolitana</option>
+        <option>Calabresa</option>
+      </select>
+
+      <div id="gusto2-box" style="display:none;">
+        <label for="gusto2">Gusto 2</label>
+        <select id="gusto2">
+          <option>Muzzarella</option>
+          <option>Jamón y Morrón</option>
+          <option>Napolitana</option>
+          <option>Calabresa</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="im-block">
+      <h4>Empanadas (6 unidades)</h4>
+      <p class="im-help">Repartí tus <strong>6 unidades</strong> entre los gustos disponibles. Máximo 6 en total.</p>
+      <div id="empanada-list"></div>
+      <p class="contador-emp">Seleccionadas: <span id="emp-count">0</span> / 6</p>
+    </div>
+  `;
+
+  const empContainer = document.getElementById("empanada-list");
+  const empanadas = ["Carne", "Jamón y Queso", "Pollo", "Cebolla y Queso"];
+
+  let total = 0;
+
+  empanadas.forEach(gusto => {
+    const row = document.createElement("div");
+    // usamos las mismas clases que los "extras" de la pizza
+    row.className = "im-extra";
+
+    row.innerHTML = `
+      <div class="im-extra-left">
+        <span class="im-extra-name">${gusto}</span>
+      </div>
+      <div class="im-extra-ctrl">
+        <button type="button" class="im-extra-btn emp-minus">−</button>
+        <span class="emp-cant">0</span>
+        <button type="button" class="im-extra-btn emp-plus">+</button>
+      </div>
+    `;
+
+    empContainer.appendChild(row);
+
+    const minus = row.querySelector(".emp-minus");
+    const plus = row.querySelector(".emp-plus");
+    const cant = row.querySelector(".emp-cant");
+
+    plus.onclick = () => {
+      if (total < 6) {
+        cant.innerText = parseInt(cant.innerText, 10) + 1;
+        total++;
+        document.getElementById("emp-count").innerText = total;
+      }
+    };
+
+    minus.onclick = () => {
+      if (parseInt(cant.innerText, 10) > 0) {
+        cant.innerText = parseInt(cant.innerText, 10) - 1;
+        total--;
+        document.getElementById("emp-count").innerText = total;
+      }
+    };
+  });
+
+  // Mostrar 2do gusto solo si eligen mitad y mitad
+  const tipo = document.getElementById("promo-pizza-tipo");
+  tipo.addEventListener("change", () => {
+    const box = document.getElementById("gusto2-box");
+    box.style.display = (tipo.value === "2") ? "block" : "none";
+  });
+}
+
+  /* MODAL EMPANADA */
+
+  const empOverlay   = document.getElementById("modal-empanada-overlay");
+  const empModal     = document.getElementById("modal-empanada");
+  const empTitle     = document.getElementById("emp-title");
+  const empPriceEl   = document.getElementById("emp-price");
+  const empImg       = document.getElementById("emp-photo");
+  const empDesc      = document.getElementById("emp-desc");
+  const empQtyInput  = document.getElementById("emp-qty");
+  const empComment   = document.getElementById("emp-comment");
+  const empAddBtn    = document.getElementById("emp-add");
+  const empAddTotal  = document.getElementById("emp-add-total");
+
+  let empBasePrice   = 0;
+  let currentEmpCard = null;
+
+  document.querySelectorAll('[data-type="empanada"], [data-type="tarta"], [data-type="bebida"]').forEach(card => {
+    card.addEventListener('click', () => {
+      currentEmpCard = card;
+
+      empTitle.textContent   = card.dataset.name;
+      empBasePrice           = parseInt(card.dataset.price || "0", 10);
+      empPriceEl.textContent = fmt(empBasePrice);    
+      empImg.src             = card.dataset.img;
+      empDesc.textContent    = card.dataset.desc || "";
+
+      empQtyInput.value      = 1;
+      empComment.value       = "";
+      updateEmpTotal();
+
+      empOverlay.style.display = "block";
+      empModal.style.display   = "block";
+      document.body.classList.add("modal-open");
+    });
+  });
+
+  function updateEmpTotal() {
+    const qty = Math.max(1, parseInt(empQtyInput.value || "1", 10));
+    if (empAddTotal) empAddTotal.textContent = fmt(empBasePrice * qty);
+  }
+
+  function empClose() {
+    empOverlay.style.display = "none";
+    empModal.style.display   = "none";
+    document.body.classList.remove("modal-open");
+  }
+
+  document.querySelector('[data-close-emp]')?.addEventListener("click", empClose);
+  empOverlay.addEventListener("click", empClose);
+
+  document.querySelectorAll('[data-emp-act]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      let val = parseInt(empQtyInput.value || "1", 10);
+      if (btn.dataset.empAct === "inc") val++;
+      else if (val > 1) val--;
+      empQtyInput.value = val;
+      updateEmpTotal();
+    });
+  });
+
+  empQtyInput.addEventListener("input", () => {
+    let val = parseInt(empQtyInput.value || "1", 10);
+    if (isNaN(val) || val < 1) val = 1;
+    empQtyInput.value = val;
+    updateEmpTotal();
+  });
+
+  empAddBtn.addEventListener("click", () => {
+    const qty  = Math.max(1, parseInt(empQtyInput.value || "1", 10));
+    const note = empComment.value.trim();
+
+    if (!currentEmpCard) return;
+
+    addToCart({
+      type: "empanada",
+      name: empTitle.textContent || "Empanada",
+      basePrice: empBasePrice,
+      qty,
+      extras: [],
+      options: [],
+      note: note ? [note] : []
+    });
+
+    empClose();
+    openCart();
+  });
+
+    document.addEventListener('click', function (ev) {
+    if (
+      ev.target.classList.contains('promo-extra-plus') ||
+      ev.target.classList.contains('promo-extra-minus')
+    ) {
+      const row = ev.target.closest('.promo-ex-row');
+      if (!row) return;
+
+      const span = row.querySelector('.ex-qty');
+      let val = parseInt(span.textContent, 10) || 0;
+      const max = parseInt(row.dataset.max || '1', 10);
+
+      if (ev.target.classList.contains('promo-extra-plus') && val < max) {
+        val++;
+      }
+      if (ev.target.classList.contains('promo-extra-minus') && val > 0) {
+        val--;
+      }
+      span.textContent = val;
+      updatePromoTotal();
+    }
+  });
+
+  renderCart();
+})();
+</script>
+</body>
+</html>
