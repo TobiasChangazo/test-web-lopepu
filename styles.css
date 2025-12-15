@@ -13,7 +13,7 @@ html, body {
   padding: 0;
   max-width: 100%;
   overflow-x: hidden;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   color: #fff;
   min-height: 100vh;
   position: relative;
@@ -32,7 +32,6 @@ body::before {
   opacity: 2;
 }
 
-/* HEADER */
 header {
   background: #000;
   padding: 0.75rem 1.5rem;
@@ -43,7 +42,7 @@ header .lp-header-inner {
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: center; /* logo + título centrados como en tu collage */
+  justify-content: center;
   gap: 18px;
 }
 
@@ -62,7 +61,7 @@ header .logo-redondo {
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
-  margin: 0;              /* que no empuje al título */
+  margin: 0;           
   transition: transform 0.3s;
 }
 
@@ -78,7 +77,6 @@ header .logo-redondo:hover {
   text-transform: uppercase;
 }
 
-/* SECCIONES  */
 .section {
   display: none;
   padding: 40px 20px;
@@ -147,22 +145,15 @@ header .logo-redondo:hover {
   align-self: flex-start;
 }
 
-/*  BIENVENIDA */
 .bienvenida-box {
-  background: linear-gradient(
-    to bottom,
-    #f0cf2b 0%,    
-    #dea160 60%,    
-    #f09952 75%,    
-    rgba(0,0,0,0) 100% 
-  );
-  color: #333;
+  color: #1d1d1d;
   padding: 40px 20px;
   font-family: 'Montserrat', sans-serif;
 }
 
 .bienvenida-bloque {
-  background: rgba(28, 28, 28, 0.92); 
+  background: rgba(25, 25, 25, 0.92);
+  backdrop-filter: blur(6px);
   border-radius: 16px;
   padding: 30px;
   max-width: 650px;
@@ -172,10 +163,8 @@ header .logo-redondo:hover {
   display: flex;
   flex-direction: column;
   gap: 25px;
-  backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px); 
   animation: fadeInUp 1s ease-out;
-  border: 1px solid rgba(240, 207, 43, 0.3);
 }
 
 @keyframes fadeInUp {
@@ -198,7 +187,6 @@ header .logo-redondo:hover {
   color: #ffeb3b;
 }
 
-/* REDES SOCIALES */
 .redes-sociales {
   margin-top: 20px;
 }
@@ -220,7 +208,6 @@ header .logo-redondo:hover {
   color: #e1306c;
 }
 
-/*  FOOTER  */
 footer {
   background-color: #000 !important;
   color: #FFD700;
@@ -240,7 +227,6 @@ html {
   background-color: #000;
 }
 
-/* LOGO */
 .logo-redondo {
   width: 110px;
   height: 110px;
@@ -253,7 +239,6 @@ html {
   max-width: 100%;
 }
 
-/*  EMPANADAS  */
 .bloque-precio-empanadas.simple {
   background-color: #1c1c1c;
   color: #fff;
@@ -274,7 +259,6 @@ html {
   font-weight: bold;
 }
 
-/*  CONOS  */
 .bloque-promo-conos {
   background-color: #1c1c1c;
   color: #fff;
@@ -314,13 +298,12 @@ html {
   border: 2px solid #ffc107;
   border-radius: 8px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 800;
   margin-bottom: 20px;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/*  Precios dobles  */
 .precios-dobles {
   display: flex;
   flex-direction: column;
@@ -333,8 +316,6 @@ html {
 .monto {
   color: #4CAF50;
 }
-
-/*  ESTADO HORARIOS  */
 
 .estado-horarios-box {
   background: #1c1c1c;
@@ -354,7 +335,7 @@ html {
 }
 
 .btn-horario {
-  background-color: #ffc107;
+  background-color: #fbdb7c;
   color: #000;
   border: none;
   padding: 6px 16px;
@@ -408,7 +389,7 @@ html {
   align-items: center;
   gap: 16px;
   margin: 18px 0 8px;
-  flex-wrap: wrap; /* en móvil, se acomoda en dos filas si no entra */
+  flex-wrap: wrap; 
 }
 
 .estado-horarios-wrapper {
@@ -451,8 +432,6 @@ html {
   margin-left: 8px;
   font-weight: normal;
 }
-
-/*  PAGO REDES  */
 
 .pago-redes-moderno {
   text-align: center;
@@ -588,8 +567,6 @@ html {
   }
 }
 
-/* Estado Local */
-
 .estado-local {
   font-size: 1.2rem;
   padding: 12px 20px;
@@ -620,7 +597,6 @@ html {
   transition: background-color 0.3s;
 }
 
-/* Estados */
 .estado-local.abriendo {
   background-color: #3c2e1e;
   border: 2px solid #ffc107;
@@ -670,7 +646,6 @@ html {
   top: 1.17em;
 }
 
-/* Animaciones */
 @keyframes pulse {
   0% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.2); opacity: 0.7; }
@@ -762,7 +737,6 @@ html {
   color: #f44336;
 }
 
-/* PDF */
 .export-panel { margin: 18px 0 4px; display:flex; gap:10px; flex-wrap:wrap; }
 .btn-export { 
   background:#000; color:#ffe066; border:2px solid #000; 
@@ -784,7 +758,11 @@ html {
   width:100% !important;            
   border-radius:18px;
   border:2px solid #000;
-  background: linear-gradient(180deg, #2a2a2a 0%, #1f1f1f 100%);
+  background: linear-gradient(
+    180deg,
+    #3a3a3a 0%,
+    #2f2f2f 100%
+  );
   color:#f3f3f3;
   box-shadow: 0 10px 26px rgba(0,0,0,.20), 0 2px 10px rgba(0,0,0,.12);
   -webkit-tap-highlight-color: transparent;
@@ -874,21 +852,20 @@ html {
   position: sticky;
   top: 0;
   z-index: 999;
-  padding: 18px 0;      /* más aire para la cápsula */
+  padding: 18px 0;     
   background: transparent;
-  border: 0;            /* quitamos bordes amarillos aquí */
-  box-shadow: none;     /* sombra irá en la cápsula */
+  border: 0;            
+  box-shadow: none;    
   backdrop-filter: none;
 }
 
 .nav-slab {
   width: min(1100px, 92vw);
   margin: 0 auto;
-  background: #1e1e1e;
-  border: 2px solid var(--lp-yellow);
+  background: rgba(25, 25, 25, 0.92);
+  backdrop-filter: blur(6px);
   border-radius: 26px;
-  box-shadow: 0 10px 26px rgba(0,0,0,.3);
-  padding: 16px 0;           /* 🔥 sin padding lateral para pegar íconos al borde */
+  padding: 16px 0;   
   overflow-x: hidden;
   position: relative;
 }
@@ -898,7 +875,6 @@ html {
   overflow: hidden;
 }
 
-/* Efecto de "fade" lateral */
 .nav-slab::before,
 .nav-slab::after {
   content: "";
@@ -910,23 +886,12 @@ html {
   pointer-events: none;
 }
 
-.nav-slab::before {
-  left: 0;
-  background: linear-gradient(to right, rgba(0,0,0,0.6), transparent);
-}
-
-.nav-slab::after {
-  right: 0;
-  background: linear-gradient(to left, rgba(0,0,0,0.6), transparent);
-}
-
-/* contenedor de iconos */
 #lp-nav .nav-icons {
   display: flex;
   justify-content: flex-start;
   overflow-x: auto;
   overflow-y: hidden;
-  gap: 14px; /* 🔧 espaciado parejo sin huecos excesivos */
+  gap: 14px; 
   padding: 0px 0 0px 1px;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -935,8 +900,8 @@ html {
 }
 
 #lp-nav .nav-icons li {
-  flex: 0 0 100px;       /* 🔥 mismo ancho para todos los íconos */
-  text-align: center;    /* centra el texto debajo del ícono */
+  flex: 0 0 100px;      
+  text-align: center;   
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -946,16 +911,14 @@ html {
   display: none;
 }
 
-/* chip */
 #lp-nav .nav-chip {
-  flex: 0 0 90px; /* 🔥 cada ícono ocupa el mismo ancho */
+  flex: 0 0 90px; 
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-/* círculo con imagen – lugar para tus animaciones */
 #lp-nav .nav-icon{
   width: 76px;
   height: 76px;
@@ -969,9 +932,9 @@ html {
 }
 #lp-nav .nav-chip span{
   font-weight: 800;
-  color: var(--lp-yellow);
+  color: #fb5639;
   letter-spacing:.2px;
-  font-size: .95rem;
+  font-size: 1.2rem;
 }
 #lp-nav .nav-chip:hover .nav-icon{ transform: translateY(-2px); }
 #lp-nav .nav-chip.active .nav-icon{
@@ -1016,13 +979,11 @@ html {
 .nav-search input::placeholder{ color:#888; }
 
 
-/* media responsive */
-
 @media (min-width: 768px) {
   #lp-nav .nav-icons {
-    justify-content: center; /* centra los iconos */
-    overflow-x: hidden;       /* quita el scroll horizontal */
-    padding: 0;               /* quita el margen extra del costado */
+    justify-content: center;
+    overflow-x: hidden;       
+    padding: 0;             
   }
 }
 
@@ -1154,13 +1115,12 @@ html {
     display: none;
   }
 
-  /* íconos un poco más chicos */
   #lp-nav .nav-icon{
     width: 64px;
     height: 64px;
   }
   #lp-nav .nav-chip span{
-    font-size: 0.9rem;
+    font-size: 1.1rem;
   }
   .nav-search {
     width: 80%;
@@ -1234,7 +1194,6 @@ html {
   }
 }
 
-/* NAVBAR NUEVO CON ICONOS CIRCULARES */
 #lp-nav {
   background: transparent;
   padding: 10px 0 15px;
@@ -1270,7 +1229,6 @@ html {
   color: var(--lp-yellow);
   font-weight: 700;
   font-size: 0.95rem;
-  text-shadow: 0 0 6px #000;
 }
 .nav-chip.active img.nav-icon {
   transform: scale(1.1);
@@ -1294,7 +1252,6 @@ html {
   color: #000;
 }
 
-/* ===== MODAL PRODUCTO ===== */
 #item-modal-overlay{
   position: fixed; inset: 0;
   background: rgba(0,0,0,.55);
@@ -1346,7 +1303,6 @@ html {
 }
 .im-add:hover{ filter:brightness(1.02); }
 
-/* ===== DRAWER CARRITO ===== */
 #cart-overlay{
   position: fixed; inset:0; background:rgba(0,0,0,.45); backdrop-filter: blur(1px);
   z-index: 980;
@@ -1383,7 +1339,6 @@ html {
 .cd-form label{ display:grid; gap:6px; }
 .cd-form input, .cd-form select{ height:38px; border:1px solid #ddd; border-radius:8px; padding:0 10px; }
 
-/* Fila: siempre en una sola línea, centrados */
 .estado-horarios-row {
   display: flex;
   justify-content: center;
@@ -1393,7 +1348,6 @@ html {
   flex-wrap: nowrap;
 }
 
-/* Botones con base similar */
 .estado-local,
 .btn-horario {
   display: inline-flex;
@@ -1408,17 +1362,15 @@ html {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* ESTADO (Cerrado / Abierto / etc) */
 .estado-local {
   position: relative;
-  padding-left: 40px;          /* espacio para el círculo rojo */
+  padding-left: 40px;         
   background-color: #3c2b2b;
   border: 2px solid #f44336;
   color: #ffdede;
   margin: 0;
 }
 
-/* Círculo rojo centrado verticalmente */
 .estado-local::before {
   content: "";
   position: absolute;
@@ -1432,9 +1384,8 @@ html {
   box-shadow: 0 0 6px rgba(255, 0, 0, 0.6);
 }
 
-/* Ver horarios */
 .btn-horario {
-  background-color: #ffc107;
+  background-color: #ffd861;
   color: #000;
   cursor: pointer;
   transition: transform 0.1s, box-shadow 0.15s, filter 0.15s;
@@ -1450,8 +1401,6 @@ html {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
-
-/* Redes estilo Lo Pepu: burbuja oscura + icono amarillo */
 .social-buttons {
   display: flex;
   justify-content: center;
@@ -1464,26 +1413,25 @@ html {
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.55);  /* negra pero suave */
+  background: rgba(0,0,0,0.55); 
   backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   transition: transform 0.12s ease;
-  border: 2px solid rgba(255,255,255,0.06); /* borde suave */
+  border: 2px solid rgba(255,255,255,0.06);
 }
 
 .social-circle i {
   font-size: 1.75rem;
-  color: #ffffff;  /* amarillo Lo Pepu */
+  color: #ffffff; 
 }
 
 .social-circle:hover {
   transform: scale(1.07);
 }
 
-/* --- FIX OVERLAY SOBRE NAVBAR --- */
 #item-modal-overlay {
   z-index: 8000 !important;
 }
@@ -1500,24 +1448,20 @@ html {
   z-index: 9000 !important;
 }
 
-/* que la navbar quede SIEMPRE por debajo de esos elementos */
 .nav-container {
   position: relative !important;
   z-index: 200 !important;
 }
 
-/* MODAL PIZZA  */
-
 #item-modal {
   max-width: 420px;
   width: 94vw;
-  padding: 0 0 20px;          /* sin padding arriba, todo empieza en la foto */
+  padding: 0 0 20px;        
   border-radius: 22px;
-  overflow: hidden;           /* para que la foto cubra arriba */
+  overflow: hidden;          
   box-sizing: border-box;
 }
 
-/* Foto grande arriba */
 .im-hero img {
   display: block;
   width: 100%;
@@ -1525,7 +1469,6 @@ html {
   object-fit: cover;
 }
 
-/* Botón X arriba a la izquierda, sobre la foto */
 #item-modal .im-close {
   position: absolute;
   top: 10px;
@@ -1545,8 +1488,8 @@ html {
   gap: 12px;
   padding: 14px 16px 4px;
   font-family: 'Montserrat', sans-serif;
-  white-space: nowrap;          /* 🔥 evita que el título baje */
-  overflow: hidden;             /* 🔥 evita que se rompa el diseño */
+  white-space: nowrap;      
+  overflow: hidden;            
 }
 
 .im-head h3 {
@@ -1554,9 +1497,9 @@ html {
   font-size: 1.2rem;
   font-weight: 700;
   color: #222;
-  white-space: nowrap;          /* 🔥 nunca cortar línea */
+  white-space: nowrap;         
   overflow: hidden;
-  text-overflow: ellipsis;      /* 🔥 agrega “…” si algún día se pasa */
+  text-overflow: ellipsis;      
 }
 
 .im-head .im-price {
@@ -1566,7 +1509,6 @@ html {
   white-space: nowrap;
 }
 
-/* Descripción centrada */
 .im-desc {
   margin: 0;
   padding: 0 20px 10px;
@@ -1575,7 +1517,6 @@ html {
   color: #555;
 }
 
-/* Cápsula de cantidad */
 .im-qty {
   margin: 4px 20px 12px;
   display: flex;
@@ -1607,7 +1548,6 @@ html {
   color: #222;
 }
 
-/* Bloques “Extras” y “Comentarios” */
 .im-block {
   margin: 10px 20px;
   font-family: 'Montserrat', sans-serif;
@@ -1627,7 +1567,6 @@ html {
   color: #777;
 }
 
-/* Fila de cada extra (lo que JS mete en #im-extras-list) */
 .im-extra {
   display: flex;
   align-items: center;
@@ -1648,7 +1587,6 @@ html {
   color: #e65100;
 }
 
-/* input de cantidad de extra (por ahora usamos el number que ya tenés) */
 .im-extra .ex-qty {
   width: 46px;
   padding: 3px 4px;
@@ -1657,7 +1595,6 @@ html {
   text-align: center;
 }
 
-/* Textarea comentarios */
 #im-note {
   width: 100%;
   min-height: 70px;
@@ -1680,7 +1617,6 @@ html {
   box-sizing: border-box;
 }
 
-/* Botón naranja “Agregar a mi pedido” */
 .im-add {
   display: block;
   width: calc(100% - 40px);
@@ -1696,7 +1632,6 @@ html {
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
-/* En mobile ocupa casi todo el ancho, sin cambios de estructura */
 @media (max-width: 480px) {
   #item-modal {
     max-width: 100%;
@@ -1705,7 +1640,6 @@ html {
   }
 }
 
-/* Fila de cada extra con controles +/- */
 .im-extra {
   display: flex;
   align-items: center;
@@ -1727,7 +1661,6 @@ html {
   color: #e65100;
 }
 
-/* Controles +/- del extra */
 .im-extra-ctrl {
   display: flex;
   align-items: center;
@@ -1753,7 +1686,6 @@ html {
   font-size: 0.9rem;
 }
 
-/* OPCIONALES: check redondito tipo radio */
 .im-opt {
   display: flex;
   align-items: center;
@@ -1784,7 +1716,6 @@ html {
   background: #ff9800;
 }
 
-/* Botón naranja con total a la derecha */
 .im-add {
   display: flex;
   align-items: center;
@@ -1809,20 +1740,18 @@ html {
 }
 
 #item-modal {
-  max-height: calc(100vh - 40px); /* no pasa de la pantalla */
-  overflow-y: auto;               /* scrollea por dentro */
+  max-height: calc(100vh - 40px); 
+  overflow-y: auto;               
 }
 
-/* Nombre de cada extra (extra muzza, extra aceitunas, etc.) */
 .im-extra-name {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 0.9rem;
-  color: #444; /* gris oscuro, bien legible */
+  color: #444;
 }
 
-/* Bloqueo de scroll cuando el modal está abierto */
 html, body {
   overscroll-behavior: contain;
 }
@@ -1832,13 +1761,11 @@ body.modal-open {
   height: 100vh;
 }
 
-/* El modal tiene scroll interno si se pasa de alto */
 #item-modal {
   max-height: calc(100vh - 40px);
   overflow-y: auto;
 }
 
-/* Cantidad principal: barra blanca con divisores */
 .im-qty {
   margin: 14px 16px 18px;
   height: 42px;
@@ -1892,7 +1819,6 @@ body.modal-open {
   margin: 0;
 }
 
-/* Fila de extra: nombre + precio en pastilla + control */
 .im-extra {
   display: flex;
   align-items: center;
@@ -1926,7 +1852,6 @@ body.modal-open {
   background: #fff7f2;
 }
 
-/* cápsula - 0 + a la derecha */
 .im-extra-ctrl {
   display: flex;
   align-items: center;
@@ -1958,9 +1883,8 @@ body.modal-open {
   color: #333;
 }
 
-/* === ESPACIADOS GENERALES DEL MODAL === */
 #item-modal .im-head {
-  margin-bottom: 18px; /* espacio bajo título y precio */
+  margin-bottom: 18px;
 }
 
 #item-modal .im-desc {
@@ -1968,56 +1892,45 @@ body.modal-open {
   margin-bottom: 18px;
 }
 
-/* Bloques como EXTRA, OPCIONAL, COMENTARIOS */
 .im-block {
-  margin: 22px 16px 10px; /* más separación entre secciones */
+  margin: 22px 16px 10px;
 }
 
-/* Título de sección (EXTRA, OPCIONAL, COMENTARIOS) */
 .im-block h4 {
   margin-bottom: 6px;
   font-weight: 700;
   letter-spacing: 0.2px;
 }
 
-/* Subtexto "Sumale más cosas..." o "Elegí cómo..." */
 .im-help {
   margin-bottom: 14px;
   font-size: 0.85rem;
   color: #777;
 }
 
-/* === ESPACIADO ENTRE EXTRAS === */
 .im-extra {
-  padding: 10px 0; /* más aire entre filas */
+  padding: 10px 0;
 }
 
-/* === ESPACIADO ENTRE OPCIONALES === */
 .im-opt {
   padding: 10px 0;
 }
 
-/* === SEPARADOR VISUAL SUAVE ENTRE BLOQUES === */
 .im-block + .im-block {
   border-top: 1px solid #eee;
   padding-top: 20px;
 }
 
-/* === COMENTARIOS === */
 #im-note {
   margin-top: 6px;
   padding: 12px;
   min-height: 80px;
 }
 
-/* === ESPACIO ARRIBA DEL BOTÓN FINAL === */
 .im-add {
   margin-top: 26px !important;
 }
 
-/* MODAL CONO */
-
-/* Fondo oscuro */
 #modal-cono-overlay {
   position: fixed;
   inset: 0;
@@ -2025,14 +1938,13 @@ body.modal-open {
   z-index: 9998;
 }
 
-/* Contenedor principal */
 #modal-cono {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: #ffffff;
-  border-radius: 22px; /* igual que Pizza */
+  border-radius: 22px;
   padding: 0 0 20px;
   max-width: 420px;
   width: 94vw;
@@ -2042,19 +1954,18 @@ body.modal-open {
   overflow: hidden;
 }
 
-/* Imagen grande arriba */
 #modal-cono .modal-img {
   display: block;
   width: 100%;
-  height: 190px;       /* mismo alto que pizza */
+  height: 190px;       
   object-fit: cover;
 }
 
-/* Botón cerrar COMO EL DE PIZZA */
+
 #modal-cono .close-btn {
   position: absolute;
   top: 10px;
-  left: 14px;            /* MOVIDA A LA IZQUIERDA */
+  left: 14px;          
   font-size: 1.9rem;
   background: none;
   border: none;
@@ -2063,30 +1974,28 @@ body.modal-open {
   z-index: 2;
 }
 
-/* HEAD: título + precio */
 #modal-cono .cono-head {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 14px 20px 4px;     /* igual a .im-head */
+  padding: 14px 20px 4px;     
   font-family: 'Montserrat', sans-serif;
 }
 
 #modal-cono .cono-head h2 {
   margin: 0;
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #222;
 }
 
 #modal-cono .modal-price {
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #219f82;
   margin: 0;
 }
 
-/* Descripción centrada */
 #modal-cono .cono-desc {
   margin: 0;
   padding: 0 20px 10px;
@@ -2095,9 +2004,6 @@ body.modal-open {
   color: #555;
 }
 
-/* ================================
-   CÁPSULA DE CANTIDAD (IM-STYLE)
-================================= */
 
 #modal-cono .modal-qty {
   margin: 14px 16px 18px;
@@ -2128,32 +2034,26 @@ body.modal-open {
 #cono-qty {
   flex: 1;
   text-align: center;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 1rem;
   color: #333;
 }
 
-/* ================================
-   BLOQUES DE SELECTS Y TEXTOS
-================================= */
-
 #modal-cono .modal-section {
   margin: 10px 16px;
-  font-family: 'Montserrat', sans-serif;
 }
 
-#modal-cono .modal-section label {
+#modal-cono .modal-section label{
   display: block;
-  margin-bottom: 4px;
-  font-size: 0.9rem;
+  margin: 4px 0 4px;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #555;
   letter-spacing: 0.04em;
+  color: #555;
 }
 
-#modal-cono select,
-#modal-cono textarea {
+#modal-cono select{
   width: 100%;
   border-radius: 12px;
   border: 1px solid #e0e0e0;
@@ -2166,10 +2066,6 @@ body.modal-open {
   min-height: 80px;
   resize: vertical;
 }
-
-/* ================================
-   BOTÓN FINAL (IDÉNTICO A IM-ADD)
-================================= */
 
 #modal-cono .modal-add-btn {
   display: flex;
@@ -2197,10 +2093,6 @@ body.modal-open {
   filter: brightness(1.03);
 }
 
-/* ===========================
-   MODAL PROMOS (usa lp-overlay / lp-modal)
-   ========================== */
-
 .lp-overlay {
   position: fixed;
   inset: 0;
@@ -2222,17 +2114,14 @@ body.modal-open {
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
   z-index: 9999;
-  margin: 20px auto; /* Centra el modal */
-  padding: 18px;  /* Espacio dentro del modal */
+  margin: 20px auto;
 }
 
-/* ocultar cuando tienen el atributo hidden */
 .lp-modal[hidden],
 .lp-overlay[hidden] {
   display: none !important;
 }
 
-/* botón X como los otros modals */
 .lp-close {
   position: absolute;
   top: 10px;
@@ -2243,7 +2132,6 @@ body.modal-open {
   cursor: pointer;
 }
 
-/* imagen de la promo arriba */
 .promo-img-container {
   margin: -8px -10px 8px;
 }
@@ -2254,13 +2142,11 @@ body.modal-open {
   border-radius: 16px 16px 10px 10px;
 }
 
-/* contenido interno (pizza + empanadas) */
 #promo-content {
   margin-top: 6px;
   font-size: 0.9rem;
 }
 
-/* Bloques internos del modal de promo (igual estilo que el modal de pizza) */
 #promo-modal .im-block {
   margin: 22px 16px 10px;
   padding: 0 0 4px;
@@ -2272,7 +2158,6 @@ body.modal-open {
   margin-top: 8px;
 }
 
-/* Título de cada bloque: PIZZA ESPECIAL / EMPANADAS (6 UNIDADES) */
 #promo-content .im-block h4 {
   margin: 0 0 4px;
   font-size: 0.9rem;
@@ -2281,14 +2166,12 @@ body.modal-open {
   color: #555;
 }
 
-/* Texto ayuda bajo el título */
 #promo-content .im-block .im-help {
   margin: 0 0 10px;
   font-size: 0.8rem;
   color: #777;
 }
 
-/* Labels + selects dentro del modal de promo */
 .lp-modal label {
   display: block;
   margin: 4px 0 4px;
@@ -2316,7 +2199,6 @@ body.modal-open {
   margin-bottom: 6px;
 }
 
-/* filas de empanadas */
 .emp-row {
   display: flex;
   align-items: center;
@@ -2355,7 +2237,6 @@ body.modal-open {
   color: #555;
 }
 
-/* botón final igual estilo a "Agregar a mi pedido" de los otros */
 .btn-agregar {
   display: block;
   width: 100%;
@@ -2375,7 +2256,6 @@ body.modal-open {
   filter: brightness(1.03);
 }
 
-/* Cantidad de promos (usa el estilo de la pizza) */
 #promo-qty-row {
   margin: 4px 20px 12px;
 }
@@ -2390,7 +2270,6 @@ body.modal-open {
   color: #222;
 }
 
-/* Botón final de la promo: texto izq / total der */
 .btn-agregar {
   display: flex;
   align-items: center;
@@ -2412,7 +2291,6 @@ body.modal-open {
   cursor: pointer;
 }
 
-/* MODAL EMPANADA */
 #modal-empanada-overlay {
   position: fixed;
   inset: 0;
@@ -2479,12 +2357,11 @@ body.modal-open {
   border: 1px solid #ccc;
 }
 
-#modal-empanada #emp-add {
-  margin-top: 18px;
-  width: 100%;
+#modal-empanada #emp-add{
+  width: calc(100% - 32px);
+  margin: 10px 16px 6px;
 }
 
-/* Cantidad principal: barra blanca con divisores (pizza, empanada, etc.) */
 .im-qty {
   margin: 14px 16px 18px;
   height: 42px;
@@ -2538,12 +2415,9 @@ body.modal-open {
   margin: 0;
 }
 
-/* la cantidad de empanadas usa la misma cápsula blanca que pizza */
 #modal-empanada .im-qty {
   margin: 14px 16px 18px;
 }
-
-/* OPCIONALES – IGUAL QUE EN EL MODAL DE PIZZA */
 
 .im-options {
   margin-top: 24px;
@@ -2559,11 +2433,11 @@ body.modal-open {
   margin: 0 0 12px;
 }
 
-/* fila de opción */
+
 .im-opt {
   display: flex;
   align-items: center;
-  justify-content: space-between;  /* separa texto y círculo */
+  justify-content: space-between; 
   gap: 12px;
   margin-bottom: 10px;
   padding: 10px 0;
@@ -2571,19 +2445,16 @@ body.modal-open {
   cursor: pointer;
 }
 
-/* texto de la opción */
 .im-opt span:first-child {
   color: #444;
   font-size: 0.95rem;
   font-weight: 600;
 }
 
-/* input real oculto */
 .im-opt input {
   display: none;
 }
 
-/* círculo */
 .im-opt-dot {
   flex-shrink: 0;
   width: 18px;
@@ -2594,8 +2465,283 @@ body.modal-open {
   box-shadow: 0 0 0 2px #fff;
 }
 
-/* círculo seleccionado */
 .im-opt input:checked + .im-opt-dot {
   background: #ff9800;
   border-color: #ff9800;
+}
+
+#promo-modal .im-head,
+#modal-empanada .im-head,
+#modal-bebida .im-head,
+#modal-tarta .im-head {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+
+@media (max-width: 520px){
+  #item-modal,
+  #modal-empanada,
+  #modal-cono{
+    width: min(420px, 94vw);
+    max-height: 90vh;
+  }
+
+  #item-modal{
+    border-radius: 20px;
+  }
+
+  #modal-empanada{
+    padding: 18px;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  #modal-cono{
+    overflow: auto;
+  }
+}
+
+
+@media (max-height: 700px){
+  #item-modal,
+  #promo-modal,
+  #modal-empanada,
+  #modal-cono{
+    max-height: 92vh;
+  }
+}
+
+#item-modal .im-hero{
+  height: 260px;        
+  background: #c3c3c3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#item-modal .im-hero img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;  
+  display: block;
+  border-radius: 0;     
+}
+
+@media (max-width: 480px) {
+  #item-modal .im-hero {
+    height: 260px;
+  }
+}
+
+#promo-modal .promo-img-container{
+  height: 235px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  padding-top: 14px;    
+  box-sizing: border-box;
+}
+
+#promo-modal .promo-img-container img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 0;     
+}
+
+#promo-modal .im-head,
+#promo-modal .im-desc,
+#promo-modal #promo-qty-row,
+#promo-modal #promo-content,
+#promo-modal .im-block,
+#promo-modal .im-options{
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+#promo-modal .lp-modal-image{
+  width: 100%;
+  height: 260px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 18px 18px 0 0;
+}
+
+#promo-modal .lp-modal-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  
+  object-position: center;
+  display: block;
+}
+
+#modal-empanada .im-hero{
+  height: 260px;               
+  margin: -24px -24px 12px;     
+  background: #c3c3c3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0;             
+}
+
+#modal-empanada .im-hero img{
+  width: auto !important;     
+  height: 105% !important;      
+  max-width: 96%;
+  object-fit: contain;
+  border-radius: 0 !important;
+  display: block;
+}
+
+#modal-cono .im-hero{
+  height: 260px;                
+  background: #c3c3c3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0;       
+}
+
+
+#modal-cono .im-hero img{
+  width: auto !important;
+  height: 96% !important;      
+  max-width: 95%;
+  object-fit: contain;
+  display: block;
+}
+
+#modal-cono .modal-img {
+  height: 260px;       
+  object-fit: contain;  
+  background: #c3c3c3; 
+}
+
+#modal-empanada{
+  overflow: hidden;    
+}
+
+#promo-modal .im-add{
+  width: calc(100% - 36px);  
+  margin: 18px auto 24px;   
+  padding: 14px 18px;       
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lp-modal,
+#promo-modal,
+#modal-cono,
+#modal-empanada {
+  font-family: 'Montserrat', sans-serif;
+  color: #222;
+}
+
+.lp-modal h2,
+#promo-modal h2,
+#modal-cono h2,
+#modal-empanada h2 {
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 0.2px;
+  margin-bottom: 4px;
+}
+
+.lp-modal .price,
+#promo-modal .price,
+#modal-cono .price,
+#modal-empanada .price {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #4CAF50;
+}
+
+#modal-empanada .im-comments{
+  margin: 22px 16px 10px;   
+}
+
+
+#modal-empanada #emp-comment{
+  width: 100%;
+  min-height: 70px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-top: 0;           
+}
+
+#modal-empanada .im-comments label,
+#modal-empanada .im-comments .im-label,
+#modal-empanada .im-comments h3,
+#modal-empanada .im-comments h4,
+#modal-empanada .im-comments p:first-child{
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  color: #6b6b6b;
+  margin: 0 0 8px;
+}
+
+#modal-empanada .im-comments label{
+  display: block;
+  margin-bottom: 14px; 
+}
+
+#modal-cono .cono-title,
+#modal-cono h2,
+#modal-cono h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800 !important;
+  font-size: 1.2rem !important;
+  letter-spacing: 0.2px;
+  color: #222;
+}
+
+#modal-cono .cono-desc,
+#modal-cono p {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+#modal-cono .modal-price,
+#modal-cono .price {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800 !important;
+  font-size: 1.2rem !important;
+  color: #4CAF50;
+}
+
+#modal-cono #cono-comments{
+  width: 100%;
+  min-height: 70px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  resize: vertical;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+#modal-cono .modal-section label {
+  margin-top: 18px;
+  margin-bottom: 10px;
 }
