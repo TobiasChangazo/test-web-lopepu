@@ -87,7 +87,6 @@
 
   </div>
 </section>
-</section>
 
 <div class="nav-container">
   <nav id="lp-nav" data-scrollable>
@@ -1337,8 +1336,8 @@
   </label>
   </div>
 
-<!-- COMENTARIOS -->
-<div class="im-block">
+  <!-- COMENTARIOS -->
+  <div class="im-block">
   <h4>COMENTARIOS</h4>
   <textarea
     id="promo-note"
@@ -1350,52 +1349,33 @@
   <span>Agregar a mi pedido</span>
   <span id="promo-add-total">$ 0</span>
 </button>
+</div>
+
+<button id="open-cart" class="cart-fab" hidden>
+  <span class="cart-fab__label">Mi pedido</span>
+  <span id="cart-total-fab" class="cart-fab__total">$ 0</span>
+  <span id="cart-count" class="cart-fab__count">0</span>
+</button>
 
 <!-- DRAWER -->
-<aside id="cart-drawer" hidden aria-labelledby="cart-title">
-  <header class="cd-head">
-    <h3 id="cart-title">Mi pedido</h3>
-    <button id="cd-close" class="cd-close" aria-label="Cerrar">&times;</button>
-  </header>
+<div id="cart-overlay" class="cd-overlay" hidden></div>
 
-  <div id="cd-list" class="cd-list"></div>
+<aside id="cart-drawer" class="cart-drawer" hidden>
+  <div class="cd-head">
+    <button id="cart-close" class="cd-back">✕</button>
+    <h3>Mi pedido</h3>
+  </div>
+
+  <div id="cart-list" class="cd-list"></div>
 
   <div class="cd-summary">
-    <div class="row">
-      <span>Subtotal</span>
-      <strong id="cd-subtotal">$0</strong>
-    </div>
-    <div class="row total">
-      <span>Total</span>
-      <strong id="cd-total">$0</strong>
-    </div>
+    <div class="row"><span>Subtotal</span><b id="cart-subtotal">$0</b></div>
+    <div class="row total"><span>Total</span><b id="cart-total">$0</b></div>
   </div>
 
   <div class="cd-actions">
-    <button id="cd-clear" class="cd-ghost">Vaciar</button>
-    <button id="cd-checkout" class="cd-primary">Continuar</button>
+    <button id="cart-continue" class="btn-primary">Continuar</button>
   </div>
-
-  <form id="cd-form" class="cd-form" hidden>
-    <h4>Datos para el pedido</h4>
-    <label>Nombre y apellido
-      <input id="cd-name" type="text" autocomplete="name" required>
-    </label>
-    <label>Teléfono
-      <input id="cd-phone" type="tel" inputmode="tel" placeholder="11 3xxx xxxx" required>
-    </label>
-    <label>Retiro / Envío
-      <select id="cd-mode">
-        <option value="retiro">Retiro en local</option>
-        <option value="envio">Envío a domicilio</option>
-      </select>
-    </label>
-    <label id="cd-addr-wrap" hidden>Dirección
-      <input id="cd-addr" type="text" autocomplete="street-address" placeholder="Calle 30 Bis…">
-    </label>
-
-    <button id="cd-send" class="cd-primary" type="button">Enviar por WhatsApp</button>
-  </form>
 </aside>
 
 <script>
@@ -1585,24 +1565,26 @@ if (document.readyState === 'loading') {
       return []; 
     } 
   }
-  function setCart(arr){ 
-    localStorage.setItem(CART_KEY, JSON.stringify(arr)); 
-    renderCart(); 
+  function setCart(arr){
+  localStorage.setItem(CART_KEY, JSON.stringify(arr));
+  renderCart();
+  if (typeof updateCartFab === 'function') updateCartFab();
   }
 
   function addToCart(item){
     const cart = getCart();
     cart.push(item);
     setCart(cart);
+    updateCartFab();
   }
 
   /* DRAWER */
   const elDrawer   = document.getElementById('cart-drawer');
   const elOverlay  = document.getElementById('cart-overlay');
-  const elList     = document.getElementById('cd-list');
-  const elSubtotal = document.getElementById('cd-subtotal');
-  const elTotal    = document.getElementById('cd-total');
-  const elClose    = document.getElementById('cd-close');
+  const elList     = document.getElementById('cart-list');
+  const elSubtotal = document.getElementById('cart-subtotal');
+  const elTotal    = document.getElementById('cart-total');
+  const elClose    = document.getElementById('cart-close');
   const btnOpen    = document.getElementById('open-cart');
   const btnClear   = document.getElementById('cd-clear');
   const btnCheck   = document.getElementById('cd-checkout');
@@ -1640,40 +1622,103 @@ if (document.readyState === 'loading') {
     addrWrap.hidden = modeSel.value !== 'envio';
   });
 
-  function renderCart(){
-    if (!elList || !elSubtotal || !elTotal) return;
-    const cart = getCart();
-    elList.innerHTML = '';
-    let subtotal = 0;
+function renderCart(){
+  if (!elList || !elSubtotal || !elTotal) return;
 
-    cart.forEach((it, idx)=>{
-      const extraTxt = (it.options?.length)
-        ? ' • ' + it.options.map(o=>`${o.name}${o.qty>1?` x${o.qty}`:''}`).join(', ')
-        : '';
-      const noteTxt = it.note ? ` — ${it.note}` : '';
-      const lineTotal = (it.basePrice + (it.options?.reduce((s,o)=>s + o.price*o.qty,0)||0)) * it.qty;
-      subtotal += lineTotal;
+  const cart = getCart();
 
-      const row = document.createElement('div');
-      row.className = 'cd-item';
-      row.innerHTML = `
-        <div>
-          <h5>${it.name} <span class="cd-meta">(x${it.qty})</span></h5>
-          <div class="cd-meta">${extraTxt}${noteTxt}</div>
-        </div>
-        <div class="cd-controls">
-          <button class="cd-qtybtn" data-act="dec" data-idx="${idx}">−</button>
-          <button class="cd-qtybtn" data-act="inc" data-idx="${idx}">+</button>
-          <span class="cd-price">${fmt(lineTotal)}</span>
-          <button class="cd-trash" data-act="del" data-idx="${idx}">🗑️</button>
-        </div>
-      `;
-      elList.appendChild(row);
-    });
+  // contenedores opcionales (para ocultar resumen/botón cuando está vacío)
+  const sumWrap = elDrawer ? elDrawer.querySelector('.cd-summary') : null;
+  const actWrap = elDrawer ? elDrawer.querySelector('.cd-actions') : null;
 
-    elSubtotal.textContent = fmt(subtotal);
-    elTotal.textContent    = fmt(subtotal);
+  // ====== CARRITO VACÍO ======
+  if (!cart.length) {
+    elList.innerHTML = `
+      <div class="cd-empty">
+        <div class="illu">🛍️</div>
+        <div class="txt">Pedido vacío</div>
+      </div>
+    `;
+
+    elSubtotal.textContent = fmt(0);
+    elTotal.textContent    = fmt(0);
+
+    if (sumWrap) sumWrap.style.display = 'none';
+    if (actWrap) actWrap.style.display = 'none';
+
+    // si tenés el botón flotante
+    if (typeof updateCartFab === 'function') updateCartFab();
+    return;
+  } else {
+    if (sumWrap) sumWrap.style.display = '';
+    if (actWrap) actWrap.style.display = '';
   }
+
+  // ====== CARRITO CON ITEMS ======
+  elList.innerHTML = '';
+  let subtotal = 0;
+
+  cart.forEach((it, idx) => {
+    const opts = Array.isArray(it.options) ? it.options : [];
+
+    // texto extras (si vienen con qty)
+    // extras en líneas (tipo boceto)
+  const extrasHtml = opts.length
+  ? `<div class="cd-extras">` + opts.map(o => {
+      const q = Number(o.qty) || 1;
+      return `<div class="cd-extra"><span class="cd-extra-qty">(x${q})</span><span>${o.name}</span></div>`;
+    }).join('') + `</div>`
+  : '';
+
+    // note puede venir string o array (por tus empanadas)
+    const noteVal = Array.isArray(it.note) ? it.note.join(' ') : (it.note || '');
+    const noteTxt = noteVal ? ` — ${noteVal}` : '';
+
+    // calcular extras total
+    const extrasTotal = opts.reduce((s, o) => s + (Number(o.price) || 0) * (Number(o.qty) || 1), 0);
+
+    // total por unidad = base + extras
+    const unitTotal = (Number(it.basePrice) || 0) + extrasTotal;
+
+    // total por línea = unidad * qty
+    const qty = Number(it.qty) || 1;
+    const lineTotal = unitTotal * qty;
+
+    subtotal += lineTotal;
+
+    const row = document.createElement('div');
+    row.className = 'cd-item';
+    row.innerHTML = `
+  <div class="cd-left">
+    <h5>${it.name} <span class="cd-meta">(x${qty})</span></h5>
+    ${
+      it.desc
+        ? `<div class="cd-meta"><small>${it.desc}</small></div>`
+        : ``
+    }
+    ${ extrasHtml || `` }
+    ${
+      noteVal
+        ? `<div class="cd-meta"><small><b>Comentario:</b> ${noteVal}</small></div>`
+        : ``
+    }
+    </div>
+
+  <div class="cd-controls">
+    <span class="cd-price">${fmt(lineTotal)}</span>
+    <button class="cd-trash" data-act="del" data-idx="${idx}" aria-label="Eliminar">🗑️</button>
+  </div>
+  `;
+
+    elList.appendChild(row);
+  });
+
+  elSubtotal.textContent = fmt(subtotal);
+  elTotal.textContent    = fmt(subtotal);
+
+  if (typeof updateCartFab === 'function') updateCartFab();
+  }
+
 
   elList?.addEventListener('click', (e)=>{
     const btn = e.target.closest('button[data-act]');
@@ -2029,7 +2074,8 @@ const promoQtyInc    = document.getElementById("promo-qty-inc");
 const promoPriceEl   = document.getElementById("promo-modal-price");
 const promoAddTotal  = document.getElementById("promo-add-total");
 
-let promoBasePrice   = 0;
+let promoBasePrice = 0;
+let currentPromoId = "";
 
 function getPromoExtrasSum() {
   let sum = 0;
@@ -2084,6 +2130,7 @@ promoQtyInput?.addEventListener("input", updatePromoTotal);
 document.querySelectorAll('.card-horizontal[data-type="promo"]').forEach(card => {
   card.addEventListener("click", () => {
     const promoId = card.dataset.promoId || "";
+    currentPromoId = promoId;
 
     document.getElementById("promo-modal-img").src = card.dataset.img || "";
     document.getElementById("promo-modal-title").innerText = card.querySelector("h4").innerText;
@@ -2133,9 +2180,144 @@ document.querySelectorAll('.card-horizontal[data-type="promo"]').forEach(card =>
     `;
   }
     promoOverlay.hidden = false;
-    promoModal.hidden   = false;
-    document.body.classList.add("modal-open");
+    promoModal.hidden = false;
+    document.body.classList.add('modal-open');
   });
+});
+
+  // ===== CERRAR PROMO (asegurado) =====
+function closePromo(){
+  promoOverlay.hidden = true;
+  promoModal.hidden = true;
+  document.body.classList.remove("modal-open");
+}
+promoClose?.addEventListener("click", closePromo);
+promoOverlay?.addEventListener("click", closePromo);
+
+// ===== BUILDER: opciones según promo =====
+function pick(id){
+  return document.getElementById(id);
+}
+
+function buildEspecialFrom(prefixLabel, tipoId, g1Id, g2Id){
+  const out = [];
+  const tipo = pick(tipoId)?.value || "1";
+  const g1 = pick(g1Id)?.value || "";
+  const g2 = pick(g2Id)?.value || "";
+
+  if (tipo === "2") {
+    if (g1) out.push({ name: `${prefixLabel}: ½ ${g1}`, qty: 1, price: 0 });
+    if (g2) out.push({ name: `${prefixLabel}: ½ ${g2}`, qty: 1, price: 0 });
+  } else {
+    if (g1) out.push({ name: `${prefixLabel}: ${g1}`, qty: 1, price: 0 });
+  }
+  return out;
+}
+
+function buildEmpanadasFromList(listId){
+  const out = [];
+  const list = pick(listId);
+  if (!list) return out;
+
+  list.querySelectorAll(".im-extra").forEach(row => {
+    const name = row.querySelector(".im-extra-name")?.textContent?.trim() || "";
+    const qty  = parseInt(row.querySelector(".emp-cant")?.textContent || "0", 10) || 0;
+    if (name && qty > 0) out.push({ name: `EMPANADAS: ${name}`, qty, price: 0 });
+  });
+  return out;
+}
+
+function buildPromoBundleOptions(){
+  const out = [];
+
+  // promos SOLO muzza
+  if (currentPromoId === "2muzza") out.push({ name: `PIZZA: Muzzarella`, qty: 2, price: 0 });
+  if (currentPromoId === "3muzza") out.push({ name: `PIZZA: Muzzarella`, qty: 3, price: 0 });
+
+  // promos SOLO especiales (2 o 3) -> ids: p1-tipo / p1-g1 / p1-g2, etc
+  if (currentPromoId === "2esp" || currentPromoId === "3esp") {
+    const n = currentPromoId === "2esp" ? 2 : 3;
+    for (let i = 1; i <= n; i++) {
+      out.push(...buildEspecialFrom(`PIZZA ${i}`, `p${i}-tipo`, `p${i}-g1`, `p${i}-g2`));
+    }
+  }
+
+  // 1 especial + 1 muzza
+  if (currentPromoId === "esp+muzza") {
+    out.push({ name: `PIZZA: Muzzarella`, qty: 1, price: 0 });
+    out.push(...buildEspecialFrom(`PIZZA`, `promo-pizza-tipo`, `gusto1`, `gusto2`));
+  }
+
+  // muzza + 1/2 doc o doc
+  if (currentPromoId === "muzza+6") {
+    out.push({ name: `PIZZA: Muzzarella`, qty: 1, price: 0 });
+    out.push(...buildEmpanadasFromList("empanada-list"));
+  }
+  if (currentPromoId === "muzza+12") {
+    out.push({ name: `PIZZA: Muzzarella`, qty: 1, price: 0 });
+    out.push(...buildEmpanadasFromList("empanada-list"));
+  }
+
+  // especial + 1/2 doc o doc
+  if (currentPromoId === "esp+6" || currentPromoId === "esp+12") {
+    out.push(...buildEspecialFrom(`PIZZA`, `promo-pizza-tipo`, `gusto1`, `gusto2`));
+    out.push(...buildEmpanadasFromList("empanada-list"));
+  }
+
+  return out;
+}
+
+// ===== AGREGAR PROMO AL CARRITO =====
+const promoAddBtn  = document.getElementById("promo-add");
+const promoQtyIn   = document.getElementById("promo-qty");
+const promoTitleEl = document.getElementById("promo-modal-title");
+
+promoAddBtn?.addEventListener("click", () => {
+  const qty = Math.max(1, parseInt(promoQtyIn?.value || "1", 10));
+
+  // ✅ basePrice REAL (por unidad), no el total del modal
+  const basePrice = promoBasePrice;
+
+  // 1) options “de la promo” (pizza/empanadas según promoId)
+  const options = buildPromoBundleOptions();
+
+  // 2) extras pagas (las .promo-ex-row) -> se suman a options también
+  document.querySelectorAll("#promo-modal .promo-ex-row").forEach(row => {
+  const qEl = row.querySelector(".promo-extra-qty");
+  const q = parseInt(qEl?.textContent || "0", 10) || 0;
+  if (q > 0) {
+    const name = row.querySelector(".im-extra-name")?.textContent?.trim() || "Extra";
+    options.push({
+      name,
+      price: Number(row.dataset.price) || 0,
+      qty: q
+      });
+    }
+  });
+
+  // 3) OPCIONALES (checkboxes marcados)
+  document.querySelectorAll('#promo-modal .im-options .opt-flag:checked').forEach(ch => {
+  options.push({
+    name: ch.value,  // "CON PISO" / "SIN ORÉGANO"
+    price: 0,
+    qty: 1
+    });
+  });
+
+  const note = (document.getElementById("promo-note")?.value || "").trim();
+
+  addToCart({
+    type: "promo",
+    promoId: currentPromoId,
+    name: promoTitleEl?.textContent || "Promo",
+    basePrice,
+    qty,
+    options,
+    note
+  });
+
+  closePromo();
+  updateCartFab();
 });
 
 promoClose.addEventListener("click", () => {
@@ -2778,7 +2960,7 @@ function loadPromoEspecialMasMediaDocena() {
     });
 
     empClose();
-    openCart();
+    updateCartFab();
   });
 
     document.addEventListener('click', function (ev) {
@@ -2789,7 +2971,7 @@ function loadPromoEspecialMasMediaDocena() {
       const row = ev.target.closest('.promo-ex-row');
       if (!row) return;
 
-      const span = row.querySelector('.ex-qty');
+      const span = row.querySelector('.promo-extra-qty');
       let val = parseInt(span.textContent, 10) || 0;
       const max = parseInt(row.dataset.max || '1', 10);
 
@@ -2804,8 +2986,78 @@ function loadPromoEspecialMasMediaDocena() {
     }
   });
 
+  function updateCartFab(){
+  const btn = document.getElementById("open-cart");
+  if (!btn) return;
+
+  const cart = getCart();
+
+  // Si no hay nada, ocultar y resetear textos
+  if (!Array.isArray(cart) || cart.length === 0) {
+    btn.hidden = true;
+    const countEl = document.getElementById("cart-count");
+    if (countEl) countEl.textContent = "0";
+    const totalEl = document.getElementById("cart-total-fab");
+    if (totalEl) totalEl.textContent = fmt(0);
+    return;
+  }
+
+  // Cantidad total de items
+  const count = cart.reduce((s, it) => {
+    const q = Number(it.qty);
+    return s + (Number.isFinite(q) && q > 0 ? q : 1);
+  }, 0);
+
+  // Total = (basePrice + options) * qty
+  const total = cart.reduce((acc, it) => {
+    const opts = Array.isArray(it.options) ? it.options : [];
+    const extrasTotal = opts.reduce((s, o) =>
+      s + (Number(o.price) || 0) * (Number(o.qty) || 1)
+    , 0);
+
+    const unitTotal = (Number(it.basePrice) || 0) + extrasTotal;
+    const q = Number(it.qty);
+    const qty = (Number.isFinite(q) && q > 0) ? q : 1;
+
+    return acc + unitTotal * qty;
+  }, 0);
+
+  // Si por algún motivo queda en 0, también lo ocultamos
+  btn.hidden = (count <= 0);
+
+  const countEl = document.getElementById("cart-count");
+  if (countEl) countEl.textContent = String(count);
+
+  const totalEl = document.getElementById("cart-total-fab");
+  if (totalEl) totalEl.textContent = fmt(total);
+  }
+
+
+  function itemDetailsHTML(it){
+  const lines = [];
+
+  if(it.extras?.length){
+    it.extras.forEach(ex=>{
+      const q = ex.qty ?? 1;
+      lines.push(`(x${q}) ${ex.name}`);
+    });
+  }
+
+  if(it.optionals?.length){
+    it.optionals.forEach(op => lines.push(`(x1) ${op}`));
+  }
+
+  if(it.note){
+    lines.push(`📝 ${it.note}`);
+  }
+
+  return lines.length ? `<div class="cd-meta">${lines.join("<br>")}</div>` : "";
+  }
+
   renderCart();
 })();
 </script>
+
+
 </body>
 </html>
