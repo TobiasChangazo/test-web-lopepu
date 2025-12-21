@@ -1362,19 +1362,84 @@
 
 <aside id="cart-drawer" class="cart-drawer" hidden>
   <div class="cd-head">
-    <button id="cart-close" class="cd-back">✕</button>
-    <h3>Mi pedido</h3>
+  <button id="cd-step2-back" class="cd-back" type="button" aria-label="Volver">
+    <i class="fa-solid fa-arrow-left"></i>
+  </button>
+
+  <h3>Mi pedido</h3>
+
+    <button id="cart-close" class="cd-close" aria-label="Cerrar">✕</button>
   </div>
 
-  <div id="cart-list" class="cd-list"></div>
+  <!-- CONTENEDOR DE PANTALLAS -->
+  <div class="cd-screens">
 
-  <div class="cd-summary">
-    <div class="row"><span>Subtotal</span><b id="cart-subtotal">$0</b></div>
-    <div class="row total"><span>Total</span><b id="cart-total">$0</b></div>
-  </div>
+    <!-- PASO 1: PEDIDO -->
+    <section id="cd-step1" class="cd-screen">
+      <div id="cart-list" class="cd-list"></div>
 
-  <div class="cd-actions">
-    <button id="cart-continue" class="btn-primary">Continuar</button>
+      <!-- TOTAL -->
+      <div class="cd-summary">
+        <div class="row total">
+          <span>Total</span>
+          <b id="cart-total">$0</b>
+        </div>
+      </div>
+
+      <!-- CONTINUAR -->
+      <div class="cd-actions">
+        <button id="cart-continue" class="cd-primary">Continuar</button>
+      </div>
+    </section>
+
+    <!-- PASO 2: ENTREGA -->
+    <section id="cd-step2" class="cd-screen cd-step2">
+      <h4 class="cd-step2__title">Entrega</h4>
+
+      <div class="cd-mode">
+        <button type="button" class="cd-mode__card is-active" data-mode="retiro">
+          <div class="t">Retiro en el local</div>
+          <div class="d">Retiro en: <b>Calle 30 Bis Esquina 5</b></div>
+        </button>
+
+        <button type="button" class="cd-mode__card" data-mode="envio">
+          <div class="t">Envío a domicilio</div>
+          <div class="d">El envío <b>no está incluido</b> en el total.</div>
+        </button>
+      </div>
+
+      <!-- AVISO SOLO PARA ENVÍO -->
+      <div id="cd-shipnote" class="cd-shipnote" hidden>
+        <b>Envíos desde $1500</b> (según distancia).
+        Confirmá el pedido por WhatsApp y coordinamos el costo.
+      </div>
+
+      <!-- FORM ENVÍO -->
+      <div id="cd-envio" class="cd-card" hidden>
+        <div class="cd-row2">
+          <div>
+            <label class="cd-label">Calle</label>
+            <input id="cd-calle" class="cd-input" type="text" placeholder="Ej: 30 Bis y 105">
+          </div>
+          <div>
+            <label class="cd-label">Número</label>
+            <input id="cd-num" class="cd-input" type="text" placeholder="Ej: 3020">
+          </div>
+        </div>
+
+        <div class="cd-row">
+          <label class="cd-label">Referencia (opcional)</label>
+          <input id="cd-ref" class="cd-input" type="text" placeholder="Portón negro, timbre 2, etc.">
+        </div>
+      </div>
+
+      <div class="cd-step2__actions">
+        <button id="cd-step2-confirm" type="button" class="cd-primary">
+        <i class="fab fa-whatsapp"></i>
+          Enviar pedido
+        </button>
+      </div>
+    </section>
   </div>
 </aside>
 
@@ -1582,7 +1647,6 @@ if (document.readyState === 'loading') {
   const elDrawer   = document.getElementById('cart-drawer');
   const elOverlay  = document.getElementById('cart-overlay');
   const elList     = document.getElementById('cart-list');
-  const elSubtotal = document.getElementById('cart-subtotal');
   const elTotal    = document.getElementById('cart-total');
   const elClose    = document.getElementById('cart-close');
   const btnOpen    = document.getElementById('open-cart');
@@ -1592,6 +1656,61 @@ if (document.readyState === 'loading') {
   const sendBtn    = document.getElementById('cd-send');
   const modeSel    = document.getElementById('cd-mode');
   const addrWrap   = document.getElementById('cd-addr-wrap');
+
+  // ===== PASO 2: ENTREGA =====
+const btnContinue = document.getElementById('cart-continue');
+const step2 = document.getElementById('cd-step2');
+const step2Back = document.getElementById('cd-step2-back');
+
+const modeCards = document.querySelectorAll('.cd-mode__card');
+const boxEnvio = document.getElementById('cd-envio');
+const shipNote = document.getElementById('cd-shipnote');
+
+function showStep2(){
+  if (!elDrawer) return;
+
+  elDrawer.classList.add('is-step2');
+
+  // si todavía tenés estas refs, dejalas
+  if (elList) elList.hidden = true;
+  if (step2) step2.hidden = false;
+
+  const sumWrap = elDrawer.querySelector('.cd-summary');
+  const actWrap = elDrawer.querySelector('.cd-actions');
+  if (sumWrap) sumWrap.style.display = 'none';
+  if (actWrap) actWrap.style.display = 'none';
+}
+
+function hideStep2(){
+  if (!elDrawer) return;
+
+  elDrawer.classList.remove('is-step2');
+
+  if (elList) elList.hidden = false;
+  if (step2) step2.hidden = true;
+
+  const sumWrap = elDrawer.querySelector('.cd-summary');
+  const actWrap = elDrawer.querySelector('.cd-actions');
+  if (sumWrap) sumWrap.style.display = '';
+  if (actWrap) actWrap.style.display = '';
+}
+
+function setEntregaMode(mode){
+  modeCards.forEach(b => b.classList.toggle('is-active', b.dataset.mode === mode));
+
+  const isEnvio = mode === 'envio';
+  if (boxEnvio) boxEnvio.hidden = !isEnvio;
+  if (shipNote) shipNote.hidden = !isEnvio;
+}
+
+btnContinue?.addEventListener('click', showStep2);
+step2Back?.addEventListener('click', hideStep2);
+
+modeCards.forEach(b => b.addEventListener('click', () => setEntregaMode(b.dataset.mode)));
+
+// default
+setEntregaMode('retiro');
+
 
   function openCart(){ 
     if(!elDrawer||!elOverlay) return; 
@@ -1623,7 +1742,7 @@ if (document.readyState === 'loading') {
   });
 
 function renderCart(){
-  if (!elList || !elSubtotal || !elTotal) return;
+  if (!elList || !elTotal) return;
 
   const cart = getCart();
 
@@ -1639,8 +1758,6 @@ function renderCart(){
         <div class="txt">Pedido vacío</div>
       </div>
     `;
-
-    elSubtotal.textContent = fmt(0);
     elTotal.textContent    = fmt(0);
 
     if (sumWrap) sumWrap.style.display = 'none';
@@ -1658,62 +1775,150 @@ function renderCart(){
   elList.innerHTML = '';
   let subtotal = 0;
 
-  cart.forEach((it, idx) => {
-    const opts = Array.isArray(it.options) ? it.options : [];
+cart.forEach((it, idx) => {
+  const qty = Number(it.qty) || 1;
+  const opts = Array.isArray(it.options) ? it.options : [];
 
-    // texto extras (si vienen con qty)
-    // extras en líneas (tipo boceto)
-  const extrasHtml = opts.length
-  ? `<div class="cd-extras">` + opts.map(o => {
-      const q = Number(o.qty) || 1;
-      return `<div class="cd-extra"><span class="cd-extra-qty">(x${q})</span><span>${o.name}</span></div>`;
-    }).join('') + `</div>`
-  : '';
+  const extrasTotal = opts.reduce((s, o) => s + (Number(o.price) || 0) * (Number(o.qty) || 1), 0);
+  const unitTotal = (Number(it.basePrice) || 0) + extrasTotal;
+  const lineTotal = unitTotal * qty;
 
-    // note puede venir string o array (por tus empanadas)
-    const noteVal = Array.isArray(it.note) ? it.note.join(' ') : (it.note || '');
-    const noteTxt = noteVal ? ` — ${noteVal}` : '';
+  subtotal += lineTotal;
 
-    // calcular extras total
-    const extrasTotal = opts.reduce((s, o) => s + (Number(o.price) || 0) * (Number(o.qty) || 1), 0);
+  const row = document.createElement('div');
+  row.className = 'cd-item';
 
-    // total por unidad = base + extras
-    const unitTotal = (Number(it.basePrice) || 0) + extrasTotal;
+  // mini-resumen (para que NO se cargue)
+  const extrasCount = opts.reduce((s, o) => s + (Number(o.qty) || 1), 0);
+  const noteVal = Array.isArray(it.note) ? it.note.join(' ') : (it.note || '');
+  const badges = [
+    extrasCount ? `${extrasCount} extra${extrasCount > 1 ? 's' : ''}` : '',
+    noteVal ? `comentario` : ''
+  ].filter(Boolean).join(' • ');
 
-    // total por línea = unidad * qty
-    const qty = Number(it.qty) || 1;
-    const lineTotal = unitTotal * qty;
+  // ===== DETALLES BONITOS (auto-secciones) =====
 
-    subtotal += lineTotal;
+// 1) si ya vienen "sections" prearmadas, las usamos
+let sections = Array.isArray(it.sections) ? it.sections : [];
 
-    const row = document.createElement('div');
-    row.className = 'cd-item';
-    row.innerHTML = `
-  <div class="cd-left">
-    <h5>${it.name} <span class="cd-meta">(x${qty})</span></h5>
-    ${
-      it.desc
-        ? `<div class="cd-meta"><small>${it.desc}</small></div>`
-        : ``
+// 2) si NO vienen sections, las armamos desde options (PIZZA 1: ..., EMPANADAS: ...)
+let extraLines = []; // extras / opcionales (CON PISO, EXTRA MUZZA, etc.)
+
+if (!sections.length && opts.length) {
+  const map = new Map(); // title -> lines[]
+
+  const addLine = (title, line) => {
+    if (!map.has(title)) map.set(title, []);
+    map.get(title).push(line);
+  };
+
+  opts.forEach(o => {
+    const name = String(o.name || '').trim();
+    const q = Number(o.qty) || 1;
+
+    // PIZZA 1: ½ Jamón Solo
+    let m = name.match(/^PIZZA\s*(\d+)\s*:\s*(.+)$/i);
+    if (m) {
+      const n = m[1];
+      const line = m[2].trim();
+      addLine(`PIZZA ${n}`, line);
+      return;
     }
-    ${ extrasHtml || `` }
-    ${
-      noteVal
-        ? `<div class="cd-meta"><small><b>Comentario:</b> ${noteVal}</small></div>`
-        : ``
+
+    // EMPANADAS: Jamón y Queso (qty puede ser >1)
+    m = name.match(/^EMPANADAS\s*:\s*(.+)$/i);
+    if (m) {
+      const line = m[1].trim();
+      addLine(`EMPANADAS`, `${q > 1 ? `(x${q}) ` : ''}${line}`);
+      return;
     }
-    </div>
 
-  <div class="cd-controls">
-    <span class="cd-price">${fmt(lineTotal)}</span>
-    <button class="cd-trash" data-act="del" data-idx="${idx}" aria-label="Eliminar">🗑️</button>
-  </div>
-  `;
+    // PIZZA: Muzzarella (si alguna promo te lo mete así)
+    m = name.match(/^PIZZA\s*:\s*(.+)$/i);
+    if (m) {
+      const line = m[1].trim();
+      addLine(`PIZZA`, `${q > 1 ? `(x${q}) ` : ''}${line}`);
+      return;
+    }
 
-    elList.appendChild(row);
+    // lo demás = extras/opcionales
+    extraLines.push(`${q > 1 ? `(x${q}) ` : ''}${name}`);
   });
 
-  elSubtotal.textContent = fmt(subtotal);
+  // orden para pizzas numeradas: 1,2,3...
+  const pizzaKeys = [...map.keys()]
+    .filter(k => /^PIZZA\s+\d+$/.test(k))
+    .sort((a, b) => Number(a.replace(/\D/g, '')) - Number(b.replace(/\D/g, '')));
+
+  const otherKeys = [...map.keys()]
+    .filter(k => !/^PIZZA\s+\d+$/.test(k));
+
+  const orderedKeys = [...pizzaKeys, ...otherKeys];
+
+  sections = orderedKeys.map(k => ({ title: k, lines: map.get(k) }));
+} else {
+  // si sections ya existe, extras salen del opts "normal"
+  extraLines = opts.map(o => {
+    const q = Number(o.qty) || 1;
+    const name = String(o.name || '').trim();
+    return `${q > 1 ? `(x${q}) ` : ''}${name}`;
+  });
+}
+
+// ✅ esto define si hay algo para mostrar
+const hasDetails = (sections.length > 0) || (extraLines.length > 0) || !!noteVal;
+
+const detailsHTML = hasDetails ? `
+  <details class="cd-details">
+    <summary class="cd-details__sum">Ver detalles</summary>
+
+    <div class="cd-details__body">
+
+      ${sections.map((sec, i) => `
+        <div class="cd-sec">
+          <div class="cd-sec__title">${sec.title || ''}</div>
+          ${(sec.lines || []).map(l => `<div class="cd-line">${l}</div>`).join('')}
+        </div>
+        ${i < sections.length - 1 ? `<div class="cd-sep"></div>` : ``}
+      `).join('')}
+
+      ${extraLines.length ? `
+        ${sections.length ? `<div class="cd-sep"></div>` : ``}
+        <div class="cd-sec">
+          <div class="cd-sec__title">EXTRAS / OPCIONALES</div>
+          ${extraLines.map(t => `<div class="cd-line">${t}</div>`).join('')}
+        </div>
+      ` : ''}
+
+      ${noteVal ? `
+        <div class="cd-sep"></div>
+        <div class="cd-sec">
+          <div class="cd-sec__title">Comentario</div>
+          <div class="cd-line cd-note">${noteVal}</div>
+        </div>
+      ` : ''}
+
+    </div>
+  </details>
+` : '';
+
+  row.innerHTML = `
+    <div class="cd-left">
+      <div class="cd-topline">
+        <h5>${it.name} <span class="cd-meta">(x${qty})</span></h5>
+        ${badges ? `<div class="cd-badges">${badges}</div>` : ``}
+      </div>
+      ${detailsHTML}
+    </div>
+
+    <div class="cd-controls">
+      <span class="cd-price">${fmt(lineTotal)}</span>
+      <button class="cd-trash" data-act="del" data-idx="${idx}" aria-label="Eliminar">🗑️</button>
+    </div>
+  `;
+
+  elList.appendChild(row);
+  });
   elTotal.textContent    = fmt(subtotal);
 
   if (typeof updateCartFab === 'function') updateCartFab();

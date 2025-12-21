@@ -1326,12 +1326,22 @@ html {
 .cd-head h3, .cd-head h4, .cd-head h5{ color:#f5f5f5; }
 
 .cd-close{
-  border:0;
-  background: transparent;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  color: rgba(255,255,255,.85);
+  border: 1px solid rgba(255,255,255,.35);
+  background: rgba(255,255,255,.06);
+  display:grid;
+  place-items:center;
   cursor:pointer;
-  font-size: 26px;
-  color:#ffb400;              /* amarillo */
+  font-size: 22px;
 }
+
+.cd-close:active{ 
+  transform: translateY(1px); 
+}
+
 
 .cd-item h5{
   margin: 0;
@@ -1398,12 +1408,6 @@ html {
   color:#ffb400;
   font-size: 1.1rem;
 }
-.cd-actions{
-  padding: 12px 16px;
-  display:flex;
-  gap: 10px;
-  border-top: 1px solid rgba(255,255,255,.10);
-}
 .cd-ghost{
   flex: 1;
   height: 44px;
@@ -1412,16 +1416,6 @@ html {
   background: rgba(255,255,255,.06);
   color: #f5f5f5;
   cursor:pointer;
-}
-.cd-primary{
-  flex: 2;
-  height: 44px;
-  border-radius: 12px;
-  border: 0;
-  background: #ffb400;
-  color: #111;
-  cursor:pointer;
-  font-weight: 900;
 }
 
 .cd-form{ padding:12px 16px 18px; border-top:1px solid #eee; display:grid; gap:10px; }
@@ -2967,10 +2961,6 @@ body.modal-open .cart-fab {
   border-bottom: 1px solid rgba(255,255,255,.10);
 }
 
-.cd-close{
-  color: #ffb400;
-}
-
 /* Card */
 
 .cd-item h5{
@@ -3035,6 +3025,7 @@ body.modal-open .cart-fab {
   display:flex;
   gap:10px;
   border-top: 1px solid rgba(255,255,255,.08);
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
 }
 
 .cd-ghost{
@@ -3054,8 +3045,15 @@ body.modal-open .cart-fab {
   border: 0;
   background: #ffb400;
   color: #111;
+  cursor:pointer;
   font-weight: 900;
+  transition: transform .12s, filter .15s, box-shadow .15s;
+  box-shadow: 0 10px 22px rgba(0,0,0,22);
+  font-size: 1rem;
 }
+
+.cd-primary:hover{ filter: brightness(1.03); }
+.cd-primary:active{ transform: translateY(1px); box-shadow: 0 6px 14px rgba(0,0,0,25); }
 
 .cd-extras{
   margin-top: 8px;
@@ -3111,4 +3109,287 @@ body.modal-open .cart-fab {
   gap: 12px;
   overflow: auto;
   padding: 12px 12px 140px;
+}
+
+.cd-details { margin-top: 10px; }
+
+.cd-details__sum{
+  cursor: pointer;
+  user-select: none;
+  font-weight: 800;
+  color: rgba(255,255,255,0.85);
+  list-style: none;
+}
+.cd-details__sum::-webkit-details-marker{ display:none; }
+.cd-details__sum::after{
+  content: "▾";
+  float: right;
+  opacity: .8;
+}
+.cd-details[open] .cd-details__sum::after{ content: "▴"; }
+
+.cd-details__body{
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+.cd-sec__title{
+  font-weight: 900;
+  letter-spacing: .5px;
+  margin: 10px 0 6px;
+  color: rgba(255,255,255,0.92);
+}
+
+.cd-line{
+  font-size: .92rem;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.25;
+  padding: 2px 0;
+}
+
+.cd-sep{
+  height: 1px;
+  background: rgba(255,255,255,0.14);
+  margin: 10px 0;
+}
+
+.cd-badges{
+  display: none;
+}
+.cd-note{ opacity: .9; }
+
+/* ===== Paso 2: Entrega ===== */
+.cd-step2{
+  padding: 12px 12px 0;
+}
+
+.cd-step2__title{
+  margin: 6px 4px 12px;
+  font-weight: 900;
+  color: rgba(255,255,255,.92);
+}
+
+.cd-mode{
+  display: grid;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.cd-mode__card{
+  width: 100%;
+  text-align: left;
+  padding: 12px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  color: #fff;
+  cursor: pointer;
+}
+
+.cd-mode__card .t{
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.cd-mode__card .d{
+  color: rgba(255,255,255,.72);
+  font-size: .92rem;
+  line-height: 1.2;
+}
+
+.cd-mode__card.is-active{
+  border-color: rgba(255,180,0,.35);
+  background: rgba(255,180,0,.12);
+}
+
+.cd-shipnote{
+  border: 1px solid rgba(255,180,0,.22);
+  background: rgba(255,180,0,.08);
+  color: rgba(255,255,255,.86);
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin: 8px 0 10px;
+  line-height: 1.25;
+}
+
+.cd-card{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.cd-row{ margin-top: 10px; }
+.cd-row:first-child{ margin-top: 0; }
+
+.cd-row2{
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 10px;
+}
+
+.cd-label{
+  display:block;
+  margin-bottom: 6px;
+  font-size: .85rem;
+  color: rgba(255,255,255,.70);
+  font-weight: 800;
+}
+
+.cd-input{
+  width:100%;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.35);
+  color: #fff;
+  padding: 11px 12px;
+  outline: none;
+}
+
+.cd-input:focus{
+  border-color: rgba(255,180,0,.35);
+  box-shadow: 0 0 0 3px rgba(255,180,0,.12);
+}
+
+/* ===== Drawer como 2 pantallas (Pedido / Entrega) ===== */
+.cart-drawer{
+  position: relative;
+  overflow: hidden; /* clave para que no se vea el otro panel */
+}
+
+.cd-screens{
+  position: relative;
+  height: calc(100vh - 10px); /* si tu drawer ya tiene un alto fijo, ponelo acá */
+  display: block;
+}
+
+/* cada pantalla ocupa todo el drawer */
+.cd-screen{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0);
+  transition: transform .22s ease;
+}
+
+/* Paso 2 arranca afuera a la derecha */
+#cd-step2{
+  transform: translateX(100%);
+}
+
+/* cuando el drawer está en modo step2 */
+.cart-drawer.is-step2 #cd-step1{ transform: translateX(-100%); }
+.cart-drawer.is-step2 #cd-step2{ transform: translateX(0); }
+
+/* tu lista ya tiene padding bottom, mantenela */
+#cd-step1 .cd-list{ flex: 1 1 auto; }
+#cd-step2{ overflow: auto; padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
+
+/* ===== Header step2 pro (volver + titulo centrado + cerrar) ===== */
+.cd-head{
+  display: grid;
+  grid-template-columns: 42px 1fr 42px;
+  align-items: center;
+  gap: 8px;
+}
+
+.cd-back{
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,15);
+  background: transparent;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .75;
+}
+
+.cd-close{
+  width: 34px;
+  height: 34px;
+  border-radius: 100%;         
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.15);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* mostrar "volver" SOLO en paso 2 */
+.cart-drawer:not(.is-step2) .cd-back{
+  opacity: 0;
+  pointer-events: none;
+}
+
+#cd-step2{
+  padding-bottom: calc(14px + env(safe-area-inset-bottom));
+}
+
+.cd-step2__actions{
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display:flex;
+  gap:10px;
+  padding: 12px 12px calc(0px + env(safe-area-inset-bottom));
+  margin: auto -12px 0;          /* 👈 importante: auto la empuja abajo */
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,.12);  /* 👈 tu valor “12” estaba mal */
+}
+
+/* ===== Form dirección: mejor encuadre ===== */
+.cd-row2{
+  grid-template-columns: 1.6fr 1fr; /* antes: 1fr 120px */
+}
+
+@media (max-width: 420px){
+  .cd-row2{
+    grid-template-columns: 1fr; /* en pantallas chicas apila */
+  }
+}
+
+/* Header alineado sin tocar la X */
+.cd-head{
+  display: grid;
+  grid-template-columns: 36px 1fr 36px;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Botón volver discreto */
+.cd-back{
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.15);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .75;
+}
+
+/* Mostrar volver solo en paso 2 */
+.cart-drawer:not(.is-step2) .cd-back{
+  visibility: hidden;
+}
+
+.cd-drawer,
+.cd-step,
+.cd-step2 {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE / Edge viejo */
+}
+
+.cd-drawer::-webkit-scrollbar,
+.cd-step::-webkit-scrollbar,
+.cd-step2::-webkit-scrollbar {
+  display: none;                /* Chrome / Safari */
 }
