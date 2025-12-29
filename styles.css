@@ -3588,3 +3588,28 @@ body.modal-open .cart-fab {
     padding: 16px;
   }
 }
+
+/* ===== Datos cliente / pago ===== */
+
+.cd-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  cursor: pointer;
+}
+
+.cd-radio input {
+  accent-color: #25d366; /* verde wsp */
+}
+
+.cd-radio span {
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.cd-radio:hover {
+  background: rgba(255,255,255,0.10);
+}
