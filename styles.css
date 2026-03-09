@@ -1365,7 +1365,6 @@ html {
   inset: 0;
   background: rgba(0, 0, 0, .55);
   backdrop-filter: blur(2px);
-  z-index: 900;
 }
 
 #item-modal {
@@ -1767,11 +1766,11 @@ html {
 }
 
 #item-modal-overlay {
-  z-index: 8000 !important;
+  z-index: 10000 !important;
 }
 
 #item-modal {
-  z-index: 9000 !important;
+  z-index: 10001 !important;
 }
 
 #cart-overlay {
@@ -5133,4 +5132,113 @@ body.lp-modal-open {
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+/* =========================================
+   UI DESIGN: "GOLDEN CAPSULE" (Llamativo & Moderno)
+   ========================================= */
+
+/* 1. El Contenedor "Cápsula" */
+.lp-capsule-header {
+  display: inline-flex; /* Se ajusta al contenido, no ocupa todo el ancho */
+  align-items: center;
+  gap: 0; /* El espacio lo manejamos con padding */
+  
+  /* Posicionamiento: Centrado visualmente */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 25px;
+  margin-top: 10px;
+  
+  /* ESTÉTICA DE LUJO */
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d); /* Degradado sutil */
+  border: 2px solid #FFC107; /* Borde Dorado Marca */
+  border-radius: 50px; /* Forma de píldora completa */
+  
+  padding: 6px 24px 6px 6px; /* Padding asimétrico para el botón */
+  
+  /* SOMBRA Y BRILLO (El toque "Llamativo") */
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.6), /* Sombra profunda */
+    0 0 15px rgba(255, 193, 7, 0.25), /* Resplandor dorado externo */
+    inset 0 1px 1px rgba(255, 255, 255, 0.2); /* Brillo superior interno */
+    
+  z-index: 10;
+  width: auto;
+  max-width: 90%;
+}
+
+/* 2. El Botón Circular (Integrado) */
+.lp-capsule-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  
+  /* Color Amarillo Intenso */
+  background: #FFC107;
+  color: #000; /* Flecha negra para contraste máximo */
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  
+  /* Sombra del botón */
+  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lp-capsule-btn:active {
+  transform: scale(0.9);
+}
+
+/* 3. Separador Vertical (Decorativo) */
+.lp-capsule-sep {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 16px; /* Espacio entre botón y título */
+}
+
+/* 4. El Título */
+.lp-capsule-title {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+/* ANIMACIÓN DE ENTRADA (Opcional pero queda muy Pro) */
+.section.active .lp-capsule-header {
+  animation: floatDown 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes floatDown {
+  from { opacity: 0; transform: translate(-50%, -20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* AJUSTES MÓVILES */
+@media (max-width: 380px) {
+  .lp-capsule-header {
+    width: 90%; /* En pantallas muy chicas ocupa casi todo */
+    justify-content: flex-start;
+  }
+  
+  .lp-capsule-sep {
+    margin: 0 12px;
+  }
+  
+  .lp-capsule-title {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
 }
