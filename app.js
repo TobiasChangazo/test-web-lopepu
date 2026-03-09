@@ -2960,10 +2960,10 @@ function goToCategory(targetId) {
     showOnly(targetId);
 }
 
-// Click en cualquier botón de categoría (HOME y /productos)
-document.querySelectorAll('.lp-cat[data-go]').forEach(btn => {
+// Ahora busca tanto .lp-cat como .lp-cat-boceto
+document.querySelectorAll('.lp-cat[data-go], .lp-cat-boceto[data-go]').forEach(btn => {
     btn.addEventListener('click', () => {
-        const targetId = btn.dataset.go; // "pizzas", "empanadas", etc
+        const targetId = btn.dataset.go; 
         goToCategory(targetId);
     });
 });
@@ -2987,5 +2987,21 @@ document.querySelectorAll('[data-go="promos"]').forEach(btn => {
     btn.addEventListener('click', () => {
         // "promos" es una sección del menú (combos), la tratamos como parte de Productos
         goToCategory('promos');
+    });
+});
+
+// Listener para los botones de volver con clase "lp-clean-back"
+document.querySelectorAll('.lp-clean-back[data-back]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const back = btn.dataset.back || 'home';
+        
+        // Usamos las mismas funciones que ya tenés en tu script
+        if (typeof closeCart === 'function') closeCart();
+        
+        // Marcamos "Inicio" o "Productos" en la barra inferior según corresponda
+        if (typeof setBottomActive === 'function') setBottomActive(back);
+        
+        // Mostramos la sección destino
+        if (typeof showOnly === 'function') showOnly(back);
     });
 });

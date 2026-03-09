@@ -4160,22 +4160,26 @@ body::before {
 /* GRID RESPONSIVA: 2 columnas en móvil, más en desktop */
 .lp-best__grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columnas fijo en móvil como referencia */
+  grid-template-columns: repeat(2, 1fr);
+  /* 2 columnas fijo en móvil como referencia */
   gap: 12px;
   margin-top: 20px;
 }
 
 @media (min-width: 768px) {
   .lp-best__grid {
-    grid-template-columns: repeat(4, 1fr); /* 4 en PC */
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 en PC */
     gap: 20px;
   }
 }
 
 /* TARJETA VERTICAL */
 .lp-best__card {
-  position: relative; /* Para posicionar la pill "Popular" */
-  background: #1e1e1e; /* Fondo un poco más claro que el negro */
+  position: relative;
+  /* Para posicionar la pill "Popular" */
+  background: #1e1e1e;
+  /* Fondo un poco más claro que el negro */
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   overflow: hidden;
@@ -4183,7 +4187,7 @@ body::before {
   flex-direction: column;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .lp-best__card:active {
@@ -4193,8 +4197,10 @@ body::before {
 /* NUEVO: Contenedor para la imagen */
 .lp-best__img-box {
   width: 100%;
-  aspect-ratio: 4/3; /* Proporción rectangular estándar */
-  background: #2c2c2c; /* Fondo oscuro para rellenar */
+  aspect-ratio: 4/3;
+  /* Proporción rectangular estándar */
+  background: #2c2c2c;
+  /* Fondo oscuro para rellenar */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4205,7 +4211,8 @@ body::before {
 .lp-best__img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Se ajusta para verse ENTERA sin cortarse */
+  object-fit: contain;
+  /* Se ajusta para verse ENTERA sin cortarse */
   display: block;
   transition: transform 0.3s ease;
 }
@@ -4215,14 +4222,15 @@ body::before {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: #ff5722; /* Naranja tipo "fuego" */
+  background: #ff5722;
+  /* Naranja tipo "fuego" */
   color: #fff;
   font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   z-index: 2;
   display: flex;
   align-items: center;
@@ -4251,7 +4259,8 @@ body::before {
   color: #aaa;
   margin-bottom: 12px;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Cortar texto largo */
+  -webkit-line-clamp: 2;
+  /* Cortar texto largo */
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.3;
@@ -4262,13 +4271,15 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: auto; /* Empuja al fondo */
+  margin-top: auto;
+  /* Empuja al fondo */
 }
 
 .lp-best__price {
   font-size: 1rem;
   font-weight: 800;
-  color: #4CAF50; /* Verde precio */
+  color: #4CAF50;
+  /* Verde precio */
 }
 
 /* MODIFICAR ESTO: El botón */
@@ -4281,18 +4292,22 @@ body::before {
   font-size: 0.75rem;
   font-weight: 800;
   cursor: pointer;
-  pointer-events: none; /* <--- TRUCO: El click pasa a través del botón hacia la tarjeta */
+  pointer-events: none;
+  /* <--- TRUCO: El click pasa a través del botón hacia la tarjeta */
   transition: transform 0.2s, background-color 0.2s;
 }
 
 /* AGREGAR ESTO: Efecto visual al pasar el mouse por la TARJETA */
 .lp-best__card:hover .lp-best__btn {
-  background-color: #fff; /* El botón se ilumina */
-  transform: scale(1.05); /* El botón crece un poquito */
+  background-color: #fff;
+  /* El botón se ilumina */
+  transform: scale(1.05);
+  /* El botón crece un poquito */
 }
 
 .lp-best__card:hover .lp-best__img {
-  transform: scale(1.05); /* Zoom sutil a la imagen */
+  transform: scale(1.05);
+  /* Zoom sutil a la imagen */
 }
 
 /* NAV FIJA ABAJO (pegada, sin bordes redondeados, más chica) */
@@ -4305,7 +4320,8 @@ body::before {
   transform: none;
 
   width: 100vw;
-  height: 56px; /* más chica */
+  height: 56px;
+  /* más chica */
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: center;
@@ -4314,7 +4330,8 @@ body::before {
   padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
   background: #191919 !important;
 
-  border-radius: 0; /* sin redondeado */
+  border-radius: 0;
+  /* sin redondeado */
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 
   backdrop-filter: none !important;
@@ -4327,8 +4344,10 @@ body::before {
 
 .lp-bottom-btn {
   border: 0;
-  background: transparent; /* Se apoya sobre el fondo sólido de la nav */
-  color: #B0B0B0;          /* Gris mate para los no seleccionados */
+  background: transparent;
+  /* Se apoya sobre el fondo sólido de la nav */
+  color: #B0B0B0;
+  /* Gris mate para los no seleccionados */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4344,7 +4363,8 @@ body::before {
 
 /* Color para cuando el botón está activo */
 .lp-bottom-btn.active {
-  color: #FFC107; /* El amarillo de tu logo */
+  color: #FFC107;
+  /* El amarillo de tu logo */
 }
 
 .lp-bottom-btn i {
@@ -4880,7 +4900,7 @@ body.lp-modal-open {
 }
 
 /* Accordion Horarios (debajo del bloque de infos) */
-.lp-horarios-accordion{
+.lp-horarios-accordion {
   width: 100%;
   margin-top: 10px;
   overflow: hidden;
@@ -4890,13 +4910,13 @@ body.lp-modal-open {
   transition: max-height .28s ease, opacity .2s ease, transform .2s ease;
 }
 
-.lp-horarios-accordion.is-open{
+.lp-horarios-accordion.is-open {
   opacity: 1;
   transform: translateY(0);
 }
 
 /* Caja interna (misma onda "glass" que tu UI) */
-.lp-horarios-accordion__inner{
+.lp-horarios-accordion__inner {
   background: rgba(25, 25, 25, 0.92);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -4905,7 +4925,7 @@ body.lp-modal-open {
   border: 1px solid rgba(240, 207, 43, 0.35);
 }
 
-.lp-horarios-accordion__inner h3{
+.lp-horarios-accordion__inner h3 {
   margin: 0 0 10px 0;
   text-align: center;
   font-size: 1.05rem;
@@ -4913,16 +4933,16 @@ body.lp-modal-open {
   letter-spacing: .2px;
 }
 
-.lp-h-row{
+.lp-h-row {
   display: flex;
   justify-content: space-between;
   gap: 12px;
   padding: 10px 6px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   font-size: .98rem;
 }
 
-.lp-h-row span:last-child{
+.lp-h-row span:last-child {
   font-weight: 800;
 }
 
@@ -5031,8 +5051,8 @@ body.lp-modal-open {
   background-repeat: no-repeat;
 
   box-shadow:
-    0 8px 22px rgba(0,0,0,0.45),
-    inset 0 2px 6px rgba(255,255,255,0.25);
+    0 8px 22px rgba(0, 0, 0, 0.45),
+    inset 0 2px 6px rgba(255, 255, 255, 0.25);
 
   transition: transform 0.15s ease;
 }
@@ -5063,182 +5083,205 @@ body.lp-modal-open {
 /* --- CATEGORÍAS EXACTAS AL BOCETO --- */
 
 #productos.section {
-    padding: 0; 
+  padding: 0;
 }
 
 /* 1. Contenedor Maestro: Altura blindada para evitar scroll */
 #productos.section.active {
-    display: flex;
-    flex-direction: column;
-    /* 200px de margen de seguridad para absorber menú y header = 0 Scroll */
-    height: calc(100dvh - 200px - env(safe-area-inset-bottom, 0px));
-    padding: 10px 20px 0px; 
-    box-sizing: border-box;
-    overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+  /* 200px de margen de seguridad para absorber menú y header = 0 Scroll */
+  height: calc(100dvh - 200px - env(safe-area-inset-bottom, 0px));
+  padding: 10px 20px 0px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 #productos .lp-panel-head {
-    margin-bottom: 5px;
-    flex-shrink: 0; 
+  margin-bottom: 5px;
+  flex-shrink: 0;
 }
 
 #productos .lp-panel-sub {
-    margin-bottom: 5px;
-    flex-shrink: 0;
-    text-align: center; /* Centramos el texto para más prolijidad */
+  margin-bottom: 5px;
+  flex-shrink: 0;
+  text-align: center;
+  /* Centramos el texto para más prolijidad */
 }
 
 /* 2. La Grilla: Bloque compacto centrado */
 .lp-cats-boceto-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    /* ELIMINAMOS grid-template-rows y flex-grow para que NO se estire */
-    gap: 16px; 
-    
-    width: 100%;
-    /* Reducimos a 310px. Al ser más angosto el contenedor, las tarjetas se achican automáticamente */
-    max-width: 310px; 
-    
-    /* LA MAGIA: Al tener margin auto, el bloque entero de 6 botones se centra vertical y horizontalmente */
-    margin: auto; 
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* ELIMINAMOS grid-template-rows y flex-grow para que NO se estire */
+  gap: 16px;
+
+  width: 100%;
+  /* Reducimos a 310px. Al ser más angosto el contenedor, las tarjetas se achican automáticamente */
+  max-width: 310px;
+
+  /* LA MAGIA: Al tener margin auto, el bloque entero de 6 botones se centra vertical y horizontalmente */
+  margin: auto;
 }
 
 /* 3. Las Tarjetas: Cuadrados perfectos y unidos */
 .lp-cat-boceto {
-    width: 100%;
-    aspect-ratio: 1 / 1; /* Obligamos a que sea un cuadrado perfecto siempre */
-    background-color: #FFFCF0; 
-    border: 1px solid #ddd;
-    border-radius: 20px; 
-    position: relative;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    transition: transform 0.1s;
-    padding: 0;
-    margin: 0; /* Quitamos el margin auto interno para que no floten separadas */
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  /* Obligamos a que sea un cuadrado perfecto siempre */
+  background-color: #FFFCF0;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.1s;
+  padding: 0;
+  margin: 0;
+  /* Quitamos el margin auto interno para que no floten separadas */
 }
 
 .lp-cat-boceto:active {
-    transform: scale(0.96);
+  transform: scale(0.96);
 }
 
 /* 4. El Icono Interno */
 .lp-cat-boceto::after {
-    content: "";
-    position: absolute;
-    /* Aumentamos el inset a 25%. Esto le da más aire al ícono, haciéndolo ver más sutil y proporcionado */
-    inset: 25%; 
-    background-image: var(--icon);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
+  content: "";
+  position: absolute;
+  /* Aumentamos el inset a 25%. Esto le da más aire al ícono, haciéndolo ver más sutil y proporcionado */
+  inset: 25%;
+  background-image: var(--icon);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 /* =========================================
-   UI DESIGN: "GOLDEN CAPSULE" (Llamativo & Moderno)
+   UI DESIGN: "CENTERED CLEAN" (Título perfecto)
    ========================================= */
 
-/* 1. El Contenedor "Cápsula" */
-.lp-capsule-header {
-  display: inline-flex; /* Se ajusta al contenido, no ocupa todo el ancho */
-  align-items: center;
-  gap: 0; /* El espacio lo manejamos con padding */
-  
-  /* Posicionamiento: Centrado visualmente */
+.lp-clean-header {
   position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: 25px;
-  margin-top: 10px;
-  
-  /* ESTÉTICA DE LUJO */
-  background: linear-gradient(145deg, #1a1a1a, #0d0d0d); /* Degradado sutil */
-  border: 2px solid #FFC107; /* Borde Dorado Marca */
-  border-radius: 50px; /* Forma de píldora completa */
-  
-  padding: 6px 24px 6px 6px; /* Padding asimétrico para el botón */
-  
-  /* SOMBRA Y BRILLO (El toque "Llamativo") */
-  box-shadow: 
-    0 8px 20px rgba(0, 0, 0, 0.6), /* Sombra profunda */
-    0 0 15px rgba(255, 193, 7, 0.25), /* Resplandor dorado externo */
-    inset 0 1px 1px rgba(255, 255, 255, 0.2); /* Brillo superior interno */
-    
-  z-index: 10;
-  width: auto;
-  max-width: 90%;
-}
-
-/* 2. El Botón Circular (Integrado) */
-.lp-capsule-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  
-  /* Color Amarillo Intenso */
-  background: #FFC107;
-  color: #000; /* Flecha negra para contraste máximo */
-  
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
-  
-  /* Sombra del botón */
-  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  width: 100%;
+  padding: 15px 16px;
+  margin-bottom: 20px;
+
+  /* Fondo vidrio oscuro sutil */
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  /* Borde fino abajo */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
 }
 
-.lp-capsule-btn:active {
-  transform: scale(0.9);
+/* 1. Botón "Flecha" (Posición Absoluta) */
+.lp-clean-back {
+  /* ALERTA: Esto es lo que permite que el título no se mueva */
+  position: absolute;
+  left: 12px;
+  /* Pegado a la izquierda */
+  top: 50%;
+  transform: translateY(-50%);
+  /* Centrado vertical exacto */
+
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.1);
+  /* Fondo blanco semi-transparente */
+  border: 1px solid #fff;
+  /* Amarillo semi-transparente */
+  border-radius: 50%;
+  /* Círculo perfecto */
+
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* 3. Separador Vertical (Decorativo) */
-.lp-capsule-sep {
-  width: 1px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.15);
-  margin: 0 16px; /* Espacio entre botón y título */
+/* Efecto al tocar */
+.lp-clean-back:active {
+  background: #FFC107;
+  color: #000;
+  transform: translateY(-50%) scale(0.9);
+  /* Mantiene el centrado vertical + achica */
 }
 
-/* 4. El Título */
-.lp-capsule-title {
+/* 2. El Título (Centrado) */
+.lp-clean-title {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
-  font-size: 1.1rem;
+  /* Negrita fuerte */
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  /* Espaciado elegante */
   text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #fff;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+
+  color: #FFC107;
+  /* Amarillo vibrante */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+
+  /* Asegura que si el título es muy largo no choque con el botón */
+  max-width: 70%;
+  text-align: center;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ANIMACIÓN DE ENTRADA (Opcional pero queda muy Pro) */
-.section.active .lp-capsule-header {
-  animation: floatDown 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+@media (max-width: 480px) {
 
-@keyframes floatDown {
-  from { opacity: 0; transform: translate(-50%, -20px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
-}
+  /* 1. CONTENEDOR PRINCIPAL */
+  .section {
+    padding: 10px 15px 100px 15px !important;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
 
-/* AJUSTES MÓVILES */
-@media (max-width: 380px) {
-  .lp-capsule-header {
-    width: 90%; /* En pantallas muy chicas ocupa casi todo */
-    justify-content: flex-start;
+  /* 2. HEADER CENTRADO */
+  .lp-clean-header {
+    margin-bottom: 20px;
+    padding: 12px 0 !important;
+    /* antes 5px → ahora más alto */
+    justify-content: center;
+    min-height: 48px;
+    /* asegura un poco más de altura */
   }
-  
-  .lp-capsule-sep {
-    margin: 0 12px;
+
+  /* TÍTULO */
+  .lp-clean-title {
+    font-size: 1.5rem !important;
+    max-width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  
-  .lp-capsule-title {
-    font-size: 1rem;
-    letter-spacing: 1px;
+
+  /* OCULTAR TEXTO DEL BOTÓN */
+  .lp-clean-back span {
+    display: none !important;
   }
+
+  .lp-clean-back {
+    position: absolute !important;
+    left: 12px !important;
+    width: 40px;
+    height: 40px;
+    padding: 0 !important;
+  }
+
 }
