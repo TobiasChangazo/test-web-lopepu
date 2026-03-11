@@ -2921,14 +2921,16 @@ function showOnly(targetId) {
 }
 
 function setBottomActive(target) {
-    document.querySelectorAll('#lp-nav .lp-bottom-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`#lp-nav .lp-bottom-btn[data-target="${target}"]`)?.classList.add('active');
+    // Apaga todos los botones de la nav nueva
+    document.querySelectorAll('.lp-bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
+    // Enciende el botón correcto buscando por su data-go
+    document.querySelector(`.lp-bottom-nav .nav-item[data-go="${target}"]`)?.classList.add('active');
 }
 
-// botones de la bottom nav (inicio/productos/promociones)
-document.querySelectorAll('#lp-nav .lp-bottom-btn[data-target]').forEach(btn => {
+// Botones de la nueva bottom nav (inicio/productos/promociones)
+document.querySelectorAll('.lp-bottom-nav .nav-item[data-go]').forEach(btn => {
     btn.addEventListener('click', () => {
-        const target = btn.dataset.target;
+        const target = btn.dataset.go;
         if (!target) return;
 
         closeCart();
@@ -2937,7 +2939,7 @@ document.querySelectorAll('#lp-nav .lp-bottom-btn[data-target]').forEach(btn => 
     });
 });
 
-// botón “Mi Pedido”
+// Botón “Mi Pedido” de la nueva nav
 document.getElementById('lp-open-cart-bottom')?.addEventListener('click', (e) => {
     e.preventDefault();
     openCart();
@@ -2949,19 +2951,13 @@ document.getElementById('lp-open-cart-bottom')?.addEventListener('click', (e) =>
 
 function goToCategory(targetId) {
     if (!targetId) return;
-
-    // si está abierto el carrito, lo cerramos para que no “trabe” la pantalla
     closeCart();
-
-    // cuando vas a una categoría, el item activo de la bottom nav debería ser "Productos"
     setBottomActive('productos');
-
-    // mostrar SOLO la sección destino (pizzas/empanadas/etc)
     showOnly(targetId);
 }
 
-// Ahora busca tanto .lp-cat como .lp-cat-boceto
-document.querySelectorAll('.lp-cat[data-go], .lp-cat-boceto[data-go]').forEach(btn => {
+// Escucha los clics en categorías del Home Y del panel de Productos
+document.querySelectorAll('.lp-cat-card[data-go], .lp-cat-boceto[data-go]').forEach(btn => {
     btn.addEventListener('click', () => {
         const targetId = btn.dataset.go; 
         goToCategory(targetId);
