@@ -440,32 +440,40 @@
     const shipNote = document.getElementById('cd-shipnote');
 
     function showStep2() {
-        if (!elDrawer) return;
+        const s1 = document.getElementById('cd-step1');
+        const s2 = document.getElementById('cd-step2');
+        const f1 = document.getElementById('cart-footer-step1');
+        const f2 = document.getElementById('cart-footer-step2');
 
-        elDrawer.classList.add('is-step2');
+        if (s1) s1.style.display = 'none';
+        if (f1) f1.style.display = 'none';
 
-        // si todavía tenés estas refs, dejalas
-        if (elList) elList.hidden = true;
-        if (step2) step2.hidden = false;
-
-        const sumWrap = elDrawer.querySelector('.cd-summary');
-        const actWrap = elDrawer.querySelector('.cd-actions');
-        if (sumWrap) sumWrap.style.display = 'none';
-        if (actWrap) actWrap.style.display = 'none';
+        if (s2) {
+            s2.style.display = 'flex';
+            s2.classList.add('active');
+        }
+        if (f2) {
+            f2.style.display = 'flex';
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function hideStep2() {
-        if (!elDrawer) return;
+        const s1 = document.getElementById('cd-step1');
+        const s2 = document.getElementById('cd-step2');
+        const f1 = document.getElementById('cart-footer-step1');
+        const f2 = document.getElementById('cart-footer-step2');
 
-        elDrawer.classList.remove('is-step2');
+        if (s2) {
+            s2.style.display = 'none';
+            s2.classList.remove('active');
+        }
+        if (f2) f2.style.display = 'none';
 
-        if (elList) elList.hidden = false;
-        if (step2) step2.hidden = true;
+        if (s1) s1.style.display = 'block';
+        if (f1) f1.style.display = 'flex';
 
-        const sumWrap = elDrawer.querySelector('.cd-summary');
-        const actWrap = elDrawer.querySelector('.cd-actions');
-        if (sumWrap) sumWrap.style.display = '';
-        if (actWrap) actWrap.style.display = '';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function setEntregaMode(mode) {
@@ -1052,44 +1060,36 @@
 
 
     function renderCart() {
+        const elList = document.getElementById('cart-list');
+        const elTotal = document.getElementById('cart-total');
+        const emptyState = document.getElementById('cd-empty');
+        const footer1 = document.getElementById('cart-footer-step1');
+
         if (!elList || !elTotal) return;
 
         const cart = getCart();
         const view = buildCartView(cart);
 
-        // contenedores opcionales (para ocultar resumen/botón cuando está vacío)
-        const sumWrap = elDrawer ? elDrawer.querySelector('.cd-summary') : null;
-        const actWrap = elDrawer ? elDrawer.querySelector('.cd-actions') : null;
-
-        // ====== CARRITO VACÍO ======
-        if (!cart.length) {
-            elList.innerHTML = `
-      <div class="cd-empty">
-        <div class="illu">🛍️</div>
-        <div class="txt">Pedido vacío</div>
-      </div>
-    `;
-            elTotal.textContent = fmt(0);
-
-            if (sumWrap) sumWrap.style.display = 'none';
-            if (actWrap) actWrap.style.display = 'none';
-
-            // si tenés el botón flotante
-            if (typeof updateCartFab === 'function') updateCartFab();
+        // Carrito Vacío
+        if (!view || view.length === 0) {
+            elList.innerHTML = '';
+            if (emptyState) emptyState.style.display = 'flex';
+            if (footer1) footer1.style.display = 'none';
+            elTotal.textContent = '0';
+            updateCartFab();
             return;
-        } else {
-            if (sumWrap) sumWrap.style.display = '';
-            if (actWrap) actWrap.style.display = '';
         }
 
-        // ====== CARRITO CON ITEMS ======
+        // Carrito con Items
+        if (emptyState) emptyState.style.display = 'none';
+        if (footer1) footer1.style.display = 'flex';
+
         elList.innerHTML = '';
         let subtotal = 0;
 
         view.forEach((it, idx) => {
             const qty = Number(it.qty) || 1;
             const opts = Array.isArray(it.options) ? it.options : [];
-
             const extrasTotal = opts.reduce((s, o) => s + (Number(o.price) || 0) * (Number(o.qty) || 1), 0);
             const unitTotal = (Number(it.basePrice) || 0) + extrasTotal;
             const lineTotal = unitTotal * qty;
@@ -1097,27 +1097,14 @@
             subtotal += lineTotal;
 
             const row = document.createElement('div');
-            row.className = 'cd-item';
+            row.className = 'cart-item';
 
-            // mini-resumen (para que NO se cargue)
-            const extrasCount = opts.reduce((s, o) => s + (Number(o.qty) || 1), 0);
-            const noteVal = Array.isArray(it.note) ? it.note.join(' ') : (it.note || '');
-            const badges = [
-                extrasCount ? `${extrasCount} extra${extrasCount > 1 ? 's' : ''}` : '',
-                noteVal ? `comentario` : ''
-            ].filter(Boolean).join(' • ');
+            // LÓGICA DE AGRUPACIÓN (SEPARA PIZZAS, EMPANADAS Y EXTRAS)
+            let sections = Array.isArray(it.sections) ? [...it.sections] : [];
+            let extraLines = [];
 
-            // ===== DETALLES BONITOS (auto-secciones) =====
-
-            // 1) si ya vienen "sections" prearmadas, las usamos
-            let sections = Array.isArray(it.sections) ? it.sections : [];
-
-            // 2) si NO vienen sections, las armamos desde options (PIZZA 1: ..., EMPANADAS: ...)
-            let extraLines = []; // extras / opcionales (BASE TOSTADA, EXTRA MUZZA, etc.)
-
-            if (!sections.length && opts.length) {
-                const map = new Map(); // title -> lines[]
-
+            if (sections.length === 0 && opts.length > 0) {
+                const map = new Map();
                 const addLine = (title, line) => {
                     if (!map.has(title)) map.set(title, []);
                     map.get(title).push(line);
@@ -1126,122 +1113,104 @@
                 opts.forEach(o => {
                     const name = String(o.name || '').trim();
                     const q = Number(o.qty) || 1;
+                    const qtyStr = q > 1 ? `(x${q}) ` : '';
 
-                    // PIZZA 1: ½ Jamón Solo
                     let m = name.match(/^PIZZA\s*(\d+)\s*:\s*(.+)$/i);
-                    if (m) {
-                        const n = m[1];
-                        const line = m[2].trim();
-                        addLine(`PIZZA ${n}`, line);
-                        return;
-                    }
+                    if (m) { addLine(`PIZZA ${m[1]}`, m[2].trim()); return; }
 
-                    // EMPANADAS: Jamón y Queso (qty puede ser >1)
                     m = name.match(/^EMPANADAS\s*:\s*(.+)$/i);
-                    if (m) {
-                        const line = m[1].trim();
-                        addLine(`EMPANADAS`, `${q > 1 ? `(x${q}) ` : ''}${line}`);
-                        return;
-                    }
+                    if (m) { addLine(`EMPANADAS`, `${qtyStr}${m[1].trim()}`); return; }
 
-                    // PIZZA: Muzzarella (si alguna promo te lo mete así)
                     m = name.match(/^PIZZA\s*:\s*(.+)$/i);
-                    if (m) {
-                        const line = m[1].trim();
-                        addLine(`PIZZA`, `${q > 1 ? `(x${q}) ` : ''}${line}`);
-                        return;
-                    }
+                    if (m) { addLine(`PIZZA`, `${qtyStr}${m[1].trim()}`); return; }
 
-                    // lo demás = extras/opcionales
-                    extraLines.push(`${q > 1 ? `(x${q}) ` : ''}${name}`);
+                    extraLines.push(`${qtyStr}${name}`);
                 });
 
-                // orden para pizzas numeradas: 1,2,3...
-                const pizzaKeys = [...map.keys()]
-                    .filter(k => /^PIZZA\s+\d+$/.test(k))
-                    .sort((a, b) => Number(a.replace(/\D/g, '')) - Number(b.replace(/\D/g, '')));
+                const pK = [...map.keys()].filter(k => /^PIZZA\s+\d+$/.test(k)).sort((a, b) => Number(a.replace(/\D/g, '')) - Number(b.replace(/\D/g, '')));
+                const oK = [...map.keys()].filter(k => !/^PIZZA\s+\d+$/.test(k));
 
-                const otherKeys = [...map.keys()]
-                    .filter(k => !/^PIZZA\s+\d+$/.test(k));
-
-                const orderedKeys = [...pizzaKeys, ...otherKeys];
-
-                sections = orderedKeys.map(k => ({ title: k, lines: map.get(k) }));
+                sections = [...pK, ...oK].map(k => ({ title: k, lines: map.get(k) }));
+            } else if (sections.length > 0) {
+                opts.forEach(o => {
+                    const name = String(o.name || '').trim();
+                    const q = Number(o.qty) || 1;
+                    const qtyStr = q > 1 ? `(x${q}) ` : '';
+                    if (/^PIZZA/i.test(name) || /^EMPANADAS/i.test(name)) return;
+                    extraLines.push(`${qtyStr}${name}`);
+                });
             } else {
-                // si sections ya existe, NO dupliques líneas que ya son "PIZZA:" / "EMPANADAS:"
-                // dejamos acá solo extras reales (CON/SIN, gustos, etc.)
-                extraLines = opts
-                    .map(o => {
-                        const q = Number(o.qty) || 1;
-                        const name = String(o.name || '').trim();
-
-                        // ❌ esto YA va en secciones, no en "EXTRAS / OPCIONALES"
-                        if (/^PIZZA(\s*\d+)?\s*:/i.test(name)) return '';
-                        if (/^EMPANADAS\s*:/i.test(name)) return '';
-
-                        return `${q > 1 ? `(x${q}) ` : ''}${name}`;
-                    })
-                    .filter(Boolean);
+                opts.forEach(o => {
+                    const name = String(o.name || '').trim();
+                    const q = Number(o.qty) || 1;
+                    const qtyStr = q > 1 ? `(x${q}) ` : '';
+                    extraLines.push(`${qtyStr}${name}`);
+                });
             }
 
-            // ✅ esto define si hay algo para mostrar
-            const hasDetails = (sections.length > 0) || (extraLines.length > 0) || !!noteVal;
+            // ARMAR EL HTML
+            let innerHTML = '';
 
-            const detailsHTML = hasDetails ? `
-  <details class="cd-details">
-    <summary class="cd-details__sum">Ver detalles</summary>
+            if (sections.length > 0) {
+                sections.forEach(sec => {
+                    innerHTML += `<div class="detail-group"><span class="detail-group-title">${sec.title}</span>`;
+                    sec.lines.forEach(l => {
+                        let lineFmt = l.replace(/\(x(\d+)\)/gi, '<span style="color: #FFC107; font-weight: 800;">(x$1)</span>');
+                        innerHTML += `<span class="detail-item">${lineFmt}</span>`;
+                    });
+                    innerHTML += `</div>`;
+                });
+            }
 
-    <div class="cd-details__body">
+            if (extraLines.length > 0) {
+                innerHTML += `<div class="detail-group"><span class="detail-group-title">AGREGADOS</span>`;
+                extraLines.forEach(l => {
+                    let lineFmt = l.replace(/\(x(\d+)\)/gi, '<span style="color: #FFC107; font-weight: 800;">(x$1)</span>');
+                    innerHTML += `<span class="detail-item">${lineFmt}</span>`;
+                });
+                innerHTML += `</div>`;
+            }
 
-      ${sections.map((sec, i) => `
-        <div class="cd-sec">
-          <div class="cd-sec__title">${sec.title || ''}</div>
-          ${compressLines(sec.lines || []).map(l => `<div class="cd-line">${l}</div>`).join('')}
-        </div>
-        ${i < sections.length - 1 ? `<div class="cd-sep"></div>` : ``}
-      `).join('')}
+            const noteVal = Array.isArray(it.note) ? it.note.join(' ') : (it.note || '');
+            if (noteVal) {
+                innerHTML += `<div class="detail-group"><span class="detail-group-title">COMENTARIO</span><span class="detail-item">${noteVal}</span></div>`;
+            }
 
-      ${extraLines.length ? `
-        ${sections.length ? `<div class="cd-sep"></div>` : ``}
-        <div class="cd-sec">
-          <div class="cd-sec__title">EXTRAS / OPCIONALES</div>
-          ${extraLines.map(t => `<div class="cd-line">${t}</div>`).join('')}
-        </div>
-      ` : ''}
+            let detailsHTML = '';
+            if (innerHTML !== '') {
+                detailsHTML = `
+            <div class="cart-item-toggle" onclick="this.closest('.cart-item').classList.toggle('is-open')">
+              <span>Ver detalles</span>
+              <svg class="toggle-arrow" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+            </div>
+            <div class="cart-item-details">
+              <div class="cart-details-inner">${innerHTML}</div>
+            </div>`;
+            }
 
-      ${noteVal ? `
-        <div class="cd-sep"></div>
-        <div class="cd-sec">
-          <div class="cd-sec__title">Comentario</div>
-          <div class="cd-line cd-note">${noteVal}</div>
-        </div>
-      ` : ''}
-
-    </div>
-  </details>
-` : '';
-
+            // INSERTAR EN LA TARJETA (Acá borré el $ duplicado del lineTotal)
             row.innerHTML = `
-    <div class="cd-left">
-      <div class="cd-topline">
-        <h5>${it.name} <span class="cd-meta">(x${qty})</span></h5>
-        ${badges ? `<div class="cd-badges">${badges}</div>` : ``}
-      </div>
-      ${detailsHTML}
-    </div>
-
-    <div class="cd-controls">
-      <span class="cd-price">${fmt(lineTotal)}</span>
-      <button class="cd-trash" data-act="del" data-src="${(it._src || []).join(',')}" aria-label="Eliminar">🗑️</button>
-    </div>
-  `;
+          <div class="cart-item-main">
+            <div class="cart-item-info">
+              <span class="cart-item-name">${it.name} <span class="qty" style="color: #FFC107;">(x${qty})</span></span>
+            </div>
+            <span class="cart-item-price">${fmt(lineTotal)}</span>
+            <button class="cart-delete-btn" data-act="del" data-src="${(it._src || []).join(',')}" aria-label="Eliminar">
+              <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+            </button>
+          </div>
+          ${detailsHTML}
+        `;
 
             elList.appendChild(row);
         });
-        elTotal.textContent = fmt(subtotal);
 
-        if (typeof updateCartFab === 'function') updateCartFab();
+        elTotal.textContent = fmt(subtotal);
+        updateCartFab();
     }
+
+    document.getElementById('cart-continue')?.addEventListener('click', showStep2);
+    document.getElementById('cd-step2-back')?.addEventListener('click', hideStep2);
 
 
     elList?.addEventListener('click', (e) => {
@@ -1282,11 +1251,17 @@
 
     function openItemModal() {
         if (!imOverlay || !imModal) return;
+
+        // Mostramos los elementos
         imOverlay.hidden = false;
         imModal.hidden = false;
         imOverlay.classList.add('visible');
         imModal.classList.add('visible');
+
+        // Bloqueamos el scroll del fondo y reseteamos el del modal
         document.body.classList.add('modal-open');
+        imModal.scrollTop = 0;
+
         updateModalTotal();
     }
 
@@ -1444,18 +1419,15 @@
     });
 
     document.addEventListener('click', (e) => {
-        const card = e.target.closest('.card-horizontal.full, .lp-best__card');
+        const card = e.target.closest('.card-horizontal.full, .lp-promo-card'); // Añadimos .lp-promo-card
         if (!card) return;
 
-        if (card.dataset.type) return;
+        // Si es un cono, bebida o promo, no hacemos nada (ellos tienen sus propios eventos)
+        if (card.dataset.type && card.dataset.type !== 'pizza') return;
 
-        const section = card.closest('.section');
-        // Permitimos abrir si estamos en la sección 'pizzas' O si es una tarjeta de 'bestsellers' (lp-best__card)
-        const isBestseller = card.classList.contains('lp-best__card');
+        // YA NO FILTRAMOS POR SECTION ID, permitimos que abra desde cualquier lado
+        const name = card.dataset.name || card.querySelector('h4')?.textContent?.trim() || 'Producto';
 
-        if (!isBestseller && (!section || section.id !== 'pizzas')) return;
-
-        const name = card.dataset.name || card.querySelector('.card-title')?.textContent?.trim() || 'Producto';
         const priceG = parseInt(card.dataset.priceG || card.dataset.price || '0', 10); // data-price-g
         const priceS = parseInt(card.dataset.priceS || '0', 10);                        // data-price-s
         const priceHalf = parseInt(card.dataset.priceHalf || '0', 10);                        // data-price-half
@@ -2788,49 +2760,20 @@
     });
 
     function updateCartFab() {
-        const btn = document.getElementById("open-cart");
-        if (!btn) return;
-
         const cart = getCart();
+        const countEl = document.getElementById("cart-count");
+        if (!countEl) return;
 
-        // Si no hay nada, ocultar y resetear textos
-        if (!Array.isArray(cart) || cart.length === 0) {
-            btn.hidden = true;
-            const countEl = document.getElementById("cart-count");
-            if (countEl) countEl.textContent = "0";
-            const totalEl = document.getElementById("cart-total-fab");
-            if (totalEl) totalEl.textContent = fmt(0);
+        // Usamos la "vista agrupada" para que cuente combos enteros, no empanadas sueltas
+        const view = typeof buildCartView === 'function' ? buildCartView(cart) : cart;
+
+        if (!Array.isArray(view) || view.length === 0) {
+            countEl.textContent = "0 items";
             return;
         }
 
-        // Cantidad total de items
-        const count = cart.reduce((s, it) => {
-            const q = Number(it.qty);
-            return s + (Number.isFinite(q) && q > 0 ? q : 1);
-        }, 0);
-
-        // Total = (basePrice + options) * qty
-        const total = cart.reduce((acc, it) => {
-            const opts = Array.isArray(it.options) ? it.options : [];
-            const extrasTotal = opts.reduce((s, o) =>
-                s + (Number(o.price) || 0) * (Number(o.qty) || 1)
-                , 0);
-
-            const unitTotal = (Number(it.basePrice) || 0) + extrasTotal;
-            const q = Number(it.qty);
-            const qty = (Number.isFinite(q) && q > 0) ? q : 1;
-
-            return acc + unitTotal * qty;
-        }, 0);
-
-        // Si por algún motivo queda en 0, también lo ocultamos
-        btn.hidden = (count <= 0);
-
-        const countEl = document.getElementById("cart-count");
-        if (countEl) countEl.textContent = String(count);
-
-        const totalEl = document.getElementById("cart-total-fab");
-        if (totalEl) totalEl.textContent = fmt(total);
+        const count = view.reduce((s, it) => s + (Number(it.qty) || 1), 0);
+        countEl.textContent = count + (count === 1 ? " item" : " items");
     }
 
 
@@ -2853,128 +2796,140 @@
     });
 
     renderCart();
-})();
 
-function openCart() {
-    const elDrawer = document.getElementById('cart-drawer');
-    const elOverlay = document.getElementById('cart-overlay');
-    if (!elDrawer || !elOverlay) return;
-
-    // reset paso 2 si existe
-    if (typeof hideStep2 === 'function') hideStep2();
-
-    elDrawer.hidden = false;
-    elOverlay.hidden = false;
-
-    if (typeof renderCart === 'function') renderCart();
-}
-
-function closeCart() {
-    const elDrawer = document.getElementById('cart-drawer');
-    const elOverlay = document.getElementById('cart-overlay');
-    if (!elDrawer || !elOverlay) return;
-
-    if (typeof hideStep2 === 'function') hideStep2();
-
-    elDrawer.hidden = true;
-    elOverlay.hidden = true;
-}
-
-function toggleHorarios() {
-    const panel = document.getElementById("horarios-accordion");
-    const btn = document.getElementById("btn-horarios");
-
-    const isOpen = panel.classList.contains("is-open");
-
-    if (isOpen) {
-        // cerrar
-        panel.style.maxHeight = "0px";
-        panel.classList.remove("is-open");
-        btn?.setAttribute("aria-expanded", "false");
-
-        // al terminar la animación, ocultar del flujo (evita espacios raros)
-        setTimeout(() => {
-            panel.hidden = true;
-        }, 280);
-    } else {
-        // abrir
-        panel.hidden = false;
-        panel.classList.add("is-open");
-        btn?.setAttribute("aria-expanded", "true");
-
-        // set max-height dinámico para animar
-        panel.style.maxHeight = panel.scrollHeight + "px";
+    function openCart() {
+        showOnly('carrito');
+        setBottomActive('carrito');
+        hideStep2();
+        if (typeof renderCart === 'function') renderCart();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-}
 
-// cerrar con ESC
-document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return;
-    const modal = document.getElementById('modal-horarios');
-    if (modal && modal.classList.contains('is-open')) toggleHorarios();
-});
+    function closeCart() {
+        // Ya no hace falta ocultar overlays, pero la función debe existir para que los botones no tiren error.
+    }
 
-function showOnly(targetId) {
-    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-    document.getElementById(targetId)?.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+    function toggleHorarios() {
+        const panel = document.getElementById("horarios-accordion");
+        const btn = document.getElementById("btn-horarios");
 
-function setBottomActive(target) {
-    // Apaga todos los botones de la nav nueva
-    document.querySelectorAll('.lp-bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
-    // Enciende el botón correcto buscando por su data-go
-    document.querySelector(`.lp-bottom-nav .nav-item[data-go="${target}"]`)?.classList.add('active');
-}
+        const isOpen = panel.classList.contains("is-open");
 
-// Botones de la nueva bottom nav (inicio/productos/promociones)
-document.querySelectorAll('.lp-bottom-nav .nav-item[data-go]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const target = btn.dataset.go;
-        if (!target) return;
+        if (isOpen) {
+            // cerrar
+            panel.style.maxHeight = "0px";
+            panel.classList.remove("is-open");
+            btn?.setAttribute("aria-expanded", "false");
 
+            // al terminar la animación, ocultar del flujo (evita espacios raros)
+            setTimeout(() => {
+                panel.hidden = true;
+            }, 280);
+        } else {
+            // abrir
+            panel.hidden = false;
+            panel.classList.add("is-open");
+            btn?.setAttribute("aria-expanded", "true");
+
+            // set max-height dinámico para animar
+            panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+    }
+
+    // cerrar con ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        const modal = document.getElementById('modal-horarios');
+        if (modal && modal.classList.contains('is-open')) toggleHorarios();
+    });
+
+    function showOnly(targetId) {
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById(targetId)?.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setBottomActive(target) {
+        document.querySelectorAll('.lp-bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
+        document.querySelector(`.lp-bottom-nav .nav-item[data-go="${target}"]`)?.classList.add('active');
+    }
+
+    // Click en la barra inferior
+    document.querySelectorAll('.lp-bottom-nav .nav-item[data-go]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const target = btn.dataset.go;
+            if (!target) return;
+
+            if (target === 'carrito') {
+                openCart();
+                return;
+            }
+
+            closeCart();
+            setBottomActive(target);
+            showOnly(target);
+        });
+    });
+
+    // Respaldo por si tocan el botón del carrito
+    document.getElementById('lp-open-cart-bottom')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        openCart();
+    });
+
+    function goToCategory(targetId) {
+        if (!targetId) return;
         closeCart();
-        setBottomActive(target);
-        showOnly(target);
+        setBottomActive('productos');
+        showOnly(targetId);
+    }
+
+    // Click en categorías del Home y Panel Productos
+    document.querySelectorAll('.lp-cat-card[data-go], .lp-cat-boceto[data-go]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            goToCategory(btn.dataset.go);
+        });
     });
-});
 
-// Botón “Mi Pedido” de la nueva nav
-document.getElementById('lp-open-cart-bottom')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    openCart();
-});
-
-// ===============================
-// CATEGORÍAS (HOME y PANEL PRODUCTOS)
-// ===============================
-
-function goToCategory(targetId) {
-    if (!targetId) return;
-    closeCart();
-    setBottomActive('productos');
-    showOnly(targetId);
-}
-
-// Escucha los clics en categorías del Home Y del panel de Productos
-document.querySelectorAll('.lp-cat-card[data-go], .lp-cat-boceto[data-go]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const targetId = btn.dataset.go; 
-        goToCategory(targetId);
+    // Botones Volver genéricos unificados
+    document.querySelectorAll('.lp-panel-back[data-back], .lp-clean-back[data-back]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const back = btn.dataset.back || 'home';
+            closeCart();
+            setBottomActive(back);
+            showOnly(back);
+        });
     });
-});
 
-// ===============================
-// BOTONES "VOLVER" de los paneles (Productos / Promociones)
-// ===============================
-document.querySelectorAll('.lp-panel-back[data-back]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const back = btn.dataset.back || 'home';
-        closeCart();
-        setBottomActive(back);
-        showOnly(back);
+    // ===============================
+    // HORARIOS (Global para el HTML)
+    // ===============================
+    window.toggleHorarios = function () {
+        const panel = document.getElementById("horarios-accordion");
+        const btn = document.getElementById("btn-horarios");
+        if (!panel) return;
+
+        const isOpen = panel.classList.contains("is-open");
+        if (isOpen) {
+            panel.style.maxHeight = "0px";
+            panel.classList.remove("is-open");
+            btn?.setAttribute("aria-expanded", "false");
+            setTimeout(() => { panel.hidden = true; }, 280);
+        } else {
+            panel.hidden = false;
+            panel.classList.add("is-open");
+            btn?.setAttribute("aria-expanded", "true");
+            panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+    };
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        const modal = document.getElementById('horarios-accordion');
+        if (modal && modal.classList.contains('is-open')) window.toggleHorarios();
     });
-});
+
+})();
 
 // ===============================
 // CTA dentro de "Promociones" (data-go="promos")
@@ -2990,13 +2945,13 @@ document.querySelectorAll('[data-go="promos"]').forEach(btn => {
 document.querySelectorAll('.lp-clean-back[data-back]').forEach(btn => {
     btn.addEventListener('click', () => {
         const back = btn.dataset.back || 'home';
-        
+
         // Usamos las mismas funciones que ya tenés en tu script
         if (typeof closeCart === 'function') closeCart();
-        
+
         // Marcamos "Inicio" o "Productos" en la barra inferior según corresponda
         if (typeof setBottomActive === 'function') setBottomActive(back);
-        
+
         // Mostramos la sección destino
         if (typeof showOnly === 'function') showOnly(back);
     });
