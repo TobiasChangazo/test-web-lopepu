@@ -5036,3 +5036,25 @@ body.modal-open {
 .cat-name {
   margin-top: 4px;
 }
+
+.section, 
+.card-horizontal.full, 
+.lp-promo-card {
+  /* Forzar renderizado por hardware */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@media (max-width: 480px) {
+  .lp-header, .lp-bottom-nav, .lp-modal, .cart-footer {
+    backdrop-filter: blur(8px) !important; /* Menos radio es más rápido */
+    -webkit-backdrop-filter: blur(8px) !important;
+    background: rgba(10, 10, 10, 0.95) !important; /* Más opaco para compensar */
+  }
+}
+
+html, body {
+  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+  scroll-behavior: smooth;
+}
