@@ -24,7 +24,7 @@
   <header class="lp-header">
     <div class="lp-header-inner">
       <div class="lp-logo">
-        <img src="img/logo/logo1.webp" alt="Lo Pepu Logo"
+        <img src="img/logo/logoo.png" alt="Lo Pepu Logo"
           style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
       </div>
 
@@ -180,8 +180,9 @@
                 </div>
               </div>
 
-              <div class="lp-promo-card" data-type="pizza" data-name="Jamón y Morrón" data-price-g="12000" data-price-s="7000"
-                data-price-half="6500" data-desc="Jamón, Morrón y Muzzarella" data-img="img/pizzaG/jamonmorron.webp">
+              <div class="lp-promo-card" data-type="pizza" data-name="Jamón y Morrón" data-price-g="12000"
+                data-price-s="7000" data-price-half="6500" data-desc="Jamón, Morrón y Muzzarella"
+                data-img="img/pizzaG/jamonmorron.webp">
                 <div class="lp-promo-img">
                   <img src="img/pizzaG/jamonmorron.webp" alt="Jamón y Morrón"
                     style="width: 100%; height: 100%; object-fit: cover; display: block;">
@@ -240,33 +241,45 @@
         <div class="cat-grid">
 
           <div class="cat-card lp-cat-boceto" data-go="pizzas" role="button" tabindex="0">
-            <span class="cat-emoji">🍕</span>
+            <div class="cat-img-wrapper">
+              <img src="img/icon-nav/pizzaicon.png" alt="Pizzas">
+            </div>
             <span class="cat-name">Pizzas</span>
           </div>
 
           <div class="cat-card lp-cat-boceto" data-go="empanadas" role="button" tabindex="0">
-            <span class="cat-emoji">🥟</span>
+            <div class="cat-img-wrapper">
+              <img src="img/icon-nav/empanadaicon.png" alt="Empanadas">
+            </div>
             <span class="cat-name">Empanadas</span>
           </div>
 
           <div class="cat-card lp-cat-boceto" data-go="tartas" role="button" tabindex="0">
-            <span class="cat-emoji">🥧</span>
-            <span class="cat-name">Tartas</span>
+            <div class="cat-img-wrapper">
+              <img src="img/icon-nav/tartaicon.png" alt="Tartas">
+            </div>
+            <span class="cat-name">Tarta</span>
           </div>
 
           <div class="cat-card lp-cat-boceto" data-go="conos" role="button" tabindex="0">
-            <span class="cat-emoji">🍦</span>
-            <span class="cat-name">Conos</span>
+            <div class="cat-img-wrapper">
+              <img src="img/icon-nav/conoicon.png" alt="Conos">
+            </div>
+            <span class="cat-name">Cono</span>
           </div>
 
           <div class="cat-card lp-cat-boceto" data-go="bebidas" role="button" tabindex="0">
-            <span class="cat-emoji">🥤</span>
+            <div class="cat-img-wrapper">
+              <img src="img/icon-nav/bebidaicon.png" alt="Bebidas">
+            </div>
             <span class="cat-name">Bebidas</span>
           </div>
 
           <div class="cat-card lp-cat-boceto" data-go="promos" role="button" tabindex="0">
-            <span class="cat-emoji">🎁</span>
-            <span class="cat-name">Combos</span>
+            <div class="cat-img-wrapper">
+              <img src="img/icon-nav/promoicon.png" alt="PROMOS">
+            </div>
+            <span class="cat-name">PROMOS</span>
           </div>
 
         </div>
@@ -403,60 +416,104 @@
       </div>
 
       <main class="lp-product-list" role="list">
-        <article class="card-horizontal full" data-type="promo" data-promo-id="2muzza" data-price="19000"
+        <article class="card-horizontal full" data-type="promo" data-promo-id="2muzza" data-price="23000"
           data-desc="2 Pizzas Muzzarella grandes" data-img="img/promos/2muzza.webp" tabindex="0" role="listitem">
           <div class="info">
             <h4>2 Muzzarellas</h4>
             <p>2 Pizzas Muzzarella grandes</p>
-            <span class="price">$19.000</span>
+            <span class="price">$23.000</span>
           </div>
           <img class="card-img" alt="Promo" src="img/promos/2muzza.webp"
             onerror="this.outerHTML='<div class=\'card-img-placeholder\'>🍕</div>'" />
         </article>
 
-        <article class="card-horizontal full" data-type="promo" data-promo-id="2esp" data-price="23000"
+        <article class="card-horizontal full" data-type="promo" data-promo-id="2esp" data-price="27000"
           data-desc="2 Pizzas Especiales a elección" data-img="img/promos/2esp.webp" tabindex="0" role="listitem">
           <div class="info">
             <h4>2 Especiales</h4>
             <p>2 Pizzas Especiales a elección</p>
-            <span class="price">$23.000</span>
+            <span class="price">$27.000</span>
           </div>
           <img class="card-img" alt="Promo" src="img/promos/2esp.webp"
             onerror="this.outerHTML='<div class=\'card-img-placeholder\'>🍕</div>'" />
         </article>
 
-        <article class="card-horizontal full" data-type="promo" data-promo-id="esp+muzza" data-price="21500"
+        <article class="card-horizontal full" data-type="promo" data-promo-id="esp+muzza" data-price="25000"
           data-desc="1 Especial + 1 Muzzarella grande" data-img="img/promos/muzza+esp.webp" tabindex="0"
           role="listitem">
           <div class="info">
-            <h4>1 Esp + 1 Muzza</h4>
+            <h4>1 Especial + 1 Muzzarella</h4>
             <p>1 Especial + 1 Muzzarella grande</p>
-            <span class="price">$21.500</span>
+            <span class="price">$25.000</span>
           </div>
           <img class="card-img" alt="Promo" src="img/promos/muzza+esp.webp"
             onerror="this.outerHTML='<div class=\'card-img-placeholder\'>🍕</div>'" />
         </article>
 
-        <article class="card-horizontal full" data-type="promo" data-promo-id="muzza+6" data-price="17500"
+        <article class="card-horizontal full" data-type="promo" data-promo-id="muzza+6" data-price="21000"
           data-desc="1 Muzzarella + 6 empanadas" data-img="img/promos/muzza+6.webp" tabindex="0" role="listitem">
           <div class="info">
-            <h4>Muzza + 1/2 Docena</h4>
+            <h4>1 Muzzarella + 1/2 Docena</h4>
             <p>1 Muzzarella + 6 empanadas</p>
-            <span class="price">$17.500</span>
+            <span class="price">$21.000</span>
           </div>
           <img class="card-img" alt="Promo" src="img/promos/muzza+6.webp"
             onerror="this.outerHTML='<div class=\'card-img-placeholder\'>🥟</div>'" />
         </article>
 
-        <article class="card-horizontal full" data-type="promo" data-promo-id="esp+12" data-price="26500"
+        <article class="card-horizontal full" data-type="promo" data-promo-id="esp+6" data-price="23000"
+          data-desc="1 Especial + 6 empanadas" data-img="img/promos/esp+6.webp" tabindex="0" role="listitem">
+          <div class="info">
+            <h4>1 Especial + 1/2 Docena</h4>
+            <p>1 Especial + 6 empanadas</p>
+            <span class="price">$23.000</span>
+          </div>
+          <img class="card-img" alt="Promo" src="img/promos/esp+6.webp"
+            onerror="this.outerHTML='<div class=\'card-img-placeholder\'>🥟</div>'" />
+        </article>
+
+        <article class="card-horizontal full" data-type="promo" data-promo-id="esp+12" data-price="29000"
+          data-desc="1 Muzzarella + 12 empanadas" data-img="img/promos/muzza+12.webp" tabindex="0" role="listitem">
+          <div class="info">
+            <h4>Muzzarella + 1 Docena</h4>
+            <p>1 Muzzarella + 12 empanadas</p>
+            <span class="price">$29.000</span>
+          </div>
+          <img class="card-img" alt="Promo" src="img/promos/muzza+12.webp"
+            onerror="this.outerHTML='<div class=\'card-img-placeholder\'>🥟</div>'" />
+        </article>
+
+        <article class="card-horizontal full" data-type="promo" data-promo-id="esp+12" data-price="31000"
           data-desc="1 Especial + 12 empanadas" data-img="img/promos/esp+12.webp" tabindex="0" role="listitem">
           <div class="info">
-            <h4>Esp + 1 Docena</h4>
+            <h4>Especial + 1 Docena</h4>
             <p>1 Especial + 12 empanadas</p>
-            <span class="price">$26.500</span>
+            <span class="price">$31.000</span>
           </div>
           <img class="card-img" alt="Promo" src="img/promos/esp+12.webp"
             onerror="this.outerHTML='<div class=\'card-img-placeholder\'>🥟</div>'" />
+        </article>
+
+        <article class="card-horizontal full" data-type="promo" data-promo-id="3muzza" data-price="33000"
+          data-desc="3 Pizzas Muzzarella grandes" data-img="img/promos/3muzza.webp" tabindex="0" role="listitem">
+          <div class="info">
+            <h4>3 Muzzarellas</h4>
+            <p>3 Pizzas Muzzarella</p>
+            <span class="price">$33.000</span>
+          </div>
+          <img class="card-img" alt="Promo" src="img/promos/3muzza.webp"
+            onerror="this.outerHTML='<div class=\'card-img-placeholder\'>🍕</div>'" />
+        </article>
+
+        <article class="card-horizontal full" data-type="promo" data-promo-id="3esp" data-price="39000"
+          data-desc="3 Pizzas Especiales a elección" data-img="img/promos/3esp.webp" tabindex="0" role="listitem">
+          <div class="info">
+            <h4>3 Especiales</h4>
+            <p>3 Pizzas Especiales a elección</p>
+            <span class="price">$39.000</span>
+          </div>
+          <img class="card-img" alt="Promo" src="img/promos/3esp.webp"
+            onerror="this.outerHTML='<div class=\'card-img-placeholder\'>🍕</div>'" />
         </article>
       </main>
     </section>
@@ -469,60 +526,418 @@
       </div>
 
       <main class="lp-product-list" role="list">
-        <article class="card-horizontal full" data-type="pizza" data-name="Muzzarella" data-price="19000" tabindex="0"
+        <article class="card-horizontal full" data-type="pizza" data-name="Muzzarella" data-price-g="12000"
+          data-price-s="6300" data-price-half="6300" data-tier="muzza" data-img="img/pizzaG/muzza.webp" tabindex="0"
           role="listitem">
           <div class="info">
             <h4>Muzzarella</h4>
-            <p>Pizza muzzarella grande</p>
-            <span class="price">$10.000</span>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$12.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$6.300</span>
+              </div>
+            </div>
           </div>
-          <img class="card-img" alt="Coca" src="img/bebida/coca_ret.webp"
-            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+          <img class="card-img" alt="Muzzarella" src="img/pizzaG/muzza.webp"
+            onerror="this.outerHTML='<div class=\'card-img-placeholder\'>🍕</div>'" />
         </article>
 
-        <article class="card-horizontal full" data-type="bebida" data-name="Sprite Retornable" data-price="3800"
-          tabindex="0" role="listitem">
+        <article class="card-horizontal full" data-type="pizza" data-name="Jamón y Morrón" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Muzzarella, jamón y morrones"
+          data-img="img/pizzaG/jamonmorron.webp" tabindex="0" role="listitem">
           <div class="info">
-            <h4>Sprite Retornable 2L</h4>
-            <p>Botella retornable</p>
-            <span class="price">$3.800</span>
+            <h4>Jamón y Morrón</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
           </div>
-          <img class="card-img" alt="Sprite" src="img/bebida/sprite_ret.webp"
-            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+          <img class="card-img" alt="Jamón y Morrón" src="img/pizzaG/jamonmorron.webp" />
         </article>
 
-        <article class="card-horizontal full" data-type="bebida" data-name="Coca Cola 500Ml" data-price="2000"
-          tabindex="0" role="listitem">
+        <article class="card-horizontal full" data-type="pizza" data-name="Jamón Solo" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Jamón y Muzzarella"
+          data-img="img/pizzaG/jamonsolo.webp" tabindex="0">
           <div class="info">
-            <h4>Coca Cola 500Ml</h4>
-            <p>Botella personal</p>
-            <span class="price">$2.000</span>
+            <h4>Jamón Solo</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
           </div>
-          <img class="card-img" alt="Coca Chica" src="img/bebida/coca_500ml.webp"
-            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+          <img class="card-img" src="img/pizzaG/jamonsolo.webp"
+            onerror="this.outerHTML='<div class=\'card-img-placeholder\'>🍕</div>'">
         </article>
 
-        <article class="card-horizontal full" data-type="bebida" data-name="Brahma 1L Retornable" data-price="3700"
-          tabindex="0" role="listitem">
+        <article class="card-horizontal full" data-type="pizza" data-name="Jamón y Huevo" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Jamón, Huevo y Muzzarella"
+          data-img="img/pizzaG/jyhuevo.webp" tabindex="0">
           <div class="info">
-            <h4>Brahma 1L Retornable</h4>
-            <p>Cerveza fría</p>
-            <span class="price">$3.700</span>
+            <h4>Jamón y Huevo</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
           </div>
-          <img class="card-img" alt="Brahma" src="img/bebida/brahma.webp"
-            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🍺</div>'" />
+          <img class="card-img" src="img/pizzaG/jyhuevo.webp">
         </article>
 
-        <article class="card-horizontal full" data-type="bebida" data-name="Levite Naranja 1.5L" data-price="2200"
-          tabindex="0" role="listitem">
+        <article class="card-horizontal full" data-type="pizza" data-name="Cebolla y Albahaca" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Cebolla, Albahaca y Muzzarella"
+          data-img="img/pizzaG/cebollayalbahaca.webp" tabindex="0">
           <div class="info">
-            <h4>Levite Naranja 1.5L</h4>
-            <p>Agua saborizada</p>
-            <span class="price">$2.200</span>
+            <h4>Cebolla y Albahaca</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
           </div>
-          <img class="card-img" alt="Levite" src="img/bebida/levite.webp"
-            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+          <img class="card-img" src="img/pizzaG/cebollayalbahaca.webp">
         </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Doble Muzzarella" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Doble Muzzarella"
+          data-img="img/pizzaG/doblemuzza.webp" tabindex="0">
+          <div class="info">
+            <h4>Doble Muzzarella</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/doblemuzza.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Napolitana" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Jamón, Tomate y Muzzarella (Sin Ajo)"
+          data-img="img/pizzaG/napo.webp" tabindex="0">
+          <div class="info">
+            <h4>Napolitana</h4>
+            <p class="card-desc">Jamon y Tomate (Sin Ajo)</p>
+
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/napo.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Fugazzeta" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Cebolla y Muzzarella"
+          data-img="img/pizzaG/cebollap.webp" tabindex="0">
+          <div class="info">
+            <h4>Fugazzeta</h4>
+            <p class="card-desc">Cebolla y Muzzarella</p>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/cebollap.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Cebolla y Tomate" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Cebolla, Tomate y Muzzarella"
+          data-img="img/pizzaG/cebollaytomate.webp" tabindex="0">
+          <div class="info">
+            <h4>Cebolla y Tomate</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/cebollaytomate.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Albahaca" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Albahaca y Muzzarella"
+          data-img="img/pizzaG/albahaca.webp" tabindex="0">
+          <div class="info">
+            <h4>Albahaca</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/albahaca.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Capresse" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Albahaca, Tomate y Muzzarella"
+          data-img="img/pizzaG/capresse.webp" tabindex="0">
+          <div class="info">
+            <h4>Capresse</h4>
+            <p class="card-desc">Albahaca, Tomate y Muzzarella</p>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/capresse.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Calabresa" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Longaniza y Muzzarella"
+          data-img="img/pizzaG/calabreza.webp" tabindex="0">
+          <div class="info">
+            <h4>Calabresa</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/calabreza.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Papas Pay" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Papas Pay y Muzzarella"
+          data-img="img/pizzaG/papaspay.webp" tabindex="0">
+          <div class="info">
+            <h4>Papas Pay</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/papaspay.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Choclo" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Choclo y Muzzarella"
+          data-img="img/pizzaG/choclo.webp" tabindex="0">
+          <div class="info">
+            <h4>Choclo</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/choclo.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Huevo Solo" data-price-g="14000"
+          data-price-s="8000" data-price-half="7300" data-tier="esp" data-desc="Huevo y Muzzarella"
+          data-img="img/pizzaG/huevosolo.webp" tabindex="0">
+          <div class="info">
+            <h4>Huevo Solo</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$14.000</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.000</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/huevosolo.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Provolone" data-price-g="15500"
+          data-price-s="8600" data-price-half="8100" data-tier="super" data-desc="Provolone y Muzzarella"
+          data-img="img/pizzaG/provolone.webp" tabindex="0">
+          <div class="info">
+            <h4>Provolone</h4>
+
+            <p class="card-desc">Provolone y Muzzarella</p>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$15.500</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.600</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/provolone.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Ananá" data-price-g="15500"
+          data-price-s="8600" data-price-half="8100" data-tier="super" data-desc="Ananá y Muzzarella"
+          data-img="img/pizzaG/anana.webp" tabindex="0">
+          <div class="info">
+            <h4>Ananá</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$15.500</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.600</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/anana.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Roquefort" data-price-g="15500"
+          data-price-s="8600" data-price-half="8100" data-tier="super" data-desc="Roquefort y Muzzarella"
+          data-img="img/pizzaG/roquefortt.webp" tabindex="0">
+          <div class="info">
+            <h4>Roquefort</h4>
+            <p class="card-desc">Roquefort y Muzzarella</p>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$15.500</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.600</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/roquefortt.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Anchoa" data-price-g="15500"
+          data-price-s="8600" data-price-half="8100" data-tier="super" data-desc="Anchoa y Muzzarella"
+          data-img="img/pizzaG/anchoa.webp" tabindex="0">
+          <div class="info">
+            <h4>Anchoa</h4>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$15.500</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.600</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/anchoa.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="3 Quesos" data-price-g="15500"
+          data-price-s="8600" data-price-half="8100" data-tier="super" data-desc="Roquefort, Provolone y Muzzarella"
+          data-img="img/pizzaG/3quesos.webp" tabindex="0">
+          <div class="info">
+            <h4>3 Quesos</h4>
+            <p class="card-desc">Roquefort, Provolone y Muzzarella</p>
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$15.500</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.600</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" src="img/pizzaG/3quesos.webp">
+        </article>
+
+        <article class="card-horizontal full" data-type="pizza" data-name="Palmito" data-price-g="15500"
+          data-price-s="8600" data-price-half="8100" data-tier="super" data-img="img/pizzaG/palmito.webp" tabindex="0"
+          role="listitem">
+          <div class="info">
+            <h4>Palmito</h4>
+
+            <p class="card-desc">Palmito con Salsa Golf</p>
+
+            <div class="precio-tags">
+              <div class="precio-tag">
+                <span class="precio-label">Grande</span>
+                <span class="precio-monto">$15.500</span>
+              </div>
+              <div class="precio-tag">
+                <span class="precio-label">Chica</span>
+                <span class="precio-monto">$8.600</span>
+              </div>
+            </div>
+          </div>
+          <img class="card-img" alt="Palmito" src="img/pizzaG/palmito.webp" />
+        </article>
+
       </main>
     </section>
 
@@ -542,10 +957,9 @@
         </div>
 
         <article class="card-horizontal full" data-type="empanada" data-name="Carne" data-price="1500"
-          data-desc="Empanada de carne tradicional" tabindex="0" role="listitem">
+          data-img="img/emp/carne.webp" tabindex="0" role="listitem">
           <div class="info">
             <h4>Carne</h4>
-            <p>Empanada de carne tradicional</p>
             <span class="price">$1.500</span>
           </div>
           <img class="card-img" alt="Carne" src="img/emp/carne.webp"
@@ -553,10 +967,9 @@
         </article>
 
         <article class="card-horizontal full" data-type="empanada" data-name="Jamón y Queso" data-price="1500"
-          data-desc="Empanada de Jamón y Queso" tabindex="0" role="listitem">
+          data-img="img/emp/jyq.webp" tabindex="0" role="listitem">
           <div class="info">
             <h4>Jamón y Queso</h4>
-            <p>Empanada de Jamón y Queso</p>
             <span class="price">$1.500</span>
           </div>
           <img class="card-img" alt="JyQ" src="img/emp/jyq.webp"
@@ -564,10 +977,9 @@
         </article>
 
         <article class="card-horizontal full" data-type="empanada" data-name="Pollo" data-price="1500"
-          data-desc="Empanada de Pollo" tabindex="0" role="listitem">
+          data-img="img/emp/pollo.webp" tabindex="0" role="listitem">
           <div class="info">
             <h4>Pollo</h4>
-            <p>Empanada de Pollo</p>
             <span class="price">$1.500</span>
           </div>
           <img class="card-img" alt="Pollo" src="img/emp/pollo.webp"
@@ -575,10 +987,9 @@
         </article>
 
         <article class="card-horizontal full" data-type="empanada" data-name="Cebolla y Queso" data-price="1500"
-          data-desc="Empanada de Cebolla y Queso" tabindex="0" role="listitem">
+          data-img="img/emp/cebolla.webp" tabindex="0" role="listitem">
           <div class="info">
             <h4>Cebolla y Queso</h4>
-            <p>Empanada de Cebolla y Queso</p>
             <span class="price">$1.500</span>
           </div>
           <img class="card-img" alt="Cebolla" src="img/emp/cebolla.webp"
@@ -591,12 +1002,12 @@
     <section class="section" id="tartas">
       <div class="lp-clean-header">
         <button class="lp-clean-back" type="button" data-back="productos" aria-label="Volver">‹</button>
-        <h2 class="lp-clean-title">TARTAS</h2>
+        <h2 class="lp-clean-title">TARTA</h2>
       </div>
 
       <main class="lp-product-list" role="list">
         <article class="card-horizontal full" data-type="tarta" data-name="Tarta Jamón y Queso" data-price="14000"
-          data-desc="Jamón, huevo y muzzarella" tabindex="0" role="listitem">
+          data-desc="Jamón, huevo y muzzarella" data-img="img/emp/tarta.webp" tabindex="0" role="listitem">
           <div class="info">
             <h4>Jamón y Queso</h4>
             <p>Jamón, Huevo y Muzzarella</p>
@@ -616,60 +1027,140 @@
       </div>
 
       <main class="lp-product-list" role="list">
-        <article class="card-horizontal full" data-type="bebida" data-name="Coca Cola Retornable" data-price="3800"
-          tabindex="0" role="listitem">
+        <article class="card-horizontal full" data-type="bebida" data-name="Coca Cola 2L" data-price="3600"
+          data-img="img/bebida/coca_ret.webp" data-desc="Botella retornable" tabindex="0" role="listitem">
           <div class="info">
-            <h4>Coca Cola Retornable 2L</h4>
+            <h4>Coca Cola 2L</h4>
             <p>Botella retornable</p>
-            <span class="price">$3.800</span>
+            <span class="price">$3.600</span>
           </div>
-          <img class="card-img" alt="Coca" src="img/bebida/coca_ret.webp"
+          <img class="card-img" alt="Coca Cola 2L" src="img/bebida/coca_ret.webp"
             onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
         </article>
 
-        <article class="card-horizontal full" data-type="bebida" data-name="Sprite Retornable" data-price="3800"
-          tabindex="0" role="listitem">
+        <article class="card-horizontal full" data-type="bebida" data-name="Sprite 2L" data-price="3600"
+          data-img="img/bebida/sprite_ret.webp" data-desc="Botella retornable" tabindex="0" role="listitem">
           <div class="info">
-            <h4>Sprite Retornable 2L</h4>
+            <h4>Sprite 2L</h4>
             <p>Botella retornable</p>
-            <span class="price">$3.800</span>
+            <span class="price">$3.600</span>
           </div>
-          <img class="card-img" alt="Sprite" src="img/bebida/sprite_ret.webp"
+          <img class="card-img" alt="Sprite 2L" src="img/bebida/sprite_ret.webp"
             onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
         </article>
 
-        <article class="card-horizontal full" data-type="bebida" data-name="Coca Cola 500Ml" data-price="2000"
-          tabindex="0" role="listitem">
+        <article class="card-horizontal full" data-type="bebida" data-name="Coca Cola Zero 2L" data-price="3600"
+          data-img="img/bebida/coca_ret_sa.webp" data-desc="Botella retornable" tabindex="0" role="listitem">
           <div class="info">
-            <h4>Coca Cola 500Ml</h4>
-            <p>Botella personal</p>
-            <span class="price">$2.000</span>
+            <h4>Coca Cola Zero 2L</h4>
+            <p>Botella retornable</p>
+            <span class="price">$3.600</span>
           </div>
-          <img class="card-img" alt="Coca Chica" src="img/bebida/coca_500ml.webp"
+          <img class="card-img" alt="Coca Cola Zero 2L" src="img/bebida/coca_ret_sa.webp"
             onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
         </article>
 
-        <article class="card-horizontal full" data-type="bebida" data-name="Brahma 1L Retornable" data-price="3700"
-          tabindex="0" role="listitem">
+        <article class="card-horizontal full" data-type="bebida" data-name="Brahma 1L Retornable" data-price="4500"
+          data-img="img/bebida/brahma.webp" data-desc="Botella retornable" tabindex="0" role="listitem">
           <div class="info">
-            <h4>Brahma 1L Retornable</h4>
-            <p>Cerveza fría</p>
-            <span class="price">$3.700</span>
+            <h4>Brahma 1L</h4>
+            <p>Botella retornable</p>
+            <span class="price">$4.500</span>
           </div>
           <img class="card-img" alt="Brahma" src="img/bebida/brahma.webp"
             onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🍺</div>'" />
         </article>
 
         <article class="card-horizontal full" data-type="bebida" data-name="Levite Naranja 1.5L" data-price="2200"
-          tabindex="0" role="listitem">
+          data-img="img/bebida/levite.webp" tabindex="0" role="listitem">
           <div class="info">
             <h4>Levite Naranja 1.5L</h4>
-            <p>Agua saborizada</p>
             <span class="price">$2.200</span>
           </div>
-          <img class="card-img" alt="Levite" src="img/bebida/levite.webp"
+          <img class="card-img" alt="Levite 1,5L" src="img/bebida/levite.webp"
             onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
         </article>
+
+        <article class="card-horizontal full" data-type="bebida" data-name="Crush Lima 2L" data-price="2500"
+          tabindex="0" data-img="img/bebida/crush.webp" role="listitem">
+          <div class="info">
+            <h4>Crush Lima 2L</h4>
+            <span class="price">$2.500</span>
+          </div>
+          <img class="card-img" alt="Crush Lima 2L" src="img/bebida/crush.webp"
+            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+        </article>
+
+        <article class="card-horizontal full" data-type="bebida" data-name="Coca Cola 2,25L" data-price="5800"
+          tabindex="0" data-img="img/bebida/coca_2,25.webp" role="listitem">
+          <div class="info">
+            <h4>Coca Cola Descartable 2,25L</h4>
+            <span class="price">$5.800</span>
+          </div>
+          <img class="card-img" alt="Coca Cola Descartable 2,25L" src="img/bebida/coca_2,25.webp"
+            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+        </article>
+
+        <article class="card-horizontal full" data-type="bebida" data-name="Coca Cola 1,75L" data-price="4700"
+          tabindex="0" data-img="img/bebida/coca_1,75.webp" role="listitem">
+          <div class="info">
+            <h4>Coca Cola Descartable 1,75L</h4>
+            <span class="price">$4.700</span>
+          </div>
+          <img class="card-img" alt="Coca Cola Descartable 1,75L" src="img/bebida/coca_1,75.webp"
+            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+        </article>
+
+        <article class="card-horizontal full" data-type="bebida" data-name="Sprite 1,75L" data-price="4700" tabindex="0"
+          data-img="img/bebida/sprite_1,75.webp" role="listitem">
+          <div class="info">
+            <h4>Sprite Descartable 1,75L</h4>
+            <span class="price">$4.700</span>
+          </div>
+          <img class="card-img" alt="Sprite Descartable 1,75L" src="img/bebida/sprite_1,75.webp"
+            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+        </article>
+
+        <article class="card-horizontal full" data-type="bebida" data-name="Lata Brahma 500Ml" data-price="2500"
+          tabindex="0" data-img="img/bebida/brahma_lata.webp" role="listitem">
+          <div class="info">
+            <h4>Lata Brahma 500Ml</h4>
+            <span class="price">$2.500</span>
+          </div>
+          <img class="card-img" alt="Brahma lata" src="img/bebida/brahma_lata.webp"
+            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+        </article>
+
+        <article class="card-horizontal full" data-type="bebida" data-name="Coca Cola 600Ml" data-price="2200"
+          tabindex="0" data-img="img/bebida/coca_500ml.webp" role="listitem">
+          <div class="info">
+            <h4>Coca Cola 600Ml</h4>
+            <span class="price">$2.200</span>
+          </div>
+          <img class="card-img" alt="Coca Cola 600Ml" src="img/bebida/coca_500ml.webp"
+            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+        </article>
+
+        <article class="card-horizontal full" data-type="bebida" data-name="Sprite Zero 500Ml" data-price="2200"
+          tabindex="0" data-img="img/bebida/sprite zero 500ml.webp" role="listitem">
+          <div class="info">
+            <h4>Sprite Zero 500Ml</h4>
+            <span class="price">$2.200</span>
+          </div>
+          <img class="card-img" alt="Sprite Zero 500Ml" src="img/bebida/sprite zero 500ml.webp"
+            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+        </article>
+
+        <article class="card-horizontal full" data-type="bebida" data-name="Agua 500Ml" data-price="1300" tabindex="0"
+          data-img="img/bebida/agua_500.webp" role="listitem">
+          <div class="info">
+            <h4>Agua 500Ml</h4>
+            <span class="price">$1.300</span>
+          </div>
+          <img class="card-img" alt="Agua 500Ml" src="img/bebida/agua_500.webp"
+            onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🥤</div>'" />
+        </article>
+
       </main>
     </section>
 
@@ -681,14 +1172,14 @@
       </div>
 
       <main class="lp-product-list" role="list">
-        <article class="card-horizontal full" data-type="cono" data-name="Cono Pizza Tradicional" data-price="5500"
+        <article class="card-horizontal full" data-type="cono" data-name="Cono Pizza Tradicional" data-price="6500"
           data-desc="Muzzarella, Salsa, Aceituna + Hasta (2) Variedades"
           data-flavors='["Jamón","Muzzarella","Morrón","Huevo","Cebolla","Choclo","Tomate","Albahaca","Papas Pay"]'
           tabindex="0" role="listitem">
           <div class="info">
-            <h4>Cono Tradicional</h4>
+            <h4>Cono Pizza</h4>
             <p>Muzzarella, Salsa, Aceituna + Hasta (2) Variedades</p>
-            <span class="price">$5.500</span>
+            <span class="price">$6.500</span>
           </div>
           <img class="card-img" alt="Cono" src="img/cono/cono1.webp"
             onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🍦</div>'" />
@@ -1009,10 +1500,10 @@
 
     <div class="cart-footer cd-summary cd-actions" id="cart-footer-step1">
       <div class="cart-total-row">
-        <span class="cart-total-label">Total estimado</span>
+        <span class="cart-total-label">Total</span>
         <span class="cart-total-amount" id="cart-total">0</span>
       </div>
-      <button id="cart-continue" class="cart-confirm-btn">Continuar con el pedido</button>
+      <button id="cart-continue" class="cart-confirm-btn">Continuar</button>
     </div>
 
     <div class="cart-footer cd-step2__actions" id="cart-footer-step2" style="display:none;">

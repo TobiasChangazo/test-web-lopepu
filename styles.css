@@ -2138,13 +2138,29 @@ body.modal-open {
 }
 
 .emp-warn {
-  margin-top: 8px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 107, 107, .35);
-  background: rgba(255, 107, 107, .10);
-  font-size: 13px;
-  line-height: 1.25;
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    /* Un rojo más intenso para el borde y fondo suave pero definido */
+    border: 1px solid #f44336; 
+    background-color: rgba(244, 67, 54, 0.15); 
+    
+    /* Texto en color rojo sólido para máximo contraste */
+    color: #ff5252; 
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+    
+    /* Animación sutil para llamar la atención cuando aparece */
+    animation: shake 0.4s ease-in-out;
+}
+
+/* Animación opcional de "sacudida" para cuando falta completar */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
 }
 
 #promo-add:disabled {
@@ -2873,18 +2889,15 @@ body::before {
   gap: 12px;
 }
 
-/* Logo circular con borde amarillo */
 .lp-logo {
-  width: 42px;
-  height: 42px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #2a1e00, #0d0900);
-  border: 1.5px solid var(--yellow);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 0 16px rgba(255, 193, 7, 0.20), inset 0 0 8px rgba(255, 193, 7, 0.06);
+  box-shadow: none; 
 }
 
 .lp-logo span {
@@ -2899,9 +2912,9 @@ body::before {
 .lp-brand {
   flex: 1;
   text-align: center;
-  font-family: var(--font-serif);
+  font-family: Garamond, serif;
   font-weight: 500;
-  font-size: 1.55rem;
+  font-size: 1.70rem;
   letter-spacing: 7px;
   text-transform: uppercase;
   color: var(--white);
@@ -4582,18 +4595,18 @@ body::before {
   text-align: center;
 }
 
-/* ─── Footer Fijo Inferior ─── */
 .cart-footer {
   position: fixed !important;
   bottom: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
-  left: 0;
-  width: 100%;
+  left: 50% !important;        /* Lo centra respecto a la pantalla */
+  transform: translateX(-50%); /* Lo centra exactamente */
+  width: 100%;                 /* Ocupa el 100% de su contenedor máximo */
+  max-width: 430px;            /* LIMITA EL ANCHO igual que tu body */
   padding: 16px 20px;
   background: rgba(10, 10, 10, 0.98);
   backdrop-filter: blur(12px);
   border-top: 1px solid rgba(255, 193, 7, 0.15);
   z-index: 9999 !important;
-  /* Siempre arriba de todo */
   box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
@@ -4995,4 +5008,31 @@ body.modal-open {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   border: none;
   cursor: pointer;
+}
+
+/* Contenedor para la imagen que reemplaza al emoji */
+.cat-img-wrapper {
+  width: 60px; /* Ajusta este tamaño según prefieras */
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cat-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Evita que la imagen se deforme o se salga */
+}
+
+/* Animación al pasar el mouse (similar a la que tenías con el emoji) */
+.cat-card:hover .cat-img-wrapper,
+.cat-card:active .cat-img-wrapper {
+  transform: scale(1.15) rotate(5deg);
+}
+
+/* Asegurar que el nombre no se pegue a la imagen */
+.cat-name {
+  margin-top: 4px;
 }
