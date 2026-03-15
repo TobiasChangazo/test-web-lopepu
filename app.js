@@ -1,51 +1,44 @@
 (() => {
     function updateStatus() {
-        const pill = document.getElementById('status-pill');
-        const texto = document.getElementById('estado-texto-nuevo');
-        if (!pill || !texto) return;
+        const pill = document.getElementById('estado-local'); // ID correcto según tu HTML
+        if (!pill) return;
 
         const ahora = new Date();
         const dia = ahora.getDay(); // 0 domingo, 1 lunes...
         const horas = ahora.getHours();
         const minutos = ahora.getMinutes();
-
-        // Convertimos todo a minutos totales transcurridos en el día para comparar fácil
-        // Ejemplo: 19:30 = (19 * 60) + 30 = 1170 minutos
         const tiempoActual = (horas * 60) + minutos;
 
         // Definimos los puntos de corte en minutos
-        const min1900 = 19 * 60;          // 1140 min
-        const min1930 = (19 * 60) + 30;   // 1170 min
-        const min2230 = (22 * 60) + 30;   // 1350 min
-        const min2300 = 23 * 60;          // 1380 min
+        const min1900 = 19 * 60;          // 19:00 hs
+        const min1930 = (19 * 60) + 30;   // 19:30 hs
+        const min2230 = (22 * 60) + 30;   // 22:30 hs
+        const min2300 = 23 * 60;          // 23:00 hs
 
-        // 1. Validar si es Lunes (Día 1)
+        // 1. Validar si es Lunes (Cerrado todo el día)
         if (dia === 1) {
-            pill.className = 'lp-pill pill-closed';
-            texto.innerText = 'Cerrado';
+            pill.className = 'estado-local cerrado';
+            pill.innerText = 'CERRADO';
             return;
         }
 
         // 2. Lógica de horarios (Martes a Domingo)
         if (tiempoActual >= min1900 && tiempoActual < min1930) {
             // 19:00 a 19:29
-            pill.className = 'lp-pill pill-warning'; // Usamos warning para el color naranja/amarillo
-            texto.innerText = 'Abre Pronto';
-
-        } else if (tiempoActual >= min1930 && tiempoActual < min2230) {
-            // 19:30 a 22:29
-            pill.className = 'lp-pill pill-open';
-            texto.innerText = 'Abierto';
-
-        } else if (tiempoActual >= min2230 && tiempoActual < min2300) {
-            // 22:30 a 22:59
-            pill.className = 'lp-pill pill-warning';
-            texto.innerText = 'Cierra Pronto';
-
+            pill.className = 'estado-local abriendo';
+            pill.innerText = 'ABRE PRONTO';
+        } else if (tiempoActual >= min1930 && tiempoActual <= min2230) {
+            // 19:30 a 22:30 (Incluimos el minuto 30)
+            pill.className = 'estado-local abierto';
+            pill.innerText = 'ABIERTO';
+        } else if (tiempoActual > min2230 && tiempoActual < min2300) {
+            // 22:31 a 22:59
+            pill.className = 'estado-local cerrando';
+            pill.innerText = 'CIERRA PRONTO';
         } else {
-            // Cualquier otro horario
-            pill.className = 'lp-pill pill-closed';
-            texto.innerText = 'Cerrado';
+            // De 23:00 a 18:59
+            pill.className = 'estado-local cerrado';
+            pill.innerText = 'CERRADO';
         }
     }
 
@@ -147,8 +140,8 @@
             if (e.key === 'Escape' && sobreNosotros?.classList.contains('visible')) cerrarSobre();
         });
 
-        actualizarEstado();
-        setInterval(actualizarEstado, 60_000);
+        updateStatus();
+        setInterval(updateStatus, 60_000);
 
         const tipoPizza = document.getElementById("tipo-pizza");
         const gusto1 = document.getElementById("gusto1");
@@ -2956,3 +2949,48 @@ document.querySelectorAll('.lp-clean-back[data-back]').forEach(btn => {
         if (typeof showOnly === 'function') showOnly(back);
     });
 });
+
+const initDniSlider = () => {
+    const wrapper = document.querySelector('.dni-slider-wrapper');
+    const dots = document.querySelectorAll('.dni-dot');
+    if (!wrapper || dots.length === 0) return;
+
+    let currentIndex = 0;
+    let autoSlideInterval;
+
+    function updateSlider(index) {
+        currentIndex = index;
+        wrapper.style.transform = `translateX(-${index * 100}%)`;
+        
+        // Actualizar estado de los dots
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+    }
+
+    function startAutoSlide() {
+        stopAutoSlide(); // Limpiar si ya existe uno
+        autoSlideInterval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % dots.length;
+            updateSlider(currentIndex);
+        }, 5000);
+    }
+
+    function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+    }
+
+    // Evento Click en los Dots
+    dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+            updateSlider(i);
+            startAutoSlide(); // Reinicia el tiempo para que no salte rápido tras clickear
+        });
+    });
+
+    // Iniciar el movimiento automático
+    startAutoSlide();
+};
+
+// Asegúrate de llamarla
+initDniSlider();

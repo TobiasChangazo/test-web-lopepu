@@ -1601,17 +1601,21 @@ body.modal-open {
 }
 
 .lp-modal {
-  position: fixed; /* Esto hace que el modal no se mueva al scrollear */
+  position: fixed;
+  /* Esto hace que el modal no se mueva al scrollear */
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Lo centra perfectamente */
+  transform: translate(-50%, -50%);
+  /* Lo centra perfectamente */
   width: min(420px, 94vw);
   max-height: 90vh;
-  overflow-y: auto; /* Permite scroll dentro del modal si es largo */
+  overflow-y: auto;
+  /* Permite scroll dentro del modal si es largo */
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-  z-index: 10001; /* Debe ser mayor al overlay y al header */
+  z-index: 10001;
+  /* Debe ser mayor al overlay y al header */
   display: block;
 }
 
@@ -2138,29 +2142,39 @@ body.modal-open {
 }
 
 .emp-warn {
-    margin-top: 12px;
-    padding: 12px 16px;
-    border-radius: 12px;
-    /* Un rojo más intenso para el borde y fondo suave pero definido */
-    border: 1px solid #f44336; 
-    background-color: rgba(244, 67, 54, 0.15); 
-    
-    /* Texto en color rojo sólido para máximo contraste */
-    color: #ff5252; 
-    font-size: 0.85rem;
-    font-weight: 700;
-    line-height: 1.4;
-    text-align: center;
-    
-    /* Animación sutil para llamar la atención cuando aparece */
-    animation: shake 0.4s ease-in-out;
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  /* Un rojo más intenso para el borde y fondo suave pero definido */
+  border: 1px solid #f44336;
+  background-color: rgba(244, 67, 54, 0.15);
+
+  /* Texto en color rojo sólido para máximo contraste */
+  color: #ff5252;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+
+  /* Animación sutil para llamar la atención cuando aparece */
+  animation: shake 0.4s ease-in-out;
 }
 
 /* Animación opcional de "sacudida" para cuando falta completar */
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-4px); }
-    75% { transform: translateX(4px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-4px);
+  }
+
+  75% {
+    transform: translateX(4px);
+  }
 }
 
 #promo-add:disabled {
@@ -2769,22 +2783,17 @@ body.lp-modal-open {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
-  /* Negrita fuerte */
   font-size: 1.4rem;
   letter-spacing: 3px;
-  /* Espaciado elegante */
   text-transform: uppercase;
-
   color: #FFC107;
-  /* Amarillo vibrante */
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-
-  /* Asegura que si el título es muy largo no choque con el botón */
-  max-width: 70%;
   text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  
+  /* Quitamos las restricciones para que el texto no se corte */
+  max-width: 100%; 
+  white-space: normal; 
+  overflow: visible;
 }
 
 @media (max-width: 480px) {
@@ -2798,13 +2807,22 @@ body.lp-modal-open {
     overflow-x: hidden;
   }
 
-  /* TÍTULO */
   .lp-clean-title {
-    font-size: 1.5rem !important;
-    max-width: 80%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 1.1rem !important;
+    /* Achicamos la fuente */
+    letter-spacing: 3px !important;
+    /* Reducimos el espacio entre letras para ganar ancho */
+    white-space: normal;
+    /* Permitimos que baje a dos líneas si es extremadamente largo */
+    line-height: 1.2;
+  }
+
+  .lp-clean-back {
+    left: 8px;
+    /* Acercamos un poquito más el botón al borde para ganar espacio central */
+    width: 32px;
+    /* Lo hacemos ligeramente más pequeño */
+    height: 32px;
   }
 
 }
@@ -2897,7 +2915,7 @@ body::before {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: none; 
+  box-shadow: none;
 }
 
 .lp-logo span {
@@ -2981,7 +2999,8 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 13px 16px;
+  padding: 13px 45px;
+  gap: 5px;
   margin: 14px 14px 10px;
   background: rgba(28, 25, 10, 0.90);
   backdrop-filter: var(--glass-blur);
@@ -3783,6 +3802,13 @@ body::before {
   color: #4CAF50;
 }
 
+.estado-local.abriendo,
+.estado-local.cerrando {
+  background: rgba(255, 193, 7, 0.12);
+  border-color: rgba(255, 193, 7, 0.40);
+  color: #FFC107;
+}
+
 @keyframes pulse-dot {
 
   0%,
@@ -4361,7 +4387,7 @@ body::before {
 
 /* 1. EL COLCHÓN DEL CARRITO REDUCIDO A SU TAMAÑO IDEAL */
 .cart-wrapper {
-  padding-bottom: 140px !important; 
+  padding-bottom: 140px !important;
 }
 
 /* EL COLCHÓN EXACTO PARA PRODUCTOS (Sin espacios enormes) */
@@ -4598,10 +4624,14 @@ body::before {
 .cart-footer {
   position: fixed !important;
   bottom: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
-  left: 50% !important;        /* Lo centra respecto a la pantalla */
-  transform: translateX(-50%); /* Lo centra exactamente */
-  width: 100%;                 /* Ocupa el 100% de su contenedor máximo */
-  max-width: 430px;            /* LIMITA EL ANCHO igual que tu body */
+  left: 50% !important;
+  /* Lo centra respecto a la pantalla */
+  transform: translateX(-50%);
+  /* Lo centra exactamente */
+  width: 100%;
+  /* Ocupa el 100% de su contenedor máximo */
+  max-width: 430px;
+  /* LIMITA EL ANCHO igual que tu body */
   padding: 16px 20px;
   background: rgba(10, 10, 10, 0.98);
   backdrop-filter: blur(12px);
@@ -4756,48 +4786,68 @@ body::before {
    TÍTULO DEL CARRITO — con X
 ═══════════════════════════════════════════ */
 .cart-title-bar {
-  position: relative; z-index: 5;
-  display: flex; align-items: center; justify-content: space-between;
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 18px 16px 4px;
-  animation: fadeUp 0.35s cubic-bezier(0.22,1,0.36,1) both;
+  animation: fadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .cart-title {
-  font-family: var(--font); font-weight: 900;
-  font-size: 1.3rem; color: var(--white);
+  font-family: var(--font);
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: var(--white);
   letter-spacing: 0.5px;
 }
 
 /* Contador de items en el título */
 .cart-count-badge {
-  display: inline-flex; align-items: center; justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: var(--yellow-dim);
-  border: 1px solid rgba(255,193,7,0.30);
+  border: 1px solid rgba(255, 193, 7, 0.30);
   border-radius: 999px;
   padding: 2px 9px;
-  font-size: 0.70rem; font-weight: 800;
-  color: var(--yellow); margin-left: 8px;
+  font-size: 0.70rem;
+  font-weight: 800;
+  color: var(--yellow);
+  margin-left: 8px;
   letter-spacing: 0.3px;
 }
 
 /* Botón cerrar (X) */
 .cart-close-btn {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.14);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; color: rgba(255,255,255,0.65);
-  font-size: 1rem; font-weight: 700;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 1rem;
+  font-weight: 700;
   transition: all 0.18s ease;
-  outline: none; -webkit-tap-highlight-color: transparent;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
   flex-shrink: 0;
 }
+
 .cart-close-btn:hover {
   background: var(--red-dim);
-  border-color: rgba(244,67,54,0.40);
+  border-color: rgba(244, 67, 54, 0.40);
   color: var(--red);
 }
-.cart-close-btn:active { transform: scale(0.90); }
+
+.cart-close-btn:active {
+  transform: scale(0.90);
+}
 
 /* Evita que el fondo se mueva cuando el modal está abierto */
 body.modal-open {
@@ -4831,9 +4881,9 @@ body.modal-open {
   padding-bottom: 20px;
 }
 
-#item-modal[hidden], 
-#item-modal-overlay[hidden] { 
-  display: none !important; 
+#item-modal[hidden],
+#item-modal-overlay[hidden] {
+  display: none !important;
 }
 
 /* 2. CABECERA E IMAGEN (HERO) */
@@ -4846,12 +4896,12 @@ body.modal-open {
   overflow: hidden;
 }
 
-#item-modal .im-hero img{
+#item-modal .im-hero img {
   width: 100%;
   height: 100%;
-  object-fit: contain;  
+  object-fit: contain;
   display: block;
-  border-radius: 0;     
+  border-radius: 0;
 }
 
 #item-modal .im-close {
@@ -4928,7 +4978,7 @@ body.modal-open {
   border-radius: 50%;
   border: none;
   background: #ffffff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   font-size: 1.2rem;
   font-weight: 700;
   color: #333;
@@ -4976,13 +5026,13 @@ body.modal-open {
   transition: all 0.2s ease;
 }
 
-.im-opt input:checked + .im-opt-dot {
+.im-opt input:checked+.im-opt-dot {
   background: #219f82;
   border-color: #219f82;
 }
 
 /* 6. INPUTS Y BOTÓN FINAL */
-#item-modal select, 
+#item-modal select,
 #item-modal textarea {
   width: 100%;
   background: #f9f9f9 !important;
@@ -5012,7 +5062,8 @@ body.modal-open {
 
 /* Contenedor para la imagen que reemplaza al emoji */
 .cat-img-wrapper {
-  width: 60px; /* Ajusta este tamaño según prefieras */
+  width: 60px;
+  /* Ajusta este tamaño según prefieras */
   height: 60px;
   display: flex;
   align-items: center;
@@ -5023,7 +5074,8 @@ body.modal-open {
 .cat-img-wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Evita que la imagen se deforme o se salga */
+  object-fit: contain;
+  /* Evita que la imagen se deforme o se salga */
 }
 
 /* Animación al pasar el mouse (similar a la que tenías con el emoji) */
@@ -5037,8 +5089,7 @@ body.modal-open {
   margin-top: 4px;
 }
 
-.section, 
-.card-horizontal.full, 
+.card-horizontal.full,
 .lp-promo-card {
   /* Forzar renderizado por hardware */
   will-change: transform, opacity;
@@ -5047,14 +5098,126 @@ body.modal-open {
 }
 
 @media (max-width: 480px) {
-  .lp-header, .lp-bottom-nav, .lp-modal, .cart-footer {
-    backdrop-filter: blur(8px) !important; /* Menos radio es más rápido */
+
+  .lp-header,
+  .lp-bottom-nav,
+  .lp-modal,
+  .cart-footer {
+    backdrop-filter: blur(8px) !important;
+    /* Menos radio es más rápido */
     -webkit-backdrop-filter: blur(8px) !important;
-    background: rgba(10, 10, 10, 0.95) !important; /* Más opaco para compensar */
   }
 }
 
-html, body {
-  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+html,
+body {
+  -webkit-overflow-scrolling: touch;
+  /* Scroll suave en iOS */
   scroll-behavior: smooth;
+}
+
+/* --- COLORES PARA EL BANNER VIOLETA --- */
+.dni-violeta {
+  border-color: rgba(155, 89, 182, 0.3) !important;
+  box-shadow: var(--shadow-card), 0 0 40px rgba(155, 89, 182, 0.2) !important;
+}
+
+.dni-violeta .dni-banner-head {
+  /* Violeta cremita / pastel */
+  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%) !important;
+}
+
+.dni-violeta .dni-banner-body {
+  background: linear-gradient(160deg, #1a152e 0%, #120e1f 100%) !important;
+}
+
+.dni-violeta .dni-detail-icon {
+  background: rgba(162, 155, 254, 0.12) !important;
+  border-color: rgba(162, 155, 254, 0.25) !important;
+}
+
+.dni-violeta .dni-detail-text .label {
+  color: #d1d1ff !important; /* Violeta muy claro para etiquetas */
+}
+
+.dni-violeta .dni-detail-text .value strong {
+  color: #a29bfe !important;
+}
+
+.dni-slider-wrapper {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  gap: 0;
+}
+
+.dni-banner {
+  min-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Busca el contenedor del slider y asegúrate que tenga este margen */
+.dni-slider-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+/* IMPORTANTE: Los dots están fuera del wrapper, dales un z-index y posición relativa */
+.dni-slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 25px;
+  position: relative;
+  z-index: 10;
+}
+
+.dni-dot {
+  width: 12px; /* Un poco más grandes para que se vean */
+  height: 12px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 0;
+}
+
+.dni-dot.active {
+  background: #FFC107 !important; /* Forzamos el amarillo de Lo Pepu */
+  width: 28px;
+  border-radius: 6px;
+}
+
+/* Hover sutil para los dots */
+.dni-dot:hover {
+  background: rgba(255, 193, 7, 0.5);
+}
+
+/* --- ESTILOS TARJETA AZUL MARINO --- */
+.dni-azul {
+  border-color: rgba(28, 55, 103, 0.4) !important;
+  box-shadow: var(--shadow-card), 0 0 40px rgba(28, 55, 103, 0.2) !important;
+}
+
+.dni-azul .dni-banner-head {
+  /* Degradado Azul Marino Profundo */
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%) !important;
+}
+
+.dni-azul .dni-banner-body {
+  background: linear-gradient(160deg, #0a1118 0%, #05090e 100%) !important;
+}
+
+.dni-azul .dni-detail-icon {
+  background: rgba(44, 83, 100, 0.2) !important;
+  border-color: rgba(44, 83, 100, 0.4) !important;
+}
+
+.dni-azul .dni-detail-text .value strong {
+  color: #5d9cec !important; /* Un azul más brillante para destacar */
+}
+
+.dni-azul .dni-accent-bar {
+  background: #5d9cec !important;
 }
