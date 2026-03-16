@@ -2276,45 +2276,6 @@ body.modal-open {
   padding-top: 12px;
 }
 
-
-#cd-step2-confirm {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-
-  padding: 14px 16px;
-  border-radius: 999px;
-
-  background: linear-gradient(180deg,
-      #0f0f0f,
-      #1a1a1a);
-
-  border: 1px solid rgba(37, 211, 102, 0.35);
-
-  color: #25d366;
-  font-size: 1rem;
-  font-weight: 600;
-
-  cursor: pointer;
-  transition: transform 0.15s ease,
-    box-shadow 0.15s ease,
-    background 0.15s ease;
-}
-
-#cd-step2-confirm i {
-  font-size: 1.2rem;
-  color: #25d366;
-}
-
-@media (max-width: 480px) {
-  #cd-step2-confirm {
-    font-size: 1.05rem;
-    padding: 16px;
-  }
-}
-
 @media (max-width: 380px) {
   header {
     padding: 0.65rem 0.9rem;
@@ -2789,10 +2750,10 @@ body.lp-modal-open {
   color: #FFC107;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   text-align: center;
-  
+
   /* Quitamos las restricciones para que el texto no se corte */
-  max-width: 100%; 
-  white-space: normal; 
+  max-width: 100%;
+  white-space: normal;
   overflow: visible;
 }
 
@@ -4033,9 +3994,12 @@ body::before {
 
 .dni-percent-row {
   display: flex;
-  align-items: center; /* Alineación central para evitar saltos visuales */
-  flex-wrap: wrap;     /* Permite que el texto baje si el número es muy grande */
-  gap: 8px;            /* Reducimos el gap de 12px a 8px */
+  align-items: center;
+  /* Alineación central para evitar saltos visuales */
+  flex-wrap: wrap;
+  /* Permite que el texto baje si el número es muy grande */
+  gap: 8px;
+  /* Reducimos el gap de 12px a 8px */
   position: relative;
   z-index: 1;
   margin-bottom: 10px;
@@ -4045,11 +4009,12 @@ body::before {
   font-family: var(--font);
   font-weight: 900;
   /* Cambio: de 4.8rem a un valor dinámico */
-  font-size: clamp(3.5rem, 15vw, 4.8rem); 
+  font-size: clamp(3.5rem, 15vw, 4.8rem);
   line-height: 1;
   color: var(--white);
   text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-  letter-spacing: -2px; /* Reducimos un poco el espaciado negativo */
+  letter-spacing: -2px;
+  /* Reducimos un poco el espaciado negativo */
 }
 
 .dni-percent sup {
@@ -4060,12 +4025,15 @@ body::before {
 }
 
 .dni-percent-desc {
-  flex: 1;             /* Hace que el texto ocupe el espacio restante */
-  min-width: 140px;    /* Evita que se comprima demasiado */
+  flex: 1;
+  /* Hace que el texto ocupe el espacio restante */
+  min-width: 140px;
+  /* Evita que se comprima demasiado */
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding-bottom: 0;   /* Quitamos el padding fijo inferior */
+  padding-bottom: 0;
+  /* Quitamos el padding fijo inferior */
 }
 
 .dni-percent-desc .line1 {
@@ -4137,9 +4105,11 @@ body::before {
 }
 
 .dni-detail-text .value {
-  font-size: 0.8rem;   /* Bajamos levemente de 0.84rem */
+  font-size: 0.8rem;
+  /* Bajamos levemente de 0.84rem */
   line-height: 1.3;
-  word-break: break-word; /* Evita que palabras largas rompan el layout */
+  word-break: break-word;
+  /* Evita que palabras largas rompan el layout */
 }
 
 .dni-detail-text .value strong {
@@ -4629,13 +4599,9 @@ body::before {
   position: fixed !important;
   bottom: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
   left: 50% !important;
-  /* Lo centra respecto a la pantalla */
   transform: translateX(-50%);
-  /* Lo centra exactamente */
   width: 100%;
-  /* Ocupa el 100% de su contenedor máximo */
   max-width: 430px;
-  /* LIMITA EL ANCHO igual que tu body */
   padding: 16px 20px;
   background: rgba(10, 10, 10, 0.98);
   backdrop-filter: blur(12px);
@@ -4643,6 +4609,7 @@ body::before {
   z-index: 9999 !important;
   box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8);
   display: flex;
+  gap: 12px;
   flex-direction: column;
   box-sizing: border-box;
 }
@@ -5142,7 +5109,8 @@ body {
 }
 
 .dni-violeta .dni-detail-text .label {
-  color: #d1d1ff !important; /* Violeta muy claro para etiquetas */
+  color: #d1d1ff !important;
+  /* Violeta muy claro para etiquetas */
 }
 
 .dni-violeta .dni-detail-text .value strong {
@@ -5178,18 +5146,20 @@ body {
 }
 
 .dni-dot {
-  width: 12px; /* Un poco más grandes para que se vean */
+  width: 12px;
+  /* Un poco más grandes para que se vean */
   height: 12px;
   background: rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0;
 }
 
 .dni-dot.active {
-  background: #FFC107 !important; /* Forzamos el amarillo de Lo Pepu */
+  background: #FFC107 !important;
+  /* Forzamos el amarillo de Lo Pepu */
   width: 28px;
   border-radius: 6px;
 }
@@ -5220,9 +5190,484 @@ body {
 }
 
 .dni-azul .dni-detail-text .value strong {
-  color: #5d9cec !important; /* Un azul más brillante para destacar */
+  color: #5d9cec !important;
+  /* Un azul más brillante para destacar */
 }
 
 .dni-azul .dni-accent-bar {
   background: #5d9cec !important;
+}
+
+.btn-send {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #25D366, #1DAF57);
+  border-radius: 999px;
+  font-family: var(--font);
+  font-weight: 900;
+  font-size: 0.86rem;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.22);
+  transition: opacity .18s, transform .12s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-send:hover {
+  opacity: .91;
+}
+
+.btn-send:active {
+  transform: scale(.97);
+}
+
+.btn-send svg {
+  width: 17px;
+  height: 17px;
+  fill: var(--white);
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════
+   STEPPER
+══════════════════════════════════ */
+.stepper {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px 18px;
+  gap: 0;
+  animation: fadeUp .34s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: .03s;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.step-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.66rem;
+  font-weight: 900;
+}
+
+.step-item.done .step-dot {
+  background: #1ed760;
+  border: 2px solid var(--green);
+  color: var(--green);
+}
+
+.step-item.active .step-dot {
+  background: var(--yellow);
+  border: 2px solid var(--yellow);
+  color: #0a0700;
+  box-shadow: 0 0 10px var(--yellow-glow);
+}
+
+.step-lbl {
+  font-size: 0.57rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.step-item.done .step-lbl {
+  color: var(--green);
+}
+
+.step-item.active .step-lbl {
+  color: var(--yellow);
+}
+
+/* PASO PENDIENTE (amarillo) */
+.step-item:not(.done):not(.active) .step-dot{
+  background:#FFC107;
+  color:#000;
+}
+
+.step-item:not(.done):not(.active) .step-lbl{
+  color:#FFC107;
+}
+
+.step-line {
+  flex: 1;
+  height: 2px;
+  margin-bottom: 18px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.step-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--green), rgba(76, 175, 80, 0.35));
+}
+
+/* ── Bloque base ── */
+.block {
+  background: var(--surface);
+  border-radius: var(--r);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.45);
+  animation: fadeUp .38s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.block:nth-child(1) {
+  animation-delay: .06s;
+}
+
+.block:nth-child(2) {
+  animation-delay: .11s;
+}
+
+.block:nth-child(3) {
+  animation-delay: .16s;
+}
+
+/* Label de sección */
+.block-label {
+  padding: 13px 15px 0;
+  font-size: 0.60rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.block-body {
+  padding: 10px 15px 15px;
+}
+
+/* ══════════════════════════════════
+   TIPO DE ENTREGA
+══════════════════════════════════ */
+.entrega-options {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.entrega-opt {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 14px;
+  border-radius: 11px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+  text-align: left;
+  transition: border-color .18s, background .18s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.entrega-opt:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.entrega-opt.selected {
+  border-color: var(--yellow-border);
+  background: var(--yellow-dim);
+}
+
+/* Indicador radio */
+.radio-ring {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .18s;
+}
+
+.entrega-opt.selected .radio-ring {
+  border-color: var(--yellow);
+}
+
+.radio-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--yellow);
+  opacity: 0;
+  transform: scale(.4);
+  transition: opacity .18s, transform .18s;
+}
+
+.entrega-opt.selected .radio-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.opt-text {
+  flex: 1;
+}
+
+.opt-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.2;
+  transition: color .18s;
+}
+
+.entrega-opt.selected .opt-title {
+  color: var(--white);
+}
+
+.opt-sub {
+  font-size: 0.71rem;
+  color: var(--muted);
+  margin-top: 2px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Campos de dirección */
+.address-fields {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .30s cubic-bezier(.22, 1, .36, 1), opacity .22s ease;
+}
+
+.address-fields.visible {
+  max-height: 300px;
+  opacity: 1;
+}
+
+.address-inner {
+  padding: 2px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fields-row {
+  display: flex;
+  gap: 8px;
+}
+
+.fields-row .field-wrap {
+  flex: 1;
+}
+
+.fields-row .field-wrap.short {
+  flex: 0 0 37%;
+}
+
+/* ══════════════════════════════════
+   INPUTS
+══════════════════════════════════ */
+.field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field-label {
+  font-size: 0.60rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+  padding-left: 2px;
+}
+
+.lp-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 10px;
+  padding: 11px 13px;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--white);
+  outline: none;
+  transition: border-color .18s, background .18s, box-shadow .18s;
+  -webkit-appearance: none;
+}
+
+.lp-input::placeholder {
+  color: rgba(255, 255, 255, 0.18);
+  font-weight: 400;
+}
+
+.lp-input:focus {
+  border-color: rgba(255, 193, 7, 0.30);
+  background: rgba(255, 193, 7, 0.035);
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.06);
+}
+
+/* ══════════════════════════════════
+   NOMBRE
+══════════════════════════════════ */
+/* reutiliza .block + .block-label + .block-body + .field-wrap */
+
+/* ══════════════════════════════════
+   MÉTODO DE PAGO — tarjetas con ícono grande
+══════════════════════════════════ */
+.pago-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.pago-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 10px 15px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  transition: border-color .20s, background .20s, box-shadow .20s;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+
+.pago-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.55), transparent);
+  opacity: 0;
+  transition: opacity .20s;
+}
+
+.pago-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pago-card.selected {
+  border-color: rgba(76, 175, 80, 0.38);
+  background: rgba(76, 175, 80, 0.07);
+  box-shadow: 0 2px 16px rgba(76, 175, 80, 0.10);
+}
+
+.pago-card.selected::before {
+  opacity: 1;
+}
+
+.pago-icon-wrap {
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  transition: background .20s, border-color .20s;
+}
+
+.pago-card.selected .pago-icon-wrap {
+  background: rgba(76, 175, 80, 0.12);
+  border-color: rgba(76, 175, 80, 0.28);
+}
+
+.pago-icon-wrap svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pago-card .pago-icon-wrap svg {
+  stroke: rgba(255, 255, 255, 0.32);
+  transition: stroke .20s;
+}
+
+.pago-card.selected .pago-icon-wrap svg {
+  stroke: #66BB6A;
+}
+
+.pago-name {
+  font-size: 0.80rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.50);
+  text-align: center;
+  transition: color .20s;
+}
+
+.pago-card.selected .pago-name {
+  color: var(--white);
+}
+
+.pago-sub {
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.20);
+  text-align: center;
+  transition: color .20s;
+}
+
+.pago-card.selected .pago-sub {
+  color: rgba(76, 175, 80, 0.65);
+}
+
+.pago-check {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #4CAF50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.pago-card.selected .pago-check {
+  display: flex;
+}
+
+.pago-check svg {
+  width: 9px;
+  height: 9px;
+  stroke: #fff;
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cd-step2{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
 }

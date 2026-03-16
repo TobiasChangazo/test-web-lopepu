@@ -122,7 +122,7 @@
                 style="width: 80%; height: 80%; object-fit: contain; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
             </div>
             <div class="lp-cat-card" data-go="conos">
-              <img src="img/icon-nav/conoicon.png" alt="Conos"
+              <img src="img/icon-nav/conoiconn.png" alt="Conos"
                 style="width: 80%; height: 80%; object-fit: contain; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
             </div>
             <div class="lp-cat-card" data-go="promos">
@@ -263,7 +263,7 @@
 
           <div class="cat-card lp-cat-boceto" data-go="conos" role="button" tabindex="0">
             <div class="cat-img-wrapper">
-              <img src="img/icon-nav/conoicon.png" loading="lazy" alt="Conos">
+              <img src="img/icon-nav/conoiconn.png" loading="lazy" alt="Conos">
             </div>
             <span class="cat-name">Cono</span>
           </div>
@@ -476,8 +476,7 @@
                     <div class="dni-logo-pill">
                       <div class="dni-logo-icon"
                         style="background: transparent; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                        <img src="img/logo/modo.png" alt="MODO"
-                          style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="img/logo/modo.png" alt="MODO" style="width: 100%; height: 100%; object-fit: contain;">
                       </div>
                       <div class="dni-logo-text">
                         <span class="t1">Paga con</span>
@@ -1616,6 +1615,20 @@
 
     <div class="cart-wrapper" style="padding: 14px 14px 20px; display: flex; flex-direction: column; gap: 16px;">
 
+      <div class="stepper">
+        <div class="step-item active">
+          <div class="step-dot">1</div>
+          <span class="step-lbl">Productos</span>
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step-item">
+          <div class="step-dot">2</div>
+          <span class="step-lbl">Confirmación</span>
+        </div>
+      </div>
+
       <div id="cd-step1" class="cart-step active">
         <div class="cart-list" id="cart-list"></div>
         <div class="cart-empty" id="cd-empty" style="display:none;">
@@ -1625,44 +1638,111 @@
       </div>
 
       <div id="cd-step2" class="cart-step cd-step2" style="display:none;">
-        <div class="cart-form">
-          <div class="cart-card" id="cd-cliente">
-            <h3>Tus Datos</h3>
-            <input id="cd-nombre" class="cart-input" type="text" placeholder="Nombre y apellido">
-          </div>
-          <div class="cart-card">
-            <h3>Entrega</h3>
-            <div class="cart-radio-group cd-mode">
-              <button type="button" class="cd-mode__card cart-radio-label is-active" data-mode="retiro">
-                <span>🏪 Retiro en local</span>
+        <!-- TIPO DE ENTREGA -->
+        <div class="block">
+          <div class="block-label">Tipo de entrega</div>
+          <div class="block-body">
+            <div class="entrega-options">
+
+              <button class="entrega-opt selected" id="opt-retiro" onclick="selectEntrega('retiro')">
+                <div class="radio-ring">
+                  <div class="radio-dot"></div>
+                </div>
+                <div class="opt-text">
+                  <div class="opt-title">Retiro en el local</div>
+                  <div class="opt-sub">Calle 30 Bis Esquina 5</div>
+                </div>
               </button>
-              <button type="button" class="cd-mode__card cart-radio-label" data-mode="envio">
-                <span>🛵 Delivery</span>
+
+              <button class="entrega-opt" id="opt-delivery" onclick="selectEntrega('delivery')">
+                <div class="radio-ring">
+                  <div class="radio-dot"></div>
+                </div>
+                <div class="opt-text">
+                  <div class="opt-title">Envío a domicilio</div>
+                  <div class="opt-sub">El Envío <strong style="color:rgba(255,255,255,0.55)">NO</strong> está incluido
+                    en el total</div>
+                </div>
               </button>
+
             </div>
-            <div id="cd-shipnote" style="font-size:0.75rem; color:#FFC107; margin-top:8px; display:none;">
-              El envío NO está incluido. Consultar costo por WhatsApp.
+
+            <!-- Campos de dirección -->
+            <div class="address-fields" id="addressFields">
+              <div class="address-inner">
+                <div class="fields-row">
+                  <div class="field-wrap">
+                    <span class="field-label">Calle</span>
+                    <input class="lp-input" type="text" placeholder="Ej: Calle 30 Bis">
+                  </div>
+                  <div class="field-wrap short">
+                    <span class="field-label">Número</span>
+                    <input class="lp-input" type="text" placeholder="Ej: 3020">
+                  </div>
+                </div>
+                <div class="field-wrap">
+                  <span class="field-label">Referencia (opcional)</span>
+                  <input class="lp-input" type="text" placeholder="Ej: Portón negro">
+                </div>
+              </div>
             </div>
           </div>
-          <div id="cd-envio" class="cart-card" style="display:none;">
-            <h3>Dirección</h3>
-            <div style="display:flex; gap:10px;">
-              <input id="cd-calle" class="cart-input" type="text" placeholder="Calle">
-              <input id="cd-num" class="cart-input" type="text" placeholder="Número" style="width:40%;">
+        </div>
+
+        <!-- NOMBRE -->
+        <div class="block">
+          <div class="block-label">Tus datos</div>
+          <div class="block-body">
+            <div class="field-wrap">
+              <span class="field-label">Nombre y Apellido</span>
+              <input class="lp-input" type="text" placeholder="¿Cómo te llamás?" autocomplete="name">
             </div>
-            <input id="cd-ref" class="cart-input" type="text" placeholder="Referencia (opcional)">
           </div>
-          <div class="cart-card">
-            <h3>Pago</h3>
-            <div class="cart-radio-group cd-row2">
-              <label class="cart-radio-label cd-radio">
-                <input type="radio" name="cd-pago" value="Efectivo" checked>
-                <span>💵 Efectivo</span>
-              </label>
-              <label class="cart-radio-label cd-radio">
-                <input type="radio" name="cd-pago" value="Transferencia">
-                <span>📱 Transferencia</span>
-              </label>
+        </div>
+
+        <!-- MÉTODO DE PAGO -->
+        <div class="block">
+          <div class="block-label">Método de pago</div>
+          <div class="block-body">
+            <div class="pago-grid">
+
+              <button class="pago-card" id="pago-transferencia" onclick="selectPago('transferencia')">
+                <div class="pago-check">
+                  <svg viewBox="0 0 12 12">
+                    <polyline points="2,6 5,9 10,3" />
+                  </svg>
+                </div>
+                <div class="pago-icon-wrap">
+                  <!-- Comprobante / transferencia -->
+                  <svg viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="8" y1="13" x2="16" y2="13" />
+                    <line x1="8" y1="17" x2="13" y2="17" />
+                  </svg>
+                </div>
+                <span class="pago-name">Transferencia</span>
+                <span class="pago-sub">CBU / Alias</span>
+              </button>
+
+              <button class="pago-card selected" id="pago-efectivo" onclick="selectPago('efectivo')">
+                <div class="pago-check">
+                  <svg viewBox="0 0 12 12">
+                    <polyline points="2,6 5,9 10,3" />
+                  </svg>
+                </div>
+                <div class="pago-icon-wrap">
+                  <!-- Billete / efectivo -->
+                  <svg viewBox="0 0 24 24">
+                    <rect x="2" y="6" width="20" height="12" rx="2" />
+                    <circle cx="12" cy="12" r="2.5" />
+                    <path d="M6 12h.01M18 12h.01" />
+                  </svg>
+                </div>
+                <span class="pago-name">Efectivo</span>
+                <span class="pago-sub">Al momento</span>
+              </button>
+
             </div>
           </div>
         </div>
@@ -1678,14 +1758,14 @@
     </div>
 
     <div class="cart-footer cd-step2__actions" id="cart-footer-step2" style="display:none;">
-      <button id="cd-step2-confirm" type="button" class="cart-confirm-btn" style="margin-bottom:10px;">
-        <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#000;margin-right:8px;">
+      <button class="btn-send">
+        <svg viewBox="0 0 24 24">
           <path
             d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
         </svg>
-        Enviar pedido
+        Enviar pedido por WhatsApp
       </button>
-      <button id="cd-step2-back" type="button" class="cart-btn-outline" style="margin-top:0;">Volver a la lista</button>
+      <button id="cd-step2-back" type="button" class="cart-btn-outline" style="margin-top:0;">Volver al Carrito</button>
     </div>
   </section>
 

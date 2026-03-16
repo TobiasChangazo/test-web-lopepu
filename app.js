@@ -438,6 +438,12 @@
         const f1 = document.getElementById('cart-footer-step1');
         const f2 = document.getElementById('cart-footer-step2');
 
+        // STEP BAR
+        const steps = document.querySelectorAll('.step-item');
+        steps[0]?.classList.add('done');
+        steps[0]?.classList.remove('active');
+        steps[1]?.classList.add('active');
+
         if (s1) s1.style.display = 'none';
         if (f1) f1.style.display = 'none';
 
@@ -445,9 +451,11 @@
             s2.style.display = 'flex';
             s2.classList.add('active');
         }
+
         if (f2) {
             f2.style.display = 'flex';
         }
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -456,6 +464,11 @@
         const s2 = document.getElementById('cd-step2');
         const f1 = document.getElementById('cart-footer-step1');
         const f2 = document.getElementById('cart-footer-step2');
+
+        const steps = document.querySelectorAll('.step-item');
+        steps[0]?.classList.remove('done');
+        steps[0]?.classList.add('active');
+        steps[1]?.classList.remove('active');
 
         if (s2) {
             s2.style.display = 'none';
@@ -2961,7 +2974,7 @@ const initDniSlider = () => {
     function updateSlider(index) {
         currentIndex = index;
         wrapper.style.transform = `translateX(-${index * 100}%)`;
-        
+
         // Actualizar estado de los dots
         dots.forEach((dot, i) => {
             dot.classList.toggle('active', i === index);
@@ -2994,3 +3007,17 @@ const initDniSlider = () => {
 
 // Asegúrate de llamarla
 initDniSlider();
+
+function selectEntrega(tipo) {
+    document.getElementById('opt-retiro').classList.remove('selected');
+    document.getElementById('opt-delivery').classList.remove('selected');
+    document.getElementById('opt-' + tipo).classList.add('selected');
+    const fields = document.getElementById('addressFields');
+    tipo === 'delivery' ? fields.classList.add('visible') : fields.classList.remove('visible');
+}
+
+function selectPago(tipo) {
+    document.getElementById('pago-transferencia').classList.remove('selected');
+    document.getElementById('pago-efectivo').classList.remove('selected');
+    document.getElementById('pago-' + tipo).classList.add('selected');
+}
