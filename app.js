@@ -172,10 +172,54 @@
             counts.set(key, (counts.get(key) || 0) + 1);
         });
 
-        return order.map(key => {
+        const out = [];
+
+        order.forEach(key => {
             const n = counts.get(key) || 1;
-            return n > 1 ? `(x${n}) ${key}` : key;
+
+            const halfMatch = key.match(/^1\/2\s+(.+)$/i);
+            if (halfMatch) {
+                const prodName = halfMatch[1].trim();
+                const wholeCount = Math.floor(n / 2);
+                const halfRest = n % 2;
+
+                if (wholeCount > 0) {
+                    out.push(wholeCount > 1 ? `(x${wholeCount}) 1 ${prodName}` : `1 ${prodName}`);
+                }
+
+                if (halfRest > 0) {
+                    out.push(`1/2 ${prodName}`);
+                }
+
+                return;
+            }
+
+            out.push(n > 1 ? `(x${n}) ${key}` : key);
         });
+
+        return out;
+    }
+
+    function formatPizzaDetailLine(line) {
+        const raw = String(line || '').trim();
+        if (!raw) return raw;
+
+        const m = raw.match(/^\(x(\d+)\)\s*1\s+(.+)$/i);
+        if (!m) return raw;
+
+        const n = Number(m[1]) || 1;
+        let name = m[2].trim();
+
+        // plural mínimo para los nombres que más usás
+        if (/muzzarella$/i.test(name)) {
+            name = name.replace(/muzzarella$/i, 'Muzzarellas');
+        } else if (/especial$/i.test(name)) {
+            name = name.replace(/especial$/i, 'Especiales');
+        } else if (/super$/i.test(name)) {
+            name = name.replace(/super$/i, 'Supers');
+        }
+
+        return `${n} ${name}`;
     }
 
     function buildWhatsappMessage() {
@@ -598,21 +642,20 @@
 
         // fallback hardcode (por si no existe card en HTML)
         const MAP = {
-            "2muzza": 19000,
-            "esp+muzza": 21500,
-            "2esp": 23000,
-            "3esp": 34500,
-            "3muzza": 28500,
+            "2muzza": 23000,
+            "esp+muzza": 25000,
+            "2esp": 27000,
+            "3esp": 39000,
+            "3muzza": 33000,
 
-            "emp6": 8000,
-            "emp12": 15000,
-            "emp24": 29000,
+            "emp6": 10000,
+            "emp12": 18000,
+            "emp24": 34000,
 
-            // ya las que tenías antes (por si las usás)
-            "muzza+6": 17500,
-            "esp+6": 19500,
-            "muzza+12": 24500,
-            "esp+12": 26500,
+            "muzza+6": 21000,
+            "esp+6": 23000,
+            "muzza+12": 29000,
+            "esp+12": 31000,
         };
         return MAP[promoId] || 0;
     }
@@ -665,8 +708,8 @@
             if (empCount < needEmp) return;
 
             // calcular normal: 1 pizza grande del tier (usamos precio grande “oficial” del tier)
-            // muzza grande = 10000, especial grande = 12000
-            const pizzaNormal = (needTier === "muzza") ? 10000 : 12000;
+            // muzza grande = 12000, especial grande = 14000
+            const pizzaNormal = (needTier === "muzza") ? 12000 : 14000;
 
             // empanadas normal: $1500 c/u (según tus cards).
             const empNormal = 1500 * needEmp;
@@ -700,9 +743,9 @@
                 : tier === 'super' ? 'Super'
                     : 'Pizza';
 
-        const tierFullPrice = (tier) => tier === 'muzza' ? 10000
-            : tier === 'esp' ? 12000
-                : tier === 'super' ? 13500
+        const tierFullPrice = (tier) => tier === 'muzza' ? 12000
+            : tier === 'esp' ? 14000
+                : tier === 'super' ? 15500
                     : 0;
 
         const halfComboPrice = (t1, t2) => {
@@ -711,9 +754,9 @@
             const key = [a, b].sort().join('+');
 
             const MAP = {
-                'esp+muzza': 11000,
-                'muzza+super': 11800,
-                'esp+super': 12800,
+                'esp+muzza': 13000,
+                'muzza+super': 13800,
+                'esp+super': 14800,
             };
             return MAP[key] || 0;
         };
@@ -786,71 +829,89 @@
 
         // 1) Fusionar 2 medias -> 1 pizza grande con detalles
         const used = new Set();
-        const halfBuckets = { muzza: [], esp: [], super: [] };
-
-        items.forEach((it, idx) => {
-            if (it.type === 'pizza' && it.size === 'half' && (it.tier in halfBuckets)) {
-                halfBuckets[it.tier].push({ it, idx });
-            }
-        });
-
         const out = [];
+
+        const cleanName = (n) => String(n || '').replace(/^1\/2\s+/i, '');
+
+        function makeMergedHalfPizza(a, b) {
+            const t1 = a.tier;
+            const t2 = b.tier;
+            const mixed = (t1 !== t2);
+
+            return {
+                type: 'pizza',
+                tier: mixed ? 'mix' : t1,
+                size: 'g',
+                qty: 1,
+                basePrice: mixed ? halfComboPrice(t1, t2) : tierFullPrice(t1),
+                name: mixed
+                    ? `1/2 ${tierLabel(t1)} y 1/2 ${tierLabel(t2)}`
+                    : `${tierLabel(t1)}`,
+                options: mergeOptions(a.options, b.options),
+                note: mergeNote(a.note, b.note),
+                _src: [...(a._src || []), ...(b._src || [])],
+                sections: mixed ? [{
+                    title: '',
+                    lines: [
+                        `1/2 ${cleanName(a.name)}`,
+                        `1/2 ${cleanName(b.name)}`
+                    ]
+                }] : []
+            };
+        }
+
+        function isHalfPizza(it) {
+            return it.type === 'pizza' && it.size === 'half' && ['muzza', 'esp', 'super'].includes(it.tier);
+        }
+
+        function pairSameTier(tier) {
+            const indexes = items
+                .map((it, idx) => ({ it, idx }))
+                .filter(x => !used.has(x.idx) && isHalfPizza(x.it) && x.it.tier === tier)
+                .map(x => x.idx);
+
+            for (let k = 0; k + 1 < indexes.length; k += 2) {
+                const i1 = indexes[k];
+                const i2 = indexes[k + 1];
+                used.add(i1);
+                used.add(i2);
+                out.push(makeMergedHalfPizza(items[i1], items[i2]));
+            }
+        }
+
+        function pairFirstAvailable(tierA, tierB) {
+            while (true) {
+                const i1 = items.findIndex((it, idx) =>
+                    !used.has(idx) && isHalfPizza(it) && it.tier === tierA
+                );
+
+                const i2 = items.findIndex((it, idx) =>
+                    !used.has(idx) && isHalfPizza(it) && it.tier === tierB
+                );
+
+                if (i1 === -1 || i2 === -1) break;
+
+                used.add(i1);
+                used.add(i2);
+                out.push(makeMergedHalfPizza(items[i1], items[i2]));
+            }
+        }
+
+        // prioridad para lograr el mejor precio/promo:
+        // 1. mismas mitades entre sí
+        pairSameTier('muzza');
+        pairSameTier('esp');
+        pairSameTier('super');
+
+        // 2. después mezclar lo que sobró
+        pairFirstAvailable('muzza', 'esp');
+        pairFirstAvailable('muzza', 'super');
+        pairFirstAvailable('esp', 'super');
+
+        // 3. dejar pasar lo que no se pudo fusionar
         for (let i = 0; i < items.length; i++) {
             if (used.has(i)) continue;
-            const it = items[i];
-
-            if (it.type === 'pizza' && it.size === 'half' && it.tier && (it.tier in halfBuckets)) {
-                // buscamos otra media disponible (la primera que haya)
-                const pair = items
-                    .map((cand, idx) => ({ cand, idx }))
-                    .find(x =>
-                        x.idx !== i &&
-                        !used.has(x.idx) &&
-                        x.cand.type === 'pizza' &&
-                        x.cand.size === 'half' &&
-                        x.cand.tier &&
-                        (x.cand.tier in halfBuckets)
-                    );
-
-                if (pair) {
-                    const pairIt = pair.cand;
-
-                    used.add(i);
-                    used.add(pair.idx);
-
-                    const cleanName = (n) => String(n || '').replace(/^1\/2\s+/i, '');
-
-                    const t1 = it.tier;
-                    const t2 = pairIt.tier;
-                    const mixed = (t1 !== t2);
-
-                    const merged = {
-                        type: 'pizza',
-                        tier: mixed ? 'mix' : t1,
-                        size: 'g',
-                        qty: 1,
-                        basePrice: mixed ? halfComboPrice(t1, t2) : tierFullPrice(t1),
-                        name: mixed
-                            ? `1/2 ${tierLabel(t1)} y 1/2 ${tierLabel(t2)}`
-                            : `${tierLabel(t1)}`,
-                        options: mergeOptions(it.options, pairIt.options),
-                        note: mergeNote(it.note, pairIt.note),
-                        _src: [...(it._src || []), ...(pairIt._src || [])],
-                        sections: [{
-                            title: '',
-                            lines: [
-                                `1/2 ${cleanName(it.name)}`,
-                                `1/2 ${cleanName(pairIt.name)}`
-                            ]
-                        }]
-                    };
-
-                    out.push(merged);
-                    continue;
-                }
-            }
-
-            out.push(it);
+            out.push(items[i]);
         }
 
         // 2) Aplicar promos automáticas (pizza + empanadas)
@@ -1159,11 +1220,25 @@
 
             if (sections.length > 0) {
                 sections.forEach(sec => {
-                    innerHTML += `<div class="detail-group"><span class="detail-group-title">${sec.title}</span>`;
-                    sec.lines.forEach(l => {
-                        let lineFmt = l.replace(/\(x(\d+)\)/gi, '<span style="color: #FFC107; font-weight: 800;">(x$1)</span>');
+                    const title = String(sec.title || '').trim().toUpperCase();
+                    let lines = compressLines(sec.lines || []);
+
+                    const isPizzaGroup = !title || title.startsWith('PIZZA');
+                    if (isPizzaGroup) {
+                        lines = lines.map(formatPizzaDetailLine);
+                    }
+
+                    innerHTML += `<div class="detail-group">`;
+
+                    if (title && !title.startsWith('PIZZA')) {
+                        innerHTML += `<span class="detail-group-title">${sec.title}</span>`;
+                    }
+
+                    lines.forEach(l => {
+                        let lineFmt = l.replace(/\(x(\d+)\)\s*/gi, '<span style="color: #FFC107; font-weight: 800;">(x$1)</span> ');
                         innerHTML += `<span class="detail-item">${lineFmt}</span>`;
                     });
+
                     innerHTML += `</div>`;
                 });
             }
@@ -1413,12 +1488,8 @@
             options,
             note,
 
-            // 👇 meta para detectar promos
-            size: (basePrice === Number(imModal?.dataset?.priceS || 0)) ? "s"
-                : (basePrice === Number(imModal?.dataset?.priceHalf || 0)) ? "half"
-                    : "g",
-
-            tier: imModal?.dataset?.tier || "unk", // muzza | esp | super | unk
+            size: size,
+            tier: imModal?.dataset?.tier || "unk",
         });
 
         closeItemModal();
@@ -1460,9 +1531,9 @@
             imModal.dataset.basePrice = String(priceG); // arranca en grande
 
             // tier por precio grande (13500 = super prohibida en promos)
-            imModal.dataset.tier = (priceG === 10000) ? "muzza"
-                : (priceG === 12000) ? "esp"
-                    : (priceG === 13500) ? "super"
+            imModal.dataset.tier = (priceG === 12000) ? "muzza"
+                : (priceG === 14000) ? "esp"
+                    : (priceG === 15500) ? "super"
                         : "unk";
         }
 
