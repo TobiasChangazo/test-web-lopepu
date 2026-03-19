@@ -1624,6 +1624,28 @@ body.modal-open {
   display: none !important;
 }
 
+/* MODAL PROMO: scroll funcional pero sin barras visibles */
+#promo-modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE 10+ */
+}
+#promo-modal::-webkit-scrollbar {
+  display: none;                /* Chrome/Safari */
+  width: 0;
+  height: 0;
+}
+#promo-content {
+  overflow-x: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+#promo-content * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 .lp-close {
   position: absolute;
   top: 10px;
@@ -2254,12 +2276,20 @@ body.modal-open {
   #modal-empanada .im-qty .im-btn,
   #modal-bebida .im-qty .im-btn,
   #modal-tarta .im-qty .im-btn {
-    height: 100%;
+    /* En mobile algunos estilos previos (con !important) hacen que el botón quede "ovalado"
+       o desalineado; acá forzamos tamaño y forma consistentes */
+    flex: 0 0 34px !important;
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 1;
     padding: 0;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
   }
 }
 
@@ -2310,6 +2340,58 @@ body.modal-open {
   .im-add {
     padding: 0 14px;
     font-size: 0.95rem;
+  }
+}
+
+/* MODAL EMPANADA (incluye TARTA): botón agregar sin corte en mobile */
+@media (max-width: 520px) {
+  #modal-empanada .im-add {
+    width: calc(100% - 0px);
+    margin: 10px 0 6px;
+    height: auto;
+    min-height: 44px;
+    padding: 14px 16px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+  }
+
+  #modal-empanada .im-add > span {
+    white-space: normal;
+  }
+
+  /* Mantener el precio en una sola línea para que no rompa el botón */
+  #modal-empanada .im-add > span:last-child {
+    white-space: nowrap;
+  }
+
+  /* Evitar "clip" del texto cuando haya wrap */
+  #modal-empanada .im-add > span:first-child {
+    overflow: visible;
+    text-overflow: clip;
+  }
+}
+
+/* Mobile chico (<=480px): asegurar 1 sola línea en el botón "AGREGAR A MI PEDIDO" */
+@media (max-width: 480px) {
+  #modal-empanada .im-add,
+  #modal-tarta .im-add {
+    flex-wrap: nowrap !important;
+    height: 44px;
+    min-height: 44px;
+    padding: 0 14px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+  }
+
+  #modal-empanada .im-add > span,
+  #modal-tarta .im-add > span {
+    white-space: nowrap !important;
+  }
+
+  #modal-empanada .im-add > span:first-child,
+  #modal-tarta .im-add > span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -4599,6 +4681,19 @@ body::before {
   flex-shrink: 0;
 }
 
+.lp-pizza-half-tag {
+  color: #FFC107;
+  font-weight: 800;
+}
+
+.lp-pizza-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.10);
+  margin: 8px 0;
+  flex-shrink: 0;
+}
+
 /* Empty state */
 .cart-empty {
   display: flex;
@@ -5086,13 +5181,57 @@ body.modal-open {
 
 @media (max-width: 480px) {
 
+  /* Rendimiento mobile: menos blur + menos animaciones + menos trabajo de paint */
+  body::before {
+    display: none !important;
+  }
+
   .lp-header,
   .lp-bottom-nav,
   .lp-modal,
-  .cart-footer {
-    backdrop-filter: blur(8px) !important;
-    /* Menos radio es más rápido */
-    -webkit-backdrop-filter: blur(8px) !important;
+  .cart-footer,
+  .lp-clean-header,
+  .bienvenida-bloque,
+  .coming-soon-block {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Evitar animaciones innecesarias en mobile */
+  .lp-clean-header {
+    animation: none !important;
+  }
+
+  .coming-soon-block,
+  .bienvenida-bloque,
+  .lp-back-float {
+    animation: none !important;
+  }
+
+  .highlight-order {
+    animation: none !important;
+  }
+
+  .estado-local::before {
+    animation: none !important;
+    box-shadow: none !important;
+  }
+
+  .coming-soon-icon,
+  .coming-dots span {
+    animation: none !important;
+  }
+
+  /* Menos trabajo de compositor por "will-change" */
+  .card-horizontal.full,
+  .lp-promo-card {
+    will-change: auto !important;
+  }
+
+  /* Scroll más responsivo */
+  html,
+  body {
+    scroll-behavior: auto !important;
   }
 }
 

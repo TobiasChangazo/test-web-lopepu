@@ -166,10 +166,18 @@
         const counts = new Map();
 
         (lines || []).forEach(l => {
-            const key = String(l || '').trim();
+            const raw = String(l || '').trim();
+            if (!raw) return;
+        
+            // Si la línea ya trae `(xN) ...`, no debemos contarla como "otra línea"
+            // (eso duplica multiplicadores). Acá sumamos las unidades directamente.
+            const pref = raw.match(/^\(x(\d+)\)\s*(.+)$/i);
+            const qtyToAdd = pref ? (Number(pref[1]) || 1) : 1;
+            const key = pref ? String(pref[2] || '').trim() : raw;
             if (!key) return;
+        
             if (!counts.has(key)) order.push(key);
-            counts.set(key, (counts.get(key) || 0) + 1);
+            counts.set(key, (counts.get(key) || 0) + qtyToAdd);
         });
 
         const out = [];
@@ -203,6 +211,24 @@
     function formatPizzaDetailLine(line) {
         const raw = String(line || '').trim();
         if (!raw) return raw;
+
+        // Caso típico al compactar mitades iguales: "1 <gusto>"
+        // Queremos mostrar el gusto sin el "1" numérico.
+        const oneMatch = raw.match(/^1\s+(.+)$/i);
+        if (oneMatch) {
+            let name = oneMatch[1].trim();
+
+            // plural mínimo para los nombres que más usás
+            if (/muzzarella$/i.test(name)) {
+                name = name.replace(/muzzarella$/i, 'Muzzarellas');
+            } else if (/especial$/i.test(name)) {
+                name = name.replace(/especial$/i, 'Especiales');
+            } else if (/super$/i.test(name)) {
+                name = name.replace(/super$/i, 'Supers');
+            }
+
+            return name;
+        }
 
         const m = raw.match(/^\(x(\d+)\)\s*1\s+(.+)$/i);
         if (!m) return raw;
@@ -836,25 +862,32 @@
         function makeMergedHalfPizza(a, b) {
             const t1 = a.tier;
             const t2 = b.tier;
-            const mixed = (t1 !== t2);
+            const mixedTier = (t1 !== t2);
+            const aClean = cleanName(a.name);
+            const bClean = cleanName(b.name);
+            // Si las dos mitades son del mismo tier pero eligieron gustos/variedades distintas,
+            // necesitamos reflejar ambas mitades en el detalle (para que las promos no muestren "Especial" genérico).
+            const showHalfDetails = mixedTier
+                || aClean !== tierLabel(t1)
+                || bClean !== tierLabel(t1);
 
             return {
                 type: 'pizza',
-                tier: mixed ? 'mix' : t1,
+                tier: mixedTier ? 'mix' : t1,
                 size: 'g',
                 qty: 1,
-                basePrice: mixed ? halfComboPrice(t1, t2) : tierFullPrice(t1),
-                name: mixed
+                basePrice: mixedTier ? halfComboPrice(t1, t2) : tierFullPrice(t1),
+                name: mixedTier
                     ? `1/2 ${tierLabel(t1)} y 1/2 ${tierLabel(t2)}`
                     : `${tierLabel(t1)}`,
                 options: mergeOptions(a.options, b.options),
                 note: mergeNote(a.note, b.note),
                 _src: [...(a._src || []), ...(b._src || [])],
-                sections: mixed ? [{
+                sections: showHalfDetails ? [{
                     title: '',
                     lines: [
-                        `1/2 ${cleanName(a.name)}`,
-                        `1/2 ${cleanName(b.name)}`
+                        `1/2 ${aClean}`,
+                        `1/2 ${bClean}`
                     ]
                 }] : []
             };
@@ -1169,6 +1202,9 @@
             // LÓGICA DE AGRUPACIÓN (SEPARA PIZZAS, EMPANADAS Y EXTRAS)
             let sections = Array.isArray(it.sections) ? [...it.sections] : [];
             let extraLines = [];
+            const hasEmpSection = sections.some(sec =>
+                String(sec?.title || '').trim().toUpperCase().startsWith('EMP')
+            );
 
             if (sections.length === 0 && opts.length > 0) {
                 const map = new Map();
@@ -1221,23 +1257,84 @@
             if (sections.length > 0) {
                 sections.forEach(sec => {
                     const title = String(sec.title || '').trim().toUpperCase();
-                    let lines = compressLines(sec.lines || []);
-
                     const isPizzaGroup = !title || title.startsWith('PIZZA');
-                    if (isPizzaGroup) {
-                        lines = lines.map(formatPizzaDetailLine);
+                    const rawSectionLines = Array.isArray(sec.lines) ? sec.lines : [];
+                    let lines = isPizzaGroup ? [] : compressLines(rawSectionLines);
+
+                    if (!isPizzaGroup) {
+                        // Solo pizzas pasan por formatPizzaDetailLine actualmente.
+                    }
+
+                    // Asegurar cantidad explícita en EMPANADAS (cuando es 1, hoy se renderiza como "Carne")
+                    if (title.startsWith('EMP')) {
+                        lines = lines.map(l => {
+                            const s = String(l || '').trim();
+                            if (!s) return s;
+                            return /^\(x\d+\)/i.test(s) ? s : `(x1) ${s}`;
+                        });
                     }
 
                     innerHTML += `<div class="detail-group">`;
 
-                    if (title && !title.startsWith('PIZZA')) {
+                    // Mostrar "PIZZAS" solo si la promo no tiene sección EMPANADAS (promo solo pizzas)
+                    const showSectionTitle =
+                        title && (!title.startsWith('PIZZA') || (title.startsWith('PIZZA') && !hasEmpSection));
+
+                    if (showSectionTitle) {
                         innerHTML += `<span class="detail-group-title">${sec.title}</span>`;
                     }
 
-                    lines.forEach(l => {
-                        let lineFmt = l.replace(/\(x(\d+)\)\s*/gi, '<span style="color: #FFC107; font-weight: 800;">(x$1)</span> ');
-                        innerHTML += `<span class="detail-item">${lineFmt}</span>`;
-                    });
+                    if (isPizzaGroup) {
+                        // Render legible: 2 mitades juntas = 1 bloque visual; separador entre pizzas.
+                        const pizzaBlocks = [];
+                        let pendingHalves = [];
+
+                        const flushPendingHalves = () => {
+                            if (!pendingHalves.length) return;
+                            pizzaBlocks.push({ kind: 'halves', halves: pendingHalves });
+                            pendingHalves = [];
+                        };
+
+                        rawSectionLines.forEach(l => {
+                            const s = String(l || '').trim();
+                            if (!s) return;
+
+                            const mHalf = s.match(/^(?:1\/2|½)\s+(.+)$/i);
+                            if (mHalf) {
+                                pendingHalves.push(mHalf[1].trim());
+                                return;
+                            }
+
+                            // Si encontramos una pizza entera, antes cerramos cualquier bloque de mitades.
+                            flushPendingHalves();
+                            pizzaBlocks.push({ kind: 'whole', name: s });
+                        });
+
+                        flushPendingHalves();
+
+                        pizzaBlocks.forEach((b, idx) => {
+                            if (idx > 0) {
+                                innerHTML += `<div class="lp-pizza-divider" aria-hidden="true"></div>`;
+                            }
+
+                            if (b.kind === 'halves') {
+                                b.halves.forEach(hName => {
+                                    innerHTML += `<span class="detail-item"><span class="lp-pizza-half-tag">1/2</span> ${hName}</span>`;
+                                });
+                            } else {
+                                const lineFmt = `(x1) ${b.name}`.replace(
+                                    /\(x(\d+)\)\s*/gi,
+                                    '<span style="color: #FFC107; font-weight: 800;">(x$1)</span> '
+                                );
+                                innerHTML += `<span class="detail-item">${lineFmt}</span>`;
+                            }
+                        });
+                    } else {
+                        lines.forEach(l => {
+                            let lineFmt = l.replace(/\(x(\d+)\)\s*/gi, '<span style="color: #FFC107; font-weight: 800;">(x$1)</span> ');
+                            innerHTML += `<span class="detail-item">${lineFmt}</span>`;
+                        });
+                    }
 
                     innerHTML += `</div>`;
                 });
