@@ -5228,6 +5228,26 @@ body.modal-open {
     will-change: auto !important;
   }
 
+  /* Grilla de productos: reducir costo de render/paint en mobile */
+  .card-horizontal.full {
+    animation: none !important; /* desactiva cardIn escalonado */
+    transition: none !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+    content-visibility: auto;
+    contain-intrinsic-size: 250px 155px;
+  }
+
+  .card-horizontal.full .card-img {
+    filter: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .card-horizontal.full:hover .card-img {
+    filter: none !important;
+    transform: none !important;
+  }
+
   /* Scroll más responsivo */
   html,
   body {

@@ -150,6 +150,23 @@
         if (tipoPizza && gusto1 && gusto2) {
             syncGustos(gusto1, gusto2, tipoPizza);
         }
+
+        // Optimización mobile: lazy + decoding async para imágenes de cards.
+        // Esto evita que al abrir categorías se “disparen” muchas cargas/decodificaciones de golpe.
+        // (No cambia la lógica; solo atributos de performance en imágenes existentes.)
+        document.querySelectorAll('img.card-img').forEach(img => {
+            try {
+                if (img.getAttribute('loading') !== 'lazy') img.loading = 'lazy';
+                if (img.getAttribute('decoding') !== 'async') img.decoding = 'async';
+
+                // Ayuda a priorizar el resto de recursos frente a imágenes de grilla.
+                if ('fetchPriority' in img) img.fetchPriority = 'low';
+
+                // Reserva espacio para evitar relayout (CSS ya define el tamaño visual).
+                if (!img.hasAttribute('width')) img.width = 115;
+                if (!img.hasAttribute('height')) img.height = 115;
+            } catch { /* sin afectar el flujo */ }
+        });
     };
 
     if (document.readyState === 'loading') {
