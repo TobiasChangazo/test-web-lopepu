@@ -5248,6 +5248,21 @@ body.modal-open {
     transform: none !important;
   }
 
+  /* Horarios: animación más liviana en mobile */
+  .lp-horarios-accordion {
+    transition: max-height .14s ease, opacity .10s ease;
+    transform: none !important;
+  }
+
+  .lp-horarios-accordion.is-open {
+    transform: none !important;
+  }
+
+  .lp-horarios-accordion__inner {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
   /* Scroll más responsivo */
   html,
   body {
