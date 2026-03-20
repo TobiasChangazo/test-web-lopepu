@@ -5860,3 +5860,46 @@ body {
   flex-direction:column;
   gap:16px;
 }
+
+.opt-ship-note {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 193, 7, 0.10);
+  border: 1px solid rgba(255, 193, 7, 0.22);
+  color: rgba(255,255,255,0.86);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.lp-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 88px;
+  transform: translateX(-50%) translateY(16px);
+  min-width: 240px;
+  max-width: calc(100vw - 32px);
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(18,18,18,0.96);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease;
+  z-index: 9999;
+}
+
+.lp-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.qty-highlight {
+  color: var(--lp-yellow);
+  font-weight: 700;
+}

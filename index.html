@@ -1342,7 +1342,7 @@
       </div>
 
       <main class="lp-product-list" role="list">
-        <article class="card-horizontal full" data-type="cono" data-name="Cono Pizza Tradicional" data-price="6500"
+        <article class="card-horizontal full" data-type="cono" data-name="Cono Pizza" data-price="6500"
           data-desc="Muzzarella, Salsa, Aceituna + Hasta (2) Variedades"
           data-flavors='["Jamón","Muzzarella","Morrón","Huevo","Cebolla","Choclo","Tomate","Albahaca","Papas Pay"]'
           tabindex="0" role="listitem">
@@ -1654,7 +1654,7 @@
                 </div>
               </button>
 
-              <button class="entrega-opt" id="opt-delivery" onclick="selectEntrega('delivery')">
+              <button class="entrega-opt" id="opt-delivery" onclick="selectEntrega('envio')">
                 <div class="radio-ring">
                   <div class="radio-dot"></div>
                 </div>
@@ -1662,22 +1662,25 @@
                   <div class="opt-title">Envío a domicilio</div>
                   <div class="opt-sub">El Envío <strong style="color:rgba(255,255,255,0.55)">NO</strong> está incluido
                     en el total</div>
+                  <div class="opt-ship-note" id="cd-shipnote" hidden>
+                    Envíos desde <strong>$1800</strong> (según distancia). Confirmá el pedido por WhatsApp y coordinamos el costo.
+                  </div>
                 </div>
               </button>
 
             </div>
 
             <!-- Campos de dirección -->
-            <div class="address-fields" id="addressFields">
+            <div class="address-fields" id="addressFields" hidden>
               <div class="address-inner">
                 <div class="fields-row">
                   <div class="field-wrap">
                     <span class="field-label">Calle</span>
-                    <input class="lp-input" type="text" placeholder="Ej: Calle 30 Bis">
+                    <input class="lp-input" type="text" id="cd-calle" placeholder="Ej: Calle 30 Bis">
                   </div>
                   <div class="field-wrap short">
                     <span class="field-label">Número</span>
-                    <input class="lp-input" type="text" placeholder="Ej: 3020">
+                    <input class="lp-input" type="text" id="cd-num" placeholder="Ej: 3020">
                   </div>
                 </div>
                 <div class="field-wrap">
@@ -1695,7 +1698,7 @@
           <div class="block-body">
             <div class="field-wrap">
               <span class="field-label">Nombre y Apellido</span>
-              <input class="lp-input" type="text" placeholder="¿Cómo te llamás?" autocomplete="name">
+              <input class="lp-input" type="text" id="cd-nombre" placeholder="¿Cómo te llamás?" autocomplete="name">
             </div>
           </div>
         </div>

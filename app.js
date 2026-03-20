@@ -185,14 +185,14 @@
         (lines || []).forEach(l => {
             const raw = String(l || '').trim();
             if (!raw) return;
-        
+
             // Si la línea ya trae `(xN) ...`, no debemos contarla como "otra línea"
             // (eso duplica multiplicadores). Acá sumamos las unidades directamente.
             const pref = raw.match(/^\(x(\d+)\)\s*(.+)$/i);
             const qtyToAdd = pref ? (Number(pref[1]) || 1) : 1;
             const key = pref ? String(pref[2] || '').trim() : raw;
             if (!key) return;
-        
+
             if (!counts.has(key)) order.push(key);
             counts.set(key, (counts.get(key) || 0) + qtyToAdd);
         });
@@ -229,6 +229,26 @@
         const raw = String(line || '').trim();
         if (!raw) return raw;
 
+        // (xN) Sabor (sin "1" intermedio; p. ej. salida de compressLines)
+        const xPlain = raw.match(/^\(x(\d+)\)\s*(.+)$/i);
+        if (xPlain && !/^\(x(\d+)\)\s*1\s+/i.test(raw)) {
+            const rest = String(xPlain[2] || '').trim();
+            if (rest && !/^1\s+/i.test(rest) && !/^1\/2\s+/i.test(rest) && !/^½/i.test(rest)) {
+                const n = Number(xPlain[1]) || 1;
+                let name = rest;
+                if (n > 1) {
+                    if (/muzzarella$/i.test(name)) {
+                        name = name.replace(/muzzarella$/i, 'Muzzarellas');
+                    } else if (/especial$/i.test(name)) {
+                        name = name.replace(/especial$/i, 'Especiales');
+                    } else if (/super$/i.test(name)) {
+                        name = name.replace(/super$/i, 'Supers');
+                    }
+                }
+                return n > 1 ? `<span class="qty-highlight">(x${n})</span> ${name}` : name;
+            }
+        }
+
         // Caso típico al compactar mitades iguales: "1 <gusto>"
         // Queremos mostrar el gusto sin el "1" numérico.
         const oneMatch = raw.match(/^1\s+(.+)$/i);
@@ -262,7 +282,7 @@
             name = name.replace(/super$/i, 'Supers');
         }
 
-        return `${n} ${name}`;
+        return `<span class="qty-highlight">(x${n})</span> ${name}`;
     }
 
     function buildWhatsappMessage() {
@@ -270,210 +290,235 @@
         const cart = buildCartView(cartRaw); // promos ya aplicadas como en el carrito
 
         const nombre = document.getElementById('cd-nombre')?.value.trim() || '';
-        const pago = document.querySelector('input[name="cd-pago"]:checked')?.value || '';
+        const pagoBtn = document.querySelector('.pago-card.selected');
+        const pago = pagoBtn?.querySelector('.pago-name')?.textContent?.trim() ||
+            pagoBtn?.textContent?.trim() || '';
 
-        const modo = document.querySelector('.cd-mode__card.is-active')?.dataset.mode || 'retiro';
+        const modo = (document.getElementById('opt-delivery')?.classList.contains('selected'))
+            ? 'envio'
+            : 'retiro';
 
         const calle = document.getElementById('cd-calle')?.value.trim() || '';
         const numero = document.getElementById('cd-num')?.value.trim() || '';
-        const ref = document.getElementById('cd-ref')?.value.trim() || '';
 
-        const fmtMoney = (n) => `$${Number(n || 0).toLocaleString('es-AR')}`;
+        const tipoEntrega = modo === 'envio' ? 'Envío' : 'Retiro';
+        const direccion = [calle, numero].filter(Boolean).join(' ');
+        const total = document.getElementById('cart-total')?.textContent?.trim() || '0';
 
-        // Convierte cualquier cosa (string/obj) a una línea legible
-        const toLine = (raw) => {
-            if (raw == null) return '';
-            if (typeof raw === 'string' || typeof raw === 'number') return String(raw).trim();
-            if (typeof raw === 'object') {
-                const name = (raw.name ?? raw.title ?? '').toString().trim();
-                const q = Number(raw.qty) || 1;
-                if (!name) return '';
-                return `${q > 1 ? `(x${q}) ` : ''}${name}`.trim();
-            }
-            return String(raw).trim();
+        const SEP = '━━━━━━━━━━━━━━━━━━━━━━';
+
+        const normComment = (val) => {
+            if (val == null) return '';
+            let s = '';
+            if (Array.isArray(val)) s = val.filter(Boolean).join(' ');
+            else s = String(val);
+            s = s.trim();
+            if (!s) return '';
+            s = s.replace(/^Comentario\s*:\s*/i, '').replace(/^Comentarios\s*:\s*/i, '').trim();
+            return s;
         };
 
-        // ===== TOTAL (igual que carrito) =====
-        let totalFinal = 0;
+        const stripSize = (n) =>
+            String(n || '')
+                .replace(/\s+(Chica|Grande)\b/gi, '')
+                .trim();
 
-        // ===== PROMOS APLICADAS =====
-        const promoLabels = cart
-            .filter(it => it.type === 'promo')
-            .map(p => `${p.name}${(Number(p.qty) || 1) > 1 ? ` (x${Number(p.qty) || 1})` : ''}`);
+        const stripPizzaPrefix = (n) => String(n || '').replace(/^PIZZA\s*:\s*/i, '').trim();
 
-        // ===== ARMAR PEDIDO =====
-        let pedidoTxt = '';
+        const parseXQty = (raw) => {
+            const s = String(raw || '').trim();
+            const m = s.match(/^\(x(\d+)\)\s*(.+)$/i);
+            if (!m) return null;
+            return { qty: Number(m[1]) || 1, name: m[2].trim() };
+        };
 
-        // ===== AGRUPADOR GLOBAL DE PIZZAS ENTERAS (solo las que NO tienen detalles) =====
-        // key: "Muzzarella|Grande" -> qty total
-        const pizzasAgg = new Map();
-        const addPizzaAgg = (name, sizeName, qty) => {
+        const linesByType = {
+            pizzas: [],
+            empanadas: [],
+            tarta: [],
+            bebidas: [],
+            conos: []
+        };
+
+        const pushLine = (arr, qty, name, comment) => {
+            const q = Number(qty) || 1;
             const n = String(name || '').trim();
-            const s = String(sizeName || '').trim();
             if (!n) return;
-            const key = `${n}|${s}`;
-            pizzasAgg.set(key, (pizzasAgg.get(key) || 0) + (Number(qty) || 1));
+            const c = normComment(comment);
+            arr.push({ qty: q, name: n, comment: c });
         };
 
-        // helpers
-        const sizeNameFromIt = (it) =>
-            it.size === 'g' ? 'Grande' :
-                it.size === 's' ? 'Chica' :
-                    it.size === 'half' ? '1/2' : '';
+        const promoItems = cart.filter(it => it.type === 'promo');
+        const promoNames = promoItems
+            .map(p => String(p.name || '').trim())
+            .filter(Boolean);
 
-        const sizeLabelFromName = (sizeName) => {
-            if (!sizeName) return '';
-            if (sizeName === '1/2') return ''; // ❌ no mostrar (1/2)
-            return ` (${sizeName})`;
-        };
-
+        // Recorremos el carrito ya "vista" (promos aplicadas) para incluir
+        // los productos consumidos dentro de promos.
         cart.forEach(it => {
-            const qty = Number(it.qty) || 1;
-
-            const opts = Array.isArray(it.options) ? it.options : [];
-            const optsTotal = opts.reduce((s, o) => s + (Number(o.price) || 0) * (Number(o.qty) || 1), 0);
-
-            const unit = (Number(it.basePrice) || 0) + optsTotal;
-            totalFinal += unit * qty;
-
-            // ===== Detectar si esta pizza tiene "gustos/detalles" =====
-            const hasSections = Array.isArray(it.sections) && it.sections.length > 0;
-            const hasPizzaLinesInOptions = opts.some(o => /^PIZZA\s*:/i.test(String(o?.name || o || '')));
-
-            const isPizzaWithDetails = (it.type === 'pizza') && (hasSections || hasPizzaLinesInOptions);
-
-            // ===== 1) IMPRIMIR TITULO (promo / pizza con detalles / otros) =====
             if (it.type === 'promo') {
-                // ✅ MOSTRAR SIEMPRE el titulo de la promo
-                pedidoTxt += `${qty > 1 ? `(x${qty}) ` : ''}${it.name}\n`;
-            } else if (isPizzaWithDetails) {
-                // ✅ pizza suelta con gustos: mostrar encabezado + luego detalles
-                const sizeName = sizeNameFromIt(it);
-                pedidoTxt += `${qty > 1 ? `(x${qty}) ` : ''}${it.name}${sizeLabelFromName(sizeName)}\n`;
-            } else if (it.type === 'pizza') {
-                // pizza simple sin detalles -> va al agregador global
-                const sizeName = sizeNameFromIt(it);
-                const cleanName = it.name
-                    .replace(/\s+Chica$/i, '')
-                    .replace(/\s+Grande$/i, '')
-                    .trim();
+                const promoQty = Number(it.qty) || 1;
+                const promoComment = normComment(it.note);
 
-                addPizzaAgg(cleanName, sizeName, qty);
-            } else {
-                // cualquier otro producto normal
-                pedidoTxt += `${qty > 1 ? `(x${qty}) ` : ''}${it.name}\n`;
-            }
-
-            // ===== 2) SECTIONS (para promos y pizzas con detalles / 1/2 y 1/2) =====
-            if (Array.isArray(it.sections) && it.sections.length) {
-                const pizzaLines = [];
-                const empLines = [];
-
-                it.sections.forEach(sec => {
+                (Array.isArray(it.sections) ? it.sections : []).forEach(sec => {
                     const title = String(sec.title || '').trim().toUpperCase();
-                    const lines = (sec.lines || []).map(toLine).filter(Boolean);
-                    if (!lines.length) return;
+                    const secLines = Array.isArray(sec.lines) ? sec.lines : [];
 
-                    if (!title && (it.type === 'pizza' || /^1\/2/i.test(it.name))) {
-                        pizzaLines.push(...lines); // ✅ FIX (antes tenías pizzaLines.push(.lines))
-                        return;
-                    }
                     if (title.startsWith('PIZZA')) {
-                        pizzaLines.push(...lines); // ✅ FIX
-                        return;
-                    }
-                    if (title.startsWith('EMP')) {
-                        empLines.push(...lines);
+                        secLines.forEach(line => {
+                            const raw = String(line || '').trim();
+                            if (!raw) return;
+
+                            const parsed = parseXQty(raw);
+                            const qtyLine = parsed ? (parsed.qty * promoQty) : promoQty;
+                            let nameLine = parsed ? parsed.name : raw;
+                            nameLine = stripPizzaPrefix(nameLine);
+                            nameLine = stripSize(nameLine);
+
+                            pushLine(linesByType.pizzas, qtyLine, nameLine, promoComment);
+                        });
                         return;
                     }
 
-                    // fallback por si viene otro título
-                    if (it.type === 'promo') {
-                        // si es promo y no sabemos el título, lo tratamos como detalle de pizza
-                        pizzaLines.push(...lines);
+                    if (title.startsWith('EMP')) {
+                        secLines.forEach(line => {
+                            const raw = String(line || '').trim();
+                            if (!raw) return;
+
+                            const parsed = parseXQty(raw);
+                            const qtyLine = parsed ? (parsed.qty * promoQty) : promoQty;
+                            let nameLine = parsed ? parsed.name : raw;
+                            nameLine = String(nameLine).trim();
+
+                            pushLine(linesByType.empanadas, qtyLine, nameLine, '');
+                        });
+                        return;
                     }
                 });
 
-                if (pizzaLines.length) {
-                    const compressed = compressLines(pizzaLines);
-                    const parts = compressed.map(p => p.replace(/^PIZZA\s*:\s*/i, '').trim()).filter(Boolean);
-
-                    // si las líneas ya vienen con 1/2, las dejamos tal cual
-                    if (parts.length) pedidoTxt += `PIZZA: ${parts.join(' , ')}\n`;
-                }
-
-                if (empLines.length) {
-                    const compressed = compressLines(empLines);
-                    pedidoTxt += `EMPANADAS: ${compressed.join(' , ')}\n`;
-                }
+                return;
             }
 
-            // ===== 3) OPCIONAL / GUSTOS / COMENTARIO =====
-            const opcional = [];
-            const gustos = [];
+            const qty = Number(it.qty) || 1;
+            const comment = normComment(it.comment || it.note);
 
-            opts.forEach(o => {
-                const n = toLine(o);
-                if (!n) return;
+            if (it.type === 'pizza') {
+                // Si la pizza tiene secciones (mitad y mitad), mostramos cada línea como item.
+                if (Array.isArray(it.sections) && it.sections.length) {
+                    it.sections.forEach(sec => {
+                        const title = String(sec.title || '').trim().toUpperCase();
+                        const secLines = Array.isArray(sec.lines) ? sec.lines : [];
+                        // Para pizzas, nos interesan tanto las secciones sin título como PIZZA.
+                        if (title && !title.startsWith('PIZZA')) return;
 
-                if (/^Gusto\s*\d*\s*:/i.test(n) || /^Gustos?\s*:/i.test(n)) {
-                    gustos.push(
-                        n.replace(/^Gusto\s*\d*\s*:\s*/i, '')
-                            .replace(/^Gustos?\s*:\s*/i, '')
-                            .trim()
-                    );
-                    return;
+                        secLines.forEach(line => {
+                            const raw = String(line || '').trim();
+                            if (!raw) return;
+                            let nameLine = stripPizzaPrefix(raw);
+                            nameLine = stripSize(nameLine);
+                            pushLine(linesByType.pizzas, qty, nameLine, comment);
+                        });
+                    });
+                } else {
+                    const nameLine = stripSize(it.name);
+                    pushLine(linesByType.pizzas, qty, nameLine, comment);
+                }
+                return;
+            }
+
+            if (it.type === 'empanada') {
+                const nameClean = (it.name || '').trim();
+                pushLine(linesByType.empanadas, qty, nameClean, comment);
+                return;
+            }
+
+            if (it.type === 'tarta') {
+                pushLine(linesByType.tarta, qty, it.name, comment);
+                return;
+            }
+
+            if (it.type === 'bebida') {
+                pushLine(linesByType.bebidas, qty, it.name, comment);
+                return;
+            }
+
+            if (it.type === 'cono') {
+                let nombre = it.name;
+
+                if (Array.isArray(it.options) && it.options.length) {
+                    const sabores = it.options.map(o => o.name).join(' + ');
+                    nombre += ` (${sabores})`;
                 }
 
-                if (/^(CON|SIN)\b/i.test(n)) {
-                    opcional.push(n.trim());
-                    return;
-                }
-            });
-
-            if (opcional.length) pedidoTxt += `   ↳ Opcional: ${opcional.join(' , ')}\n`;
-            if (gustos.length) pedidoTxt += `   ↳ Gustos: ${gustos.join(' y ')}\n`;
-
-            const noteVal = String(it.comment || it.note || '').trim();
-            if (noteVal) pedidoTxt += `   ↳ Comentario: ${noteVal}\n`;
-
-            pedidoTxt += `\n`;
+                pushLine(linesByType.conos, qty, nombre, comment);
+                return;
+            }
         });
 
-        // ===== IMPRIMIR PIZZAS AGRUPADAS (UNA SOLA VEZ) =====
-        if (pizzasAgg.size) {
-            let out = '';
-            pizzasAgg.forEach((q, key) => {
-                const [name, sizeName] = key.split('|');
-                out += `(x${q}) ${name}${sizeLabelFromName(sizeName)}\n`;
+        function compactItems(items) {
+            const map = new Map();
+
+            items.forEach(it => {
+                const key = `${it.name}||${it.comment || ''}`;
+
+                if (!map.has(key)) {
+                    map.set(key, { ...it });
+                } else {
+                    map.get(key).qty += it.qty;
+                }
             });
-            // las ponemos arriba del resto del pedido
-            pedidoTxt = `${out}\n${pedidoTxt}`.trim() + '\n';
+
+            return Array.from(map.values());
         }
 
-        // ===== CABECERA SEGÚN ENTREGA =====
-        let header = '';
-        header += `Nombre y Apellido: ${nombre}\n`;
+        const renderItems = (items) => {
+            const compacted = compactItems(items);
 
+            return compacted
+                .map(itLine => {
+                    let base = `* (x${itLine.qty}) ${itLine.name}`;
+
+                    if (itLine.comment) {
+                        base += ` (${itLine.comment})`;
+                    }
+
+                    return base;
+                })
+                .join('\n');
+        };
+
+        let msg = '';
+        msg += `Nombre y Apellido: ${nombre}\n`;
+        msg += `Tipo de Entrega: ${tipoEntrega}\n`;
         if (modo === 'envio') {
-            header += `Forma de entrega: Envío\n`;
-            header += `Dirección: ${[calle, numero].filter(Boolean).join(' ')}\n`;
-            if (ref) header += `Referencia: ${ref}\n`;
-        } else {
-            header += `Forma de entrega: Retiro\n`;
+            if (direccion) msg += `Dirección: ${direccion}\n`;
+        }
+        msg += `Medio de Pago: ${pago}\n`;
+        msg += `Total del Pedido: ${total}\n\n${SEP}\n\n`;
+
+        if (linesByType.pizzas.length) {
+            msg += `PIZZAS\n${renderItems(linesByType.pizzas)}\n\n`;
+        }
+        if (linesByType.empanadas.length) {
+            msg += `EMPANADAS\n${renderItems(linesByType.empanadas)}\n\n`;
+        }
+        if (linesByType.tarta.length) {
+            msg += `TARTA\n${renderItems(linesByType.tarta)}\n\n`;
+        }
+        if (linesByType.bebidas.length) {
+            msg += `BEBIDAS\n${renderItems(linesByType.bebidas)}\n\n`;
+        }
+        if (linesByType.conos.length) {
+            msg += `CONO\n${renderItems(linesByType.conos)}\n\n`;
         }
 
-        header += `Medio de pago: ${pago}\n\n`;
-        header += `----------------------\n\n`;
-        header += `Pedido:\n\n`;
+        if (promoNames.length) {
+            msg += `${SEP}\n\nPromociones Aplicadas:\n`;
+            msg += promoNames.map(p => `* ${p}`).join('\n');
+            msg += '\n';
+        }
 
-        // ===== FOOTER =====
-        let footer = '';
-        footer += `\n----------------------\n\n`;
-        footer += `Total: ${fmtMoney(totalFinal)}\n`;
-        if (promoLabels.length) footer += `Promos Aplicadas: ${promoLabels.join(' | ')}\n`;
-
-        return `${header}${pedidoTxt}${footer}`.trim();
+        return msg.trim();
     }
 
     function getCart() {
@@ -515,8 +560,9 @@
     const step2 = document.getElementById('cd-step2');
     const step2Back = document.getElementById('cd-step2-back');
 
-    const modeCards = document.querySelectorAll('.cd-mode__card');
-    const boxEnvio = document.getElementById('cd-envio');
+    const btnRetiro = document.getElementById('opt-retiro');
+    const btnDelivery = document.getElementById('opt-delivery');
+    const boxEnvio = document.getElementById('addressFields');
     const shipNote = document.getElementById('cd-shipnote');
 
     function showStep2() {
@@ -570,28 +616,58 @@
     }
 
     function setEntregaMode(mode) {
-        modeCards.forEach(b => b.classList.toggle('is-active', b.dataset.mode === mode));
-
         const isEnvio = mode === 'envio';
-        if (boxEnvio) boxEnvio.hidden = !isEnvio;
-        if (shipNote) shipNote.hidden = !isEnvio;
+
+        btnRetiro?.classList.toggle('selected', !isEnvio);
+        btnDelivery?.classList.toggle('selected', isEnvio);
+
+        if (boxEnvio) {
+            boxEnvio.hidden = !isEnvio;
+            boxEnvio.classList.toggle('visible', isEnvio);
+        }
+
+        if (shipNote) {
+            shipNote.hidden = !isEnvio;
+        }
     }
 
-    btnContinue?.addEventListener('click', showStep2);
-    step2Back?.addEventListener('click', hideStep2);
+    window.setEntregaMode = setEntregaMode;
+    window.selectEntrega = function (mode) {
+        setEntregaMode(mode);
+    };
 
-    modeCards.forEach(b => b.addEventListener('click', () => setEntregaMode(b.dataset.mode)));
-
-    // default
     setEntregaMode('retiro');
 
-    const btnEnviarPedido = document.getElementById('cd-step2-confirm');
+    function showToast(message) {
+        let toast = document.getElementById('lp-toast');
+
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'lp-toast';
+            toast.className = 'lp-toast';
+            document.body.appendChild(toast);
+        }
+
+        toast.textContent = message;
+        toast.classList.add('show');
+
+        clearTimeout(window.__lpToastTimer);
+        window.__lpToastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2600);
+    }
+
+    const btnEnviarPedido =
+        document.querySelector('#cart-footer-step2 .btn-send') ||
+        document.getElementById('cd-step2-confirm');
     const inputCalle = document.getElementById('cd-calle');
     const inputNumero = document.getElementById('cd-num');
 
     // BUSCA ESTE BLOQUE Y REEMPLÁZALO COMPLETO:
     btnEnviarPedido?.addEventListener('click', () => {
-        const modoActivo = document.querySelector('.cd-mode__card.is-active')?.dataset.mode;
+        const modoActivo = (document.getElementById('opt-delivery')?.classList.contains('selected'))
+            ? 'envio'
+            : 'retiro';
 
         // 1. LIMPIEZA DE ERRORES PREVIOS
         // Quitamos la clase de error del nombre y los pagos
@@ -609,7 +685,7 @@
 
         // 2. VALIDACIÓN DE DATOS DEL CLIENTE (Nombre y Pago)
         let clienteError = false;
-        const pagoSeleccionado = document.querySelector('input[name="cd-pago"]:checked');
+        const pagoSeleccionado = document.querySelector('.pago-card.selected');
 
         // Validar Nombre
         if (!inputNombre?.value.trim()) {
@@ -620,7 +696,7 @@
         // Validar Pago
         if (!pagoSeleccionado) {
             // Marcamos ambas opciones en rojo para indicar que falta seleccionar una
-            document.querySelectorAll('.cd-radio').forEach(r => r.classList.add('is-error'));
+            document.querySelectorAll('.pago-card').forEach(r => r.classList.add('is-error'));
             clienteError = true;
         }
 
@@ -630,6 +706,7 @@
             box.className = 'cd-field-error-msg'; // Usamos la nueva clase CSS
             box.textContent = 'Por favor completá tu Nombre y Medio de Pago.';
             document.getElementById('cd-cliente')?.appendChild(box);
+            showToast('Completá nombre y medio de pago para continuar.');
             return; // <--- Importante: detiene la ejecución aquí
         }
 
@@ -645,7 +722,8 @@
                 const box = document.createElement('div');
                 box.className = 'cd-envio-error'; // Usamos la clase que ya tenías
                 box.textContent = 'Para envío a domicilio, completá Calle y Número.';
-                document.getElementById('cd-envio')?.appendChild(box);
+                document.getElementById('addressFields')?.appendChild(box);
+                showToast('Completá calle y número para el envío.');
                 return; // <--- Detiene la ejecución si falta dirección
             }
         }
@@ -654,7 +732,8 @@
         const mensaje = buildWhatsappMessage();
         const phone = '5492324674311'; // Tu número
         const url = `https://wa.me/${phone}?text=${encodeURIComponent(mensaje)}`;
-        window.open(url, '_blank');
+        const waWin = window.open(url, '_blank');
+        if (!waWin) window.location.href = url;
 
         // Vaciar carrito y cerrar
         localStorage.removeItem(CART_KEY);
@@ -1302,49 +1381,11 @@
                     }
 
                     if (isPizzaGroup) {
-                        // Render legible: 2 mitades juntas = 1 bloque visual; separador entre pizzas.
-                        const pizzaBlocks = [];
-                        let pendingHalves = [];
-
-                        const flushPendingHalves = () => {
-                            if (!pendingHalves.length) return;
-                            pizzaBlocks.push({ kind: 'halves', halves: pendingHalves });
-                            pendingHalves = [];
-                        };
-
-                        rawSectionLines.forEach(l => {
-                            const s = String(l || '').trim();
-                            if (!s) return;
-
-                            const mHalf = s.match(/^(?:1\/2|½)\s+(.+)$/i);
-                            if (mHalf) {
-                                pendingHalves.push(mHalf[1].trim());
-                                return;
-                            }
-
-                            // Si encontramos una pizza entera, antes cerramos cualquier bloque de mitades.
-                            flushPendingHalves();
-                            pizzaBlocks.push({ kind: 'whole', name: s });
-                        });
-
-                        flushPendingHalves();
-
-                        pizzaBlocks.forEach((b, idx) => {
-                            if (idx > 0) {
-                                innerHTML += `<div class="lp-pizza-divider" aria-hidden="true"></div>`;
-                            }
-
-                            if (b.kind === 'halves') {
-                                b.halves.forEach(hName => {
-                                    innerHTML += `<span class="detail-item"><span class="lp-pizza-half-tag">1/2</span> ${hName}</span>`;
-                                });
-                            } else {
-                                const lineFmt = `(x1) ${b.name}`.replace(
-                                    /\(x(\d+)\)\s*/gi,
-                                    '<span style="color: #FFC107; font-weight: 800;">(x$1)</span> '
-                                );
-                                innerHTML += `<span class="detail-item">${lineFmt}</span>`;
-                            }
+                        const lines = compressLines(rawSectionLines);
+                        lines.forEach(line => {
+                            const formatted = formatPizzaDetailLine(line);
+                            if (!String(formatted || '').replace(/<[^>]+>/g, '').trim()) return;
+                            innerHTML += `<span class="detail-item">${formatted}</span>`;
                         });
                     } else {
                         lines.forEach(l => {
@@ -3193,12 +3234,8 @@ const initDniSlider = () => {
 // Asegúrate de llamarla
 initDniSlider();
 
-function selectEntrega(tipo) {
-    document.getElementById('opt-retiro').classList.remove('selected');
-    document.getElementById('opt-delivery').classList.remove('selected');
-    document.getElementById('opt-' + tipo).classList.add('selected');
-    const fields = document.getElementById('addressFields');
-    tipo === 'delivery' ? fields.classList.add('visible') : fields.classList.remove('visible');
+function selectEntrega(mode) {
+    window.setEntregaMode?.(mode);
 }
 
 function selectPago(tipo) {
