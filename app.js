@@ -178,12 +178,72 @@
     const CART_KEY = 'lopepu-cart';
     const fmt = n => '$ ' + (n || 0).toLocaleString('es-AR');
 
+    const isCommentLikeOption = (s) => {
+        const t = String(s || '').trim().toLowerCase();
+        return t.startsWith('comentario') || t.startsWith('comment');
+    };
+
+    /** Quita prefijos de bundle tipo "PIZZA:", "PIZZA 2:", "EMPANADAS:" en detalles y mensajes. No elimina "Chica"/"Grande" de tamaño. */
+    function stripMenuLinePrefixes(line) {
+        let t = String(line || '').trim();
+        let prev;
+        do {
+            prev = t;
+            t = t
+                .replace(/\s*PIZZA\s*\d*\s*:\s*/gi, ' ')
+                .replace(/\s*PIZZA\s*:\s*/gi, ' ')
+                .replace(/\s*EMPANADAS\s*:\s*/gi, ' ')
+                .replace(/\s*,\s*,+/g, ', ')
+                .replace(/^\s*,\s*|\s*,\s*$/g, '')
+                .trim();
+        } while (prev !== t);
+        return t.replace(/\s+/g, ' ').trim();
+    }
+
+    /** Para no repetir sabores de la línea principal dentro del paréntesis de extras. */
+    function normalizeHalfFlavor(s) {
+        return stripMenuLinePrefixes(String(s || '').trim())
+            .replace(/^1\/2\s+/i, '')
+            .trim()
+            .toLowerCase();
+    }
+
+    /**
+     * Sufijo con extras + nota. excludeFlavorLines = líneas base (ej. mitades): no se repiten en ().
+     * No se aplica a empanadas.
+     */
+    function formatPizzaExtrasSuffix(options, note, excludeFlavorLines = []) {
+        const excl = new Set(
+            (excludeFlavorLines || [])
+                .map(s => normalizeHalfFlavor(s))
+                .filter(Boolean)
+        );
+        const rawLines = (excludeFlavorLines || []).map(s =>
+            stripMenuLinePrefixes(String(s || '').trim()).toLowerCase()
+        );
+
+        const parts = [];
+        (Array.isArray(options) ? options : []).forEach(o => {
+            const name = String(o?.name || '').trim();
+            if (!name || isCommentLikeOption(name)) return;
+            const clean = stripMenuLinePrefixes(name);
+            const n = normalizeHalfFlavor(clean);
+            if (excl.has(n)) return;
+            if (rawLines.some(rl => rl && (clean.toLowerCase() === rl || n === normalizeHalfFlavor(rl)))) return;
+            parts.push(clean);
+        });
+        const n = Array.isArray(note) ? note.filter(Boolean).join(' ') : String(note || '').trim();
+        if (n) parts.push(stripMenuLinePrefixes(n));
+        if (!parts.length) return '';
+        return ' (' + parts.join(', ') + ')';
+    }
+
     function compressLines(lines) {
         const order = [];
         const counts = new Map();
 
         (lines || []).forEach(l => {
-            const raw = String(l || '').trim();
+            const raw = stripMenuLinePrefixes(String(l || '').trim());
             if (!raw) return;
 
             // Si la línea ya trae `(xN) ...`, no debemos contarla como "otra línea"
@@ -209,7 +269,7 @@
                 const halfRest = n % 2;
 
                 if (wholeCount > 0) {
-                    out.push(wholeCount > 1 ? `(x${wholeCount}) 1 ${prodName}` : `1 ${prodName}`);
+                    out.push(wholeCount > 1 ? `(x${wholeCount}) ${prodName}` : prodName);
                 }
 
                 if (halfRest > 0) {
@@ -225,64 +285,77 @@
         return out;
     }
 
+    function applyTierPlural(name, n) {
+        let out = name;
+        if (n <= 1) return out;
+        if (/muzzarella$/i.test(out)) {
+            out = out.replace(/muzzarella$/i, 'Muzzarellas');
+        } else if (/especial$/i.test(out)) {
+            out = out.replace(/especial$/i, 'Especiales');
+        } else if (/super$/i.test(out)) {
+            out = out.replace(/super$/i, 'Supers');
+        }
+        return out;
+    }
+
     function formatPizzaDetailLine(line) {
         const raw = String(line || '').trim();
         if (!raw) return raw;
 
-        // (xN) Sabor (sin "1" intermedio; p. ej. salida de compressLines)
-        const xPlain = raw.match(/^\(x(\d+)\)\s*(.+)$/i);
-        if (xPlain && !/^\(x(\d+)\)\s*1\s+/i.test(raw)) {
-            const rest = String(xPlain[2] || '').trim();
-            if (rest && !/^1\s+/i.test(rest) && !/^1\/2\s+/i.test(rest) && !/^½/i.test(rest)) {
-                const n = Number(xPlain[1]) || 1;
-                let name = rest;
-                if (n > 1) {
-                    if (/muzzarella$/i.test(name)) {
-                        name = name.replace(/muzzarella$/i, 'Muzzarellas');
-                    } else if (/especial$/i.test(name)) {
-                        name = name.replace(/especial$/i, 'Especiales');
-                    } else if (/super$/i.test(name)) {
-                        name = name.replace(/super$/i, 'Supers');
-                    }
-                }
-                return n > 1 ? `<span class="qty-highlight">(x${n})</span> ${name}` : name;
+        if (/\r?\n/.test(raw)) {
+            return raw.split(/\r?\n/)
+                .map(seg => formatPizzaDetailLine(seg.trim()))
+                .filter(s => s !== '')
+                .join('<br>');
+        }
+
+        // Extras / nota en líneas aparte (sin cantidad de pizza)
+        if (/^\[/.test(raw) || /^\(Nota:/i.test(raw)) return raw;
+
+        // (xN) 1 Sabor — salida legacy de compressLines
+        const legacyX1 = raw.match(/^\(x(\d+)\)\s*1\s+(.+)$/i);
+        if (legacyX1) {
+            const n = Number(legacyX1[1]) || 1;
+            const name = applyTierPlural(legacyX1[2].trim(), n);
+            return `<span class="qty-highlight">(x${n})</span> ${name}`;
+        }
+
+        const xQty = raw.match(/^\(x(\d+)\)\s*(.+)$/i);
+        if (xQty) {
+            const n = Number(xQty[1]) || 1;
+            let rest = String(xQty[2] || '').trim();
+
+            const halfAfter = rest.match(/^1\/2\s+(.+)$/i);
+            if (halfAfter) {
+                return `<span class="qty-highlight">(x${n})</span> <span class="qty-highlight">1/2</span> ${halfAfter[1].trim()}`;
+            }
+
+            const oneAfter = rest.match(/^1\s+(.+)$/i);
+            if (oneAfter) {
+                const name = applyTierPlural(oneAfter[1].trim(), n);
+                return `<span class="qty-highlight">(x${n})</span> ${name}`;
+            }
+
+            if (rest) {
+                const name = /^½/i.test(rest) ? rest : applyTierPlural(rest, n);
+                return `<span class="qty-highlight">(x${n})</span> ${name}`;
+            }
+            return raw;
+        }
+
+        if (/^1\/2\s+/i.test(raw)) {
+            const hm = raw.match(/^1\/2\s+(.+)$/i);
+            if (hm) {
+                return `<span class="qty-highlight">1/2</span> ${hm[1].trim()}`;
             }
         }
 
-        // Caso típico al compactar mitades iguales: "1 <gusto>"
-        // Queremos mostrar el gusto sin el "1" numérico.
-        const oneMatch = raw.match(/^1\s+(.+)$/i);
-        if (oneMatch) {
-            let name = oneMatch[1].trim();
-
-            // plural mínimo para los nombres que más usás
-            if (/muzzarella$/i.test(name)) {
-                name = name.replace(/muzzarella$/i, 'Muzzarellas');
-            } else if (/especial$/i.test(name)) {
-                name = name.replace(/especial$/i, 'Especiales');
-            } else if (/super$/i.test(name)) {
-                name = name.replace(/super$/i, 'Supers');
-            }
-
-            return name;
+        const oneLead = raw.match(/^1\s+(.+)$/i);
+        if (oneLead) {
+            return `<span class="qty-highlight">(x1)</span> ${oneLead[1].trim()}`;
         }
 
-        const m = raw.match(/^\(x(\d+)\)\s*1\s+(.+)$/i);
-        if (!m) return raw;
-
-        const n = Number(m[1]) || 1;
-        let name = m[2].trim();
-
-        // plural mínimo para los nombres que más usás
-        if (/muzzarella$/i.test(name)) {
-            name = name.replace(/muzzarella$/i, 'Muzzarellas');
-        } else if (/especial$/i.test(name)) {
-            name = name.replace(/especial$/i, 'Especiales');
-        } else if (/super$/i.test(name)) {
-            name = name.replace(/super$/i, 'Supers');
-        }
-
-        return `<span class="qty-highlight">(x${n})</span> ${name}`;
+        return `<span class="qty-highlight">(x1)</span> ${raw}`;
     }
 
     function buildWhatsappMessage() {
@@ -318,12 +391,19 @@
             return s;
         };
 
-        const stripSize = (n) =>
+        /** Solo quita "Grande"; no toca "Chica" (evita que Chica y Grande se confundan en WhatsApp). */
+        const stripGrandeOnly = (n) =>
             String(n || '')
-                .replace(/\s+(Chica|Grande)\b/gi, '')
+                .replace(/\s+Grande\b/gi, '')
                 .trim();
 
-        const stripPizzaPrefix = (n) => String(n || '').replace(/^PIZZA\s*:\s*/i, '').trim();
+        const displayWhatsappPizzaName = (nameAfterPrefixStrip, size) => {
+            let n = stripGrandeOnly(String(nameAfterPrefixStrip || '').trim());
+            if (size === 's' && n && !/\bchica\b/i.test(n)) {
+                n = `${n} Chica`.trim();
+            }
+            return n;
+        };
 
         const parseXQty = (raw) => {
             const s = String(raw || '').trim();
@@ -340,12 +420,12 @@
             conos: []
         };
 
-        const pushLine = (arr, qty, name, comment) => {
+        const pushLine = (arr, qty, name, comment, pizzaSize) => {
             const q = Number(qty) || 1;
             const n = String(name || '').trim();
             if (!n) return;
             const c = normComment(comment);
-            arr.push({ qty: q, name: n, comment: c });
+            arr.push({ qty: q, name: n, comment: c, _pizzaSize: pizzaSize });
         };
 
         const promoItems = cart.filter(it => it.type === 'promo');
@@ -372,10 +452,9 @@
                             const parsed = parseXQty(raw);
                             const qtyLine = parsed ? (parsed.qty * promoQty) : promoQty;
                             let nameLine = parsed ? parsed.name : raw;
-                            nameLine = stripPizzaPrefix(nameLine);
-                            nameLine = stripSize(nameLine);
-
-                            pushLine(linesByType.pizzas, qtyLine, nameLine, promoComment);
+                            nameLine = displayWhatsappPizzaName(stripMenuLinePrefixes(nameLine), it.pizzaSize);
+                            // Extras/nota ya van en la línea (buildCartView); no repetir nota global en cada pizza.
+                            pushLine(linesByType.pizzas, qtyLine, nameLine, '', it.pizzaSize);
                         });
                         return;
                     }
@@ -388,13 +467,17 @@
                             const parsed = parseXQty(raw);
                             const qtyLine = parsed ? (parsed.qty * promoQty) : promoQty;
                             let nameLine = parsed ? parsed.name : raw;
-                            nameLine = String(nameLine).trim();
+                            nameLine = stripMenuLinePrefixes(String(nameLine).trim());
 
                             pushLine(linesByType.empanadas, qtyLine, nameLine, '');
                         });
                         return;
                     }
                 });
+
+                if (promoComment) {
+                    pushLine(linesByType.pizzas, promoQty, 'Nota al combo', promoComment);
+                }
 
                 return;
             }
@@ -403,25 +486,38 @@
             const comment = normComment(it.comment || it.note);
 
             if (it.type === 'pizza') {
+                const noteMerged = [
+                    Array.isArray(it.note) ? it.note.filter(Boolean).join(' ') : String(it.note || '').trim(),
+                    String(it.comment || '').trim()
+                ].filter(Boolean).join(' ');
                 // Si la pizza tiene secciones (mitad y mitad), mostramos cada línea como item.
                 if (Array.isArray(it.sections) && it.sections.length) {
+                    const flavorExclude = [];
+                    it.sections.forEach(sec => {
+                        const title = String(sec.title || '').trim().toUpperCase();
+                        if (title && !title.startsWith('PIZZA')) return;
+                        (Array.isArray(sec.lines) ? sec.lines : []).forEach(line => {
+                            const raw = String(line || '').trim();
+                            if (raw) flavorExclude.push(displayWhatsappPizzaName(stripMenuLinePrefixes(raw), it.size));
+                        });
+                    });
                     it.sections.forEach(sec => {
                         const title = String(sec.title || '').trim().toUpperCase();
                         const secLines = Array.isArray(sec.lines) ? sec.lines : [];
-                        // Para pizzas, nos interesan tanto las secciones sin título como PIZZA.
                         if (title && !title.startsWith('PIZZA')) return;
 
                         secLines.forEach(line => {
                             const raw = String(line || '').trim();
                             if (!raw) return;
-                            let nameLine = stripPizzaPrefix(raw);
-                            nameLine = stripSize(nameLine);
-                            pushLine(linesByType.pizzas, qty, nameLine, comment);
+                            let nameLine = displayWhatsappPizzaName(stripMenuLinePrefixes(raw), it.size);
+                            const optSuf = formatPizzaExtrasSuffix(it.options, noteMerged, flavorExclude);
+                            pushLine(linesByType.pizzas, qty, nameLine + optSuf, '', it.size);
                         });
                     });
                 } else {
-                    const nameLine = stripSize(it.name);
-                    pushLine(linesByType.pizzas, qty, nameLine, comment);
+                    const nameLine = displayWhatsappPizzaName(stripMenuLinePrefixes(it.name), it.size);
+                    const optSuf = formatPizzaExtrasSuffix(it.options, noteMerged, [nameLine]);
+                    pushLine(linesByType.pizzas, qty, nameLine + optSuf, '', it.size);
                 }
                 return;
             }
@@ -457,12 +553,20 @@
 
         function compactItems(items) {
             const map = new Map();
+            const nm = (s) => String(s || '').trim().replace(/\s+/g, ' ');
+            const sig = (s) => {
+                try {
+                    return nm(s).normalize('NFKC');
+                } catch {
+                    return nm(s);
+                }
+            };
 
             items.forEach(it => {
-                const key = `${it.name}||${it.comment || ''}`;
+                const key = `${sig(it.name)}||${sig(it.comment)}||${sig(it._pizzaSize ?? '')}`;
 
                 if (!map.has(key)) {
-                    map.set(key, { ...it });
+                    map.set(key, { ...it, name: nm(it.name), comment: nm(it.comment) });
                 } else {
                     map.get(key).qty += it.qty;
                 }
@@ -833,8 +937,8 @@
             // muzza grande = 12000, especial grande = 14000
             const pizzaNormal = (needTier === "muzza") ? 12000 : 14000;
 
-            // empanadas normal: $1500 c/u (según tus cards).
-            const empNormal = 1500 * needEmp;
+            // empanadas normal: $1800 c/u (según tus cards).
+            const empNormal = 1800 * needEmp;
 
             const normal = pizzaNormal + empNormal;
             const discount = Math.max(0, normal - pricePromo);
@@ -870,18 +974,9 @@
                 : tier === 'super' ? 15500
                     : 0;
 
-        const halfComboPrice = (t1, t2) => {
-            const a = String(t1 || 'unk');
-            const b = String(t2 || 'unk');
-            const key = [a, b].sort().join('+');
-
-            const MAP = {
-                'esp+muzza': 13000,
-                'muzza+super': 13800,
-                'esp+super': 14800,
-            };
-            return MAP[key] || 0;
-        };
+        /** Entre dos tiers distintos, gana el de mayor precio de pizza grande (p. ej. muzza+esp → esp). */
+        const higherPriceTier = (ta, tb) =>
+            (tierFullPrice(ta) >= tierFullPrice(tb) ? ta : tb);
 
         // juntar extras/opcionales: si lo ponen en una mitad, aplica a toda la pizza
         const mergeOptions = (a, b) => {
@@ -909,29 +1004,29 @@
             return Array.from(map.values());
         };
 
-        const mergeNote = (n1, n2) => {
-            const a = Array.isArray(n1) ? n1.join(' ') : String(n1 || '').trim();
-            const b = Array.isArray(n2) ? n2.join(' ') : String(n2 || '').trim();
-            if (!a && !b) return '';
-            if (a && !b) return a;
-            if (!a && b) return b;
-            return a === b ? a : `${a} | ${b}`;
+        const mergeHalfNotes = (n1, n2) => {
+            const a = Array.isArray(n1) ? n1.join(' ').trim() : String(n1 || '').trim();
+            const b = Array.isArray(n2) ? n2.join(' ').trim() : String(n2 || '').trim();
+            return [a, b].filter(Boolean).join(' | ');
         };
 
-        // opcionales SIN el comentario (evita que "Comentario: ..." aparezca en EXTRAS/OPCIONALES)
-        const isCommentLike = (s) => {
-            const t = String(s || '').trim().toLowerCase();
-            return t.startsWith('comentario') || t.startsWith('comment');
+        const isTostadaOption = (o) => {
+            const n = String(o?.name || '').trim().toLowerCase();
+            return n.includes('tostada');
         };
 
-        const mergePickedOptions = (picked) => {
+        const optionsListHasTostada = (opts) =>
+            (Array.isArray(opts) ? opts : []).some(isTostadaOption);
+
+        /** Solo extras con costo > 0 (para sumar al subtotal del combo sin mezclar texto con empanadas). */
+        const mergePickedPricedOptions = (picked) => {
             const merged = [];
             const seen = new Set();
             picked.forEach(pz => {
                 (Array.isArray(pz.options) ? pz.options : []).forEach(o => {
                     const name = String(o?.name || '').trim();
-                    if (!name) return;
-                    if (isCommentLike(name)) return; // <- clave para que no se cuele
+                    if (!name || isCommentLikeOption(name)) return;
+                    if ((Number(o.price) || 0) <= 0) return;
                     const q = Number(o?.qty) || 1;
                     const pr = Number(o?.price) || 0;
                     const key = `${name}|${q}|${pr}`;
@@ -941,12 +1036,6 @@
                 });
             });
             return merged;
-        };
-
-        const mergePickedNote = (picked) => {
-            return [...new Set(
-                picked.map(pz => String(pz.note || '').trim()).filter(Boolean)
-            )].join(' / ');
         };
 
         // 1) Fusionar 2 medias -> 1 pizza grande con detalles
@@ -959,6 +1048,7 @@
             const t1 = a.tier;
             const t2 = b.tier;
             const mixedTier = (t1 !== t2);
+            const winningTier = mixedTier ? higherPriceTier(t1, t2) : t1;
             const aClean = cleanName(a.name);
             const bClean = cleanName(b.name);
             // Si las dos mitades son del mismo tier pero eligieron gustos/variedades distintas,
@@ -967,17 +1057,36 @@
                 || aClean !== tierLabel(t1)
                 || bClean !== tierLabel(t1);
 
+            const basePrice = mixedTier
+                ? tierFullPrice(winningTier)
+                : tierFullPrice(t1);
+
+            let mergedOpts = mergeOptions(a.options, b.options);
+            if (optionsListHasTostada(a.options) || optionsListHasTostada(b.options)) {
+                if (!mergedOpts.some(isTostadaOption)) {
+                    mergedOpts = mergeOptions(mergedOpts, [{ name: 'BASE TOSTADA', price: 0, qty: 1 }]);
+                }
+                mergedOpts = mergeOptions(
+                    mergedOpts.map(o =>
+                        isTostadaOption(o)
+                            ? { name: 'BASE TOSTADA', price: Number(o.price) || 0, qty: 1 }
+                            : o
+                    ),
+                    []
+                );
+            }
+
             return {
                 type: 'pizza',
-                tier: mixedTier ? 'mix' : t1,
+                tier: winningTier,
                 size: 'g',
                 qty: 1,
-                basePrice: mixedTier ? halfComboPrice(t1, t2) : tierFullPrice(t1),
+                basePrice,
                 name: mixedTier
                     ? `1/2 ${tierLabel(t1)} y 1/2 ${tierLabel(t2)}`
                     : `${tierLabel(t1)}`,
-                options: mergeOptions(a.options, b.options),
-                note: mergeNote(a.note, b.note),
+                options: mergedOpts,
+                note: mergeHalfNotes(a.note, b.note),
                 _src: [...(a._src || []), ...(b._src || [])],
                 sections: showHalfDetails ? [{
                     title: '',
@@ -993,6 +1102,7 @@
             return it.type === 'pizza' && it.size === 'half' && ['muzza', 'esp', 'super'].includes(it.tier);
         }
 
+        /** Dos mitades del mismo tier → 1 grande (orden del carrito); gustos distintos van en sections. */
         function pairSameTier(tier) {
             const indexes = items
                 .map((it, idx) => ({ it, idx }))
@@ -1008,12 +1118,12 @@
             }
         }
 
+        /** Cruza tiers (muzza+esp, etc.): empareja la primera media disponible de cada una, sin exigir mismos extras/nota. */
         function pairFirstAvailable(tierA, tierB) {
             while (true) {
                 const i1 = items.findIndex((it, idx) =>
                     !used.has(idx) && isHalfPizza(it) && it.tier === tierA
                 );
-
                 const i2 = items.findIndex((it, idx) =>
                     !used.has(idx) && isHalfPizza(it) && it.tier === tierB
                 );
@@ -1092,6 +1202,19 @@
             return lines;
         };
 
+        /** Líneas de sección PIZZA en promos: base + extras/nota solo de esa pizza (no van al root ni a empanadas). */
+        const buildPizzaSectionLinesForPromo = (pizza) => {
+            const baseLines = consumePizzaLines(pizza).map(l =>
+                stripMenuLinePrefixes(String(l || '').trim())
+            );
+            return baseLines.map(bl =>
+                stripMenuLinePrefixes(
+                    String(bl || '').trim() +
+                    formatPizzaExtrasSuffix(pizza.options, pizza.note, baseLines)
+                )
+            );
+        };
+
         for (const p of promos) {
             while (true) {
                 const pizza = firstPizzaUnitOfTier(p.tier);
@@ -1105,23 +1228,23 @@
                 const price = getPromoPrice(p.id) || 0;
                 if (!price) break;
 
-                const pizzaLines = consumePizzaLines(pizza);
+                const pizzaLines = buildPizzaSectionLinesForPromo(pizza);
                 const empLines = taken.map(t =>
                     `(x${Number(t.qty) || 1}) ${t.name}`
                 );
 
-                // promo: hereda opcionales + comentario SOLO de la pizza usada (1 unidad)
+                // Texto de extras en líneas de PIZZA; solo cobramos opciones con precio en el combo.
                 const picked = [pizza];
-                const mergedOptions = mergePickedOptions(picked);
-                const mergedNote = mergePickedNote(picked);
+                const pricedOpts = mergePickedPricedOptions(picked);
 
                 const promoItem = {
                     type: 'promo',
                     qty: 1,
                     basePrice: price,
                     name: p.label,
-                    options: mergedOptions,
-                    note: mergedNote,
+                    options: pricedOpts,
+                    note: '',
+                    pizzaSize: pizza.size,
                     sections: [
                         { title: 'PIZZAS', lines: pizzaLines },
                         { title: 'EMPANADAS', lines: empLines }
@@ -1178,15 +1301,18 @@
                 if (!price) break;
 
                 const pizzaLines = [];
-                picked.forEach(pz => consumePizzaLines(pz).forEach(l => pizzaLines.push(l)));
+                picked.forEach(pz => {
+                    buildPizzaSectionLinesForPromo(pz).forEach(l => pizzaLines.push(l));
+                });
 
                 const promoItem = {
                     type: 'promo',
                     qty: 1,
                     basePrice: price,
                     name: label,
-                    options: mergePickedOptions(picked),
-                    note: mergePickedNote(picked),
+                    options: mergePickedPricedOptions(picked),
+                    note: '',
+                    pizzaSize: picked[0]?.size,
                     sections: [{ title: 'PIZZAS', lines: pizzaLines }],
                     _src: picked.flatMap(pz => pz._src || [])
                 };
@@ -1578,6 +1704,9 @@
 
         const priceEl = document.getElementById('im-price');
         if (priceEl) priceEl.textContent = fmt(total);
+
+        const halfHint = document.getElementById('im-half-tostada-hint');
+        if (halfHint) halfHint.hidden = size !== 'half';
     }
 
     document.getElementById('pizza-size')?.addEventListener('change', updateModalTotal);
@@ -2158,7 +2287,7 @@
         if (note) commonOpts.push({ name: `Comentario: ${note}`, price: 0, qty: 1 });
 
         const PIZZA_G = { muzza: 10000, esp: 12000 };
-        const EMP_UNIT = 1500;
+        const EMP_UNIT = 1800;
 
         const addPizzaItem = ({ tier, qty, pizzaLines }) => {
             const optLines = [];
@@ -2191,8 +2320,8 @@
                 basePrice: EMP_UNIT,
                 qty: Math.max(1, Number(qty) || 1),
                 extras: [],
-                options: [...commonOpts],
-                note: note
+                options: [],
+                note: ''
             });
         };
 
